@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Lock, Check, Sparkles, ShieldCheck, Zap } from 'lucide-react';
-import confetti from 'canvas-confetti';
 
 interface PaywallModalProps {
   isOpen: boolean;
@@ -27,16 +26,17 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
     setIsProcessing(true);
     setTimeout(() => {
       setIsProcessing(false);
-      // Trigger Confetti!
-      try {
-        confetti({
-          particleCount: 80,
-          spread: 70,
-          origin: { y: 0.6 },
-        });
-      } catch (e) {
-        console.error(e);
-      }
+      // Dynamic import for confetti
+      import('canvas-confetti')
+        .then((confettiModule) => {
+          const fireConfetti = confettiModule.default || confettiModule;
+          fireConfetti({
+            particleCount: 80,
+            spread: 70,
+            origin: { y: 0.6 },
+          });
+        })
+        .catch((e) => console.error(e));
       onUnlockSuccess();
     }, 800);
   };
