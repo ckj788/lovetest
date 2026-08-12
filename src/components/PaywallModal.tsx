@@ -61,14 +61,14 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
           {/* Badge */}
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-mbti-pink/10 text-mbti-pink text-xs font-bold mb-3">
             <Lock className="w-3.5 h-3.5" />
-            解锁专属关系报告
+            UNLOCK DEEP BLUEPRINT
           </div>
 
           <h3 className="text-2xl font-black text-mbti-text mb-1">
-            看清他在关系里的真相
+            See Through His Real Intentions
           </h3>
           <p className="text-xs text-mbti-muted mb-6">
-            针对针对测算出的 <span className="font-bold text-mbti-purple">{archetypeName}</span>，提供全方位拆解与 7 天实操策略
+            Custom deep analysis & 7-day power playbook for <span className="font-bold text-mbti-purple">{archetypeName}</span>
           </p>
 
           {/* Pricing Options Cards */}
@@ -87,15 +87,15 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="font-bold text-mbti-text text-sm md:text-base">基础解密报告</span>
-                    <span className="text-[10px] bg-mbti-pink/15 text-mbti-pink px-2 py-0.5 rounded-full font-bold">热销</span>
+                    <span className="font-bold text-mbti-text text-sm md:text-base">Standard Unlock</span>
+                    <span className="text-[10px] bg-mbti-pink/15 text-mbti-pink px-2 py-0.5 rounded-full font-bold">Popular</span>
                   </div>
-                  <p className="text-xs text-mbti-muted">解锁未推进原因 + 试探信号 + 7天Action Guide</p>
+                  <p className="text-xs text-mbti-muted">Full report + 7-Day Power Playbook</p>
                 </div>
               </div>
               <div className="text-right">
-                <div className="text-lg font-black text-mbti-purple">¥9.9</div>
-                <div className="text-[10px] text-mbti-muted line-through">¥29.9</div>
+                <div className="text-lg font-black text-mbti-purple">$9.90</div>
+                <div className="text-[10px] text-mbti-muted line-through">$29.90</div>
               </div>
             </div>
 
@@ -113,15 +113,15 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="font-bold text-mbti-text text-sm md:text-base">PRO 全景战略报告</span>
-                    <span className="text-[10px] bg-gradient-mbti text-white px-2 py-0.5 rounded-full font-bold">推荐</span>
+                    <span className="font-bold text-mbti-text text-sm md:text-base">PRO Master Blueprint</span>
+                    <span className="text-[10px] bg-gradient-mbti text-white px-2 py-0.5 rounded-full font-bold">Best Value</span>
                   </div>
-                  <p className="text-xs text-mbti-muted">含基础版全量内容 + 异性风险排查 + 聊天下套话术</p>
+                  <p className="text-xs text-mbti-muted">Standard + Texting Scripts & Roster Audit</p>
                 </div>
               </div>
               <div className="text-right">
-                <div className="text-lg font-black text-mbti-pink">¥19.9</div>
-                <div className="text-[10px] text-mbti-muted line-through">¥49.9</div>
+                <div className="text-lg font-black text-mbti-pink">$19.90</div>
+                <div className="text-[10px] text-mbti-muted line-through">$49.90</div>
               </div>
             </div>
           </div>
@@ -130,24 +130,24 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
           <div className="bg-mbti-bg rounded-2xl p-4 mb-6 border border-mbti-border/60">
             <h4 className="text-xs font-bold text-mbti-text mb-2.5 flex items-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5 text-mbti-purple" />
-              解锁后即刻包含以下核心板块：
+              Includes Instant Access To:
             </h4>
             <ul className="grid grid-cols-2 gap-2 text-xs text-mbti-muted">
               <li className="flex items-center gap-1.5">
                 <Check className="w-3.5 h-3.5 text-mbti-teal shrink-0" />
-                <span>为什么喜欢却不推进</span>
+                <span>Why he flirts but avoids DTR</span>
               </li>
               <li className="flex items-center gap-1.5">
                 <Check className="w-3.5 h-3.5 text-mbti-teal shrink-0" />
-                <span>认真发展 vs 享受暧昧</span>
+                <span>Real Intent vs Free Trial</span>
               </li>
               <li className="flex items-center gap-1.5">
                 <Check className="w-3.5 h-3.5 text-mbti-teal shrink-0" />
-                <span>异性与排他性隐形信号</span>
+                <span>Stealth Roster Audit</span>
               </li>
               <li className="flex items-center gap-1.5">
                 <Check className="w-3.5 h-3.5 text-mbti-teal shrink-0" />
-                <span>未来 7 天最佳 Action Guide</span>
+                <span>7-Day Power Playbook</span>
               </li>
             </ul>
           </div>
@@ -161,17 +161,17 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
             {isProcessing ? (
               <span className="flex items-center gap-2">
                 <Zap className="w-4 h-4 animate-spin" />
-                正在生成生成专属密钥...
+                Generating Access Key...
               </span>
             ) : (
-              <span>一键解锁报告 ({selectedPlan === 'basic' ? '¥9.9' : '¥19.9'})</span>
+              <span>Unlock Report ({selectedPlan === 'basic' ? '$9.90' : '$19.90'})</span>
             )}
           </button>
 
           {/* Sandbox note for dev testing */}
           <p className="mt-3 text-[11px] text-center text-mbti-muted flex items-center justify-center gap-1">
             <ShieldCheck className="w-3.5 h-3.5 text-mbti-teal" />
-            <span>演练测试模式：点击按钮将直接模拟完成支付并展示完整解锁报告</span>
+            <span>Demo Mode: Click to simulate instant checkout & unlock report</span>
           </p>
         </motion.div>
       </div>

@@ -55,7 +55,7 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = ({
             </span>
             {isMulti && (
               <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-mbti-yellow/15 text-amber-700">
-                可多选
+                Select All That Apply
               </span>
             )}
           </div>
@@ -128,7 +128,7 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = ({
               }`}
             >
               <ArrowLeft className="w-4 h-4" />
-              上一题
+              Previous
             </button>
 
             <button
@@ -140,7 +140,7 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = ({
                   : 'bg-mbti-border/70 text-mbti-muted opacity-60 cursor-not-allowed'
               }`}
             >
-              <span>{currentIndex === totalQuestions - 1 ? '提交并生成报告' : '下一题'}</span>
+              <span>{currentIndex === totalQuestions - 1 ? 'Generate Analysis' : 'Next'}</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>

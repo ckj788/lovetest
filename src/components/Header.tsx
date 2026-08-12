@@ -31,10 +31,10 @@ export const Header: React.FC<HeaderProps> = ({
             <div className="flex items-center gap-1.5">
               <span className="font-extrabold text-lg text-mbti-text tracking-tight">SignalQuiz</span>
               <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-mbti-purple/10 text-mbti-purple border border-mbti-purple/20">
-                PRO 行为分析
+                Co-Star Engine
               </span>
             </div>
-            <p className="text-xs text-mbti-muted hidden sm:block">测懂他未说出口的关系信号</p>
+            <p className="text-xs text-mbti-muted hidden sm:block">Decoding his unspoken intent.</p>
           </div>
         </div>
 
@@ -42,7 +42,7 @@ export const Header: React.FC<HeaderProps> = ({
         {currentStep === 'quiz' && (
           <div className="flex items-center gap-3">
             <div className="text-right hidden xs:block">
-              <p className="text-xs font-semibold text-mbti-muted">测评进度</p>
+              <p className="text-xs font-semibold text-mbti-muted">Progress</p>
               <p className="text-sm font-bold text-mbti-purple">
                 {currentQuestionIndex + 1} <span className="text-mbti-muted font-normal">/ {totalQuestions}</span>
               </p>
@@ -64,14 +64,14 @@ export const Header: React.FC<HeaderProps> = ({
             className="flex items-center gap-1.5 text-xs font-semibold text-mbti-muted hover:text-mbti-purple bg-mbti-purple/5 hover:bg-mbti-purple/10 border border-mbti-purple/20 px-3 py-1.5 rounded-lg transition-all"
           >
             <RotateCcw className="w-3.5 h-3.5" />
-            重新测试
+            Retake Quiz
           </button>
         )}
 
         {currentStep === 'landing' && (
           <div className="flex items-center gap-2 text-xs text-mbti-muted bg-white/60 border border-mbti-border px-3 py-1.5 rounded-full shadow-sm">
             <Sparkles className="w-3.5 h-3.5 text-mbti-yellow animate-pulse" />
-            <span>基于 20+ 行为信号深度匹配</span>
+            <span>20+ Behavioral Signals</span>
           </div>
         )}
       </div>

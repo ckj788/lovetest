@@ -13,11 +13,11 @@ export const QuizCalculating: React.FC<QuizCalculatingProps> = ({ onComplete }) 
   const [stepIndex, setStepIndex] = useState(0);
 
   const steps = [
-    { label: '匹配行为信号: 浪漫吸引度 (Attraction)', icon: Heart, color: 'text-mbti-pink' },
-    { label: '测算心智占用: 行为投入度 (Investment)', icon: Activity, color: 'text-mbti-purple' },
-    { label: '评估关系定义: 承诺意愿 (Commitment)', icon: Compass, color: 'text-mbti-teal' },
-    { label: '拟合风险模型: 排他与忠诚度 (Exclusivity)', icon: Lock, color: 'text-mbti-blue' },
-    { label: '生成报告与 7 天 Action Guide...', icon: Sparkles, color: 'text-mbti-yellow' },
+    { label: 'Analyzing Subconscious Chemistry (Raw Attraction)', icon: Heart, color: 'text-mbti-pink' },
+    { label: 'Measuring Real Effort & Availability (Real Effort)', icon: Activity, color: 'text-mbti-purple' },
+    { label: 'Calculating DTR Willingness (Commitment)', icon: Compass, color: 'text-mbti-teal' },
+    { label: 'Fitting Roster & Boundary Model (Exclusivity)', icon: Lock, color: 'text-mbti-blue' },
+    { label: 'Generating Persona & 7-Day Power Playbook...', icon: Sparkles, color: 'text-mbti-yellow' },
   ];
 
   useEffect(() => {
@@ -65,10 +65,10 @@ export const QuizCalculating: React.FC<QuizCalculatingProps> = ({ onComplete }) 
 
         {/* Title */}
         <h2 className="text-2xl font-black text-mbti-text mb-2">
-          正在计算关系匹配模型...
+          Cosmic Algorithm Processing...
         </h2>
         <p className="text-sm text-mbti-muted mb-8">
-          基于 8 组核心行为证据和 20+ 个信号特征进行维度拟合
+          Cross-referencing 8 behavioral proofs against 20+ red & green flag indicators
         </p>
 
         {/* Progress Bar */}

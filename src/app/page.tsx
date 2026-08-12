@@ -106,7 +106,7 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="py-6 border-t border-mbti-border/40 text-center text-xs text-mbti-muted">
-        <p>© 2026 SignalQuiz PRO · 基于行为心理学与情感决策树算法</p>
+        <p>© 2026 SignalQuiz PRO · Co-Star AI Relationship Engine</p>
       </footer>
     </div>
   );
