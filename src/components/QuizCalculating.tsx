@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Sparkles, Heart, Activity, Compass, Lock, CheckCircle } from 'lucide-react';
+import { CelestialArt } from './CelestialArt';
 
 interface QuizCalculatingProps {
   onComplete: () => void;
@@ -13,11 +13,11 @@ export const QuizCalculating: React.FC<QuizCalculatingProps> = ({ onComplete }) 
   const [stepIndex, setStepIndex] = useState(0);
 
   const steps = [
-    { label: 'Analyzing Subconscious Chemistry (Raw Attraction)', icon: Heart, color: 'text-mbti-pink' },
-    { label: 'Measuring Real Effort & Availability (Real Effort)', icon: Activity, color: 'text-mbti-purple' },
-    { label: 'Calculating DTR Willingness (Commitment)', icon: Compass, color: 'text-mbti-teal' },
-    { label: 'Fitting Roster & Boundary Model (Exclusivity)', icon: Lock, color: 'text-mbti-blue' },
-    { label: 'Generating Persona & 7-Day Power Playbook...', icon: Sparkles, color: 'text-mbti-yellow' },
+    'ALIGNING CELESTIAL VECTORS (ATTRACTION SPARK)',
+    'MEASURING REAL EFFORT & AVAILABILITY DENSITY',
+    'CALCULATING DTR WILLINGNESS & STATUS INTENT',
+    'COMPUTING ROSTER & SOCIAL BOUNDARY MATRIX',
+    'GENERATING ASTROLOGICAL PERSONA & 7-DAY PLAYBOOK',
   ];
 
   useEffect(() => {
@@ -45,64 +45,61 @@ export const QuizCalculating: React.FC<QuizCalculatingProps> = ({ onComplete }) 
     else setStepIndex(4);
   }, [progress]);
 
-  const CurrentIcon = steps[stepIndex].icon;
-
   return (
-    <div className="max-w-xl mx-auto px-4 py-16 text-center">
+    <div className="max-w-xl mx-auto px-4 py-16 text-center font-mono">
       <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
+        initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="glass-card rounded-3xl p-8 md:p-12 shadow-mbti relative overflow-hidden"
+        className="costar-box p-8 md:p-12 corner-ticks"
       >
-        {/* Animated Radar Pulse Circle */}
-        <div className="relative w-28 h-28 mx-auto mb-8 flex items-center justify-center">
-          <div className="absolute inset-0 rounded-full bg-gradient-mbti opacity-20 animate-ping" />
-          <div className="absolute inset-2 rounded-full bg-gradient-mbti opacity-40 animate-pulse" />
-          <div className="relative w-20 h-20 rounded-full bg-gradient-mbti flex items-center justify-center text-white shadow-glow-purple">
-            <CurrentIcon className="w-10 h-10 animate-bounce" />
-          </div>
+        {/* Celestial Line Art Animation */}
+        <div className="relative w-36 h-36 mx-auto mb-8 flex items-center justify-center">
+          <CelestialArt size={140} />
         </div>
 
         {/* Title */}
-        <h2 className="text-2xl font-black text-mbti-text mb-2">
-          Cosmic Algorithm Processing...
+        <h2 className="text-lg font-bold text-white mb-2 uppercase tracking-widest">
+          CO-STAR ALGORITHM PROCESSING
         </h2>
-        <p className="text-sm text-mbti-muted mb-8">
-          Cross-referencing 8 behavioral proofs against 20+ red & green flag indicators
+        <p className="text-xs text-zinc-400 mb-8">
+          // CROSS-REFERENCING 8 PROOFS AGAINST 20+ BEHAVIORAL INDICATORS
         </p>
 
-        {/* Progress Bar */}
-        <div className="w-full bg-mbti-purple/10 h-3 rounded-full overflow-hidden p-0.5 mb-6">
+        {/* Progress Line */}
+        <div className="w-full bg-zinc-900 border border-zinc-800 h-2 p-0 mb-4">
           <div
-            className="h-full bg-gradient-mbti rounded-full transition-all duration-100 ease-linear"
+            className="h-full bg-white transition-all duration-100 ease-linear"
             style={{ width: `${progress}%` }}
           />
         </div>
 
+        <div className="text-right text-xs text-zinc-400 font-bold mb-6">
+          [ {progress}% COMPLETED ]
+        </div>
+
         {/* Dynamic Status Steps */}
-        <div className="space-y-2.5 text-left max-w-md mx-auto">
+        <div className="space-y-2 text-left max-w-md mx-auto text-xs">
           {steps.map((s, idx) => {
             const isFinished = stepIndex > idx;
             const isCurrent = stepIndex === idx;
-            const StepIcon = s.icon;
 
             return (
               <div
                 key={idx}
-                className={`flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs md:text-sm transition-all ${
+                className={`flex items-center gap-3 px-3 py-2 border transition-all ${
                   isCurrent
-                    ? 'bg-mbti-purple/10 font-bold text-mbti-purple border border-mbti-purple/30'
+                    ? 'border-white bg-white text-black font-bold'
                     : isFinished
-                    ? 'text-mbti-muted/70 opacity-70'
-                    : 'text-mbti-muted/40 opacity-40'
+                    ? 'border-zinc-800 bg-zinc-950 text-zinc-400'
+                    : 'border-zinc-900 text-zinc-700'
                 }`}
               >
-                {isFinished ? (
-                  <CheckCircle className="w-4 h-4 text-mbti-teal shrink-0" />
-                ) : (
-                  <StepIcon className={`w-4 h-4 ${s.color} shrink-0 ${isCurrent ? 'animate-spin' : ''}`} />
-                )}
-                <span>{s.label}</span>
+                <span className="shrink-0">
+                  {isFinished ? '[ ✓ ]' : isCurrent ? '[ ✦ ]' : '[   ]'}
+                </span>
+                <span className="truncate">
+                  0{idx + 1} // {s}
+                </span>
               </div>
             );
           })}

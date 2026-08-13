@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Sparkles, ArrowRight, ShieldCheck, Heart, Lock, Compass, Activity, Clock } from 'lucide-react';
+import { CelestialArt } from './CelestialArt';
 
 interface QuizLandingProps {
   onStart: () => void;
@@ -11,129 +11,113 @@ interface QuizLandingProps {
 export const QuizLanding: React.FC<QuizLandingProps> = ({ onStart }) => {
   return (
     <div className="max-w-3xl mx-auto px-4 py-8 md:py-12">
-      {/* Top MBTI Badge */}
+      {/* Top Badge */}
       <motion.div
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         className="flex justify-center mb-6"
       >
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-mbti-pink/10 via-mbti-purple/10 to-mbti-blue/10 border border-mbti-purple/20 shadow-sm text-mbti-purple text-xs md:text-sm font-semibold">
-          <Sparkles className="w-4 h-4 text-mbti-pink animate-pulse" />
-          <span>VIRAL RELATIONSHIP ALGORITHM · 8 QUESTIONS</span>
+        <div className="inline-flex items-center gap-2 px-3 py-1 border border-zinc-800 bg-zinc-950 font-mono text-[11px] uppercase tracking-[0.2em] text-zinc-400">
+          <span className="text-white">☉</span>
+          <span>CO-STAR ALGORITHM · 8 BEHAVIORAL QUESTIONS</span>
         </div>
       </motion.div>
 
-      {/* Main Hero Card */}
+      {/* Main Hero Card (Co-Star Line Art Box) */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className="glass-card rounded-3xl p-6 md:p-10 text-center shadow-mbti relative overflow-hidden mb-8 border border-white/80"
+        className="costar-box-white p-6 md:p-12 text-center relative overflow-hidden mb-8 corner-ticks"
       >
-        {/* Ambient Gradient Glow Background */}
-        <div className="absolute -top-24 -left-24 w-60 h-60 bg-mbti-pink/20 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-24 -right-24 w-60 h-60 bg-mbti-purple/20 rounded-full blur-3xl pointer-events-none" />
+        {/* Background Celestial Line Art */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-20 pointer-events-none">
+          <CelestialArt size={360} />
+        </div>
 
         {/* Title */}
-        <h1 className="text-3xl md:text-5xl font-black text-mbti-text tracking-tight mb-4 leading-tight">
+        <h1 className="text-2xl md:text-5xl font-black tracking-tight text-white mb-6 uppercase leading-tight font-sans">
           Is he actually into you,
-          <span className="block mt-2 bg-gradient-mbti bg-clip-text text-transparent">
-            or are you just delulu?
+          <span className="block mt-2 font-mono font-normal text-zinc-300 text-xl md:text-3xl tracking-wider">
+            OR ARE YOU JUST DELULU?
           </span>
         </h1>
 
-        <p className="text-base md:text-lg text-mbti-muted max-w-xl mx-auto mb-8 leading-relaxed">
-          Stop over-analyzing his 2 AM texts in the group chat. We measure his real behavior—his effort, availability, and roster energy—to tell you the cold, cosmic truth.
+        <div className="w-16 h-[1px] bg-white/40 mx-auto mb-6" />
+
+        <p className="font-mono text-xs md:text-sm text-zinc-400 max-w-xl mx-auto mb-10 leading-relaxed tracking-wide">
+          Stop over-analyzing his 2 AM texts in the group chat. We measure his raw behavior—his effort, availability, and roster status—to tell you the cold, cosmic truth.
         </p>
 
-        {/* 4 Core Dimensions Floating Badges */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8 max-w-2xl mx-auto">
-          <div className="bg-white/80 border border-mbti-pink/20 rounded-2xl p-3 shadow-sm flex flex-col items-center">
-            <div className="w-8 h-8 rounded-full bg-mbti-pink/15 flex items-center justify-center text-mbti-pink mb-1.5">
-              <Heart className="w-4 h-4" />
-            </div>
-            <span className="text-xs font-bold text-mbti-text">Raw Attraction</span>
-            <span className="text-[10px] text-mbti-muted">Subconscious Spark</span>
+        {/* 4 Core Dimensions Line-Art Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-10 max-w-2xl mx-auto">
+          <div className="border border-zinc-800 bg-zinc-950/80 p-4 text-left font-mono">
+            <div className="text-xs text-zinc-500 mb-1">01 // ATTRACT</div>
+            <div className="text-xs font-bold text-white uppercase tracking-wider">Raw Attraction</div>
+            <div className="text-[10px] text-zinc-500 mt-1">Subconscious Spark</div>
           </div>
 
-          <div className="bg-white/80 border border-mbti-purple/20 rounded-2xl p-3 shadow-sm flex flex-col items-center">
-            <div className="w-8 h-8 rounded-full bg-mbti-purple/15 flex items-center justify-center text-mbti-purple mb-1.5">
-              <Activity className="w-4 h-4" />
-            </div>
-            <span className="text-xs font-bold text-mbti-text">Real Effort</span>
-            <span className="text-[10px] text-mbti-muted">Action vs Words</span>
+          <div className="border border-zinc-800 bg-zinc-950/80 p-4 text-left font-mono">
+            <div className="text-xs text-zinc-500 mb-1">02 // EFFORT</div>
+            <div className="text-xs font-bold text-white uppercase tracking-wider">Real Effort</div>
+            <div className="text-[10px] text-zinc-500 mt-1">Action vs Words</div>
           </div>
 
-          <div className="bg-white/80 border border-mbti-teal/20 rounded-2xl p-3 shadow-sm flex flex-col items-center">
-            <div className="w-8 h-8 rounded-full bg-mbti-teal/15 flex items-center justify-center text-mbti-teal mb-1.5">
-              <Compass className="w-4 h-4" />
-            </div>
-            <span className="text-xs font-bold text-mbti-text">Commitment</span>
-            <span className="text-[10px] text-mbti-muted">DTR Willingness</span>
+          <div className="border border-zinc-800 bg-zinc-950/80 p-4 text-left font-mono">
+            <div className="text-xs text-zinc-500 mb-1">03 // DTR</div>
+            <div className="text-xs font-bold text-white uppercase tracking-wider">Commitment</div>
+            <div className="text-[10px] text-zinc-500 mt-1">Status Intent</div>
           </div>
 
-          <div className="bg-white/80 border border-mbti-blue/20 rounded-2xl p-3 shadow-sm flex flex-col items-center">
-            <div className="w-8 h-8 rounded-full bg-mbti-blue/15 flex items-center justify-center text-mbti-blue mb-1.5">
-              <Lock className="w-4 h-4" />
-            </div>
-            <span className="text-xs font-bold text-mbti-text">Exclusivity</span>
-            <span className="text-[10px] text-mbti-muted">Roster Status</span>
+          <div className="border border-zinc-800 bg-zinc-950/80 p-4 text-left font-mono">
+            <div className="text-xs text-zinc-500 mb-1">04 // BOUNDARY</div>
+            <div className="text-xs font-bold text-white uppercase tracking-wider">Exclusivity</div>
+            <div className="text-[10px] text-zinc-500 mt-1">Roster Check</div>
           </div>
         </div>
 
-        {/* Big Start Button */}
+        {/* Big High-Contrast Start Button */}
         <motion.button
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.97 }}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
           onClick={onStart}
-          className="w-full sm:w-auto px-10 py-4 rounded-2xl bg-gradient-mbti text-white font-extrabold text-lg shadow-glow-purple flex items-center justify-center gap-3 mx-auto transition-all cursor-pointer"
+          className="w-full sm:w-auto px-10 py-4 bg-white text-black font-mono font-bold text-sm tracking-[0.2em] uppercase hover:bg-zinc-200 transition-all border border-white cursor-pointer shadow-lg"
         >
-          <span>Diagnose His Signals (8 Qs · 60s)</span>
-          <ArrowRight className="w-5 h-5" />
+          [ BEGIN DIAGNOSIS (8 Qs · 60s) → ]
         </motion.button>
 
-        {/* Time guarantee */}
-        <div className="mt-4 flex items-center justify-center gap-4 text-xs text-mbti-muted">
-          <span className="flex items-center gap-1">
-            <Clock className="w-3.5 h-3.5 text-mbti-purple" />
-            Takes ~60 Seconds
-          </span>
+        {/* Guarantee text */}
+        <div className="mt-6 flex items-center justify-center gap-4 font-mono text-[11px] text-zinc-500 tracking-wider">
+          <span>~60 SECONDS</span>
           <span>•</span>
-          <span className="flex items-center gap-1">
-            <ShieldCheck className="w-3.5 h-3.5 text-mbti-teal" />
-            100% Anonymous & Free
-          </span>
+          <span>100% ANONYMOUS</span>
+          <span>•</span>
+          <span>FREE REPORT</span>
         </div>
       </motion.div>
 
-      {/* Feature Highlights Grid */}
+      {/* Feature Highlights Line-Art Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-white/70 border border-mbti-border/80 rounded-2xl p-5 shadow-sm">
-          <div className="w-10 h-10 rounded-xl bg-mbti-pink/10 text-mbti-pink flex items-center justify-center mb-3 font-bold text-lg">
-            01
-          </div>
-          <h3 className="font-bold text-mbti-text mb-1 text-sm">No Cheap Talk</h3>
-          <p className="text-xs text-mbti-muted leading-relaxed">
+        <div className="border border-zinc-800 bg-zinc-950 p-5 corner-ticks">
+          <div className="font-mono text-xs text-zinc-500 mb-2">[ 01 ]</div>
+          <h3 className="font-mono font-bold text-white text-xs uppercase tracking-wider mb-2">NO CHEAP TALK</h3>
+          <p className="font-sans text-xs text-zinc-400 leading-relaxed">
             We ignore sweet words and zero-effort flirts. We analyze real receipts and behavioral patterns.
           </p>
         </div>
 
-        <div className="bg-white/70 border border-mbti-border/80 rounded-2xl p-5 shadow-sm">
-          <div className="w-10 h-10 rounded-xl bg-mbti-purple/10 text-mbti-purple flex items-center justify-center mb-3 font-bold text-lg">
-            02
-          </div>
-          <h3 className="font-bold text-mbti-text mb-1 text-sm">Expose The Delulu Gap</h3>
-          <p className="text-xs text-mbti-muted leading-relaxed">
+        <div className="border border-zinc-800 bg-zinc-950 p-5 corner-ticks">
+          <div className="font-mono text-xs text-zinc-500 mb-2">[ 02 ]</div>
+          <h3 className="font-mono font-bold text-white text-xs uppercase tracking-wider mb-2">EXPOSE DELULU GAP</h3>
+          <p className="font-sans text-xs text-zinc-400 leading-relaxed">
             Uncover why he flirts like a boyfriend but avoids defining the relationship.
           </p>
         </div>
 
-        <div className="bg-white/70 border border-mbti-border/80 rounded-2xl p-5 shadow-sm">
-          <div className="w-10 h-10 rounded-xl bg-mbti-teal/10 text-mbti-teal flex items-center justify-center mb-3 font-bold text-lg">
-            03
-          </div>
-          <h3 className="font-bold text-mbti-text mb-1 text-sm">7-Day Power Playbook</h3>
-          <p className="text-xs text-mbti-muted leading-relaxed">
+        <div className="border border-zinc-800 bg-zinc-950 p-5 corner-ticks">
+          <div className="font-mono text-xs text-zinc-500 mb-2">[ 03 ]</div>
+          <h3 className="font-mono font-bold text-white text-xs uppercase tracking-wider mb-2">7-DAY PLAYBOOK</h3>
+          <p className="font-sans text-xs text-zinc-400 leading-relaxed">
             No fluff. Get hyper-specific moves to test his intent and reclaim your main-character energy.
           </p>
         </div>

@@ -3,7 +3,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Question } from '../types/quiz';
-import { ArrowLeft, ArrowRight, CheckCircle2, Circle } from 'lucide-react';
 
 interface QuizQuestionProps {
   question: Question;
@@ -42,32 +41,32 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = ({
       <AnimatePresence mode="wait">
         <motion.div
           key={question.id}
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -20 }}
-          transition={{ duration: 0.25 }}
-          className="glass-card rounded-3xl p-6 md:p-8 shadow-mbti border border-white/90"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.2 }}
+          className="costar-box p-6 md:p-8 corner-ticks"
         >
-          {/* Top Badge */}
-          <div className="flex items-center justify-between mb-4">
-            <span className="text-xs font-bold px-3 py-1 rounded-full bg-mbti-purple/10 text-mbti-purple">
-              QUESTION {currentIndex + 1} OF {totalQuestions}
+          {/* Top Monospace Header */}
+          <div className="flex items-center justify-between mb-6 pb-4 border-b border-zinc-800 font-mono text-xs">
+            <span className="text-white tracking-widest">
+              [ QUESTION {String(currentIndex + 1).padStart(2, '0')} / {String(totalQuestions).padStart(2, '0')} ]
             </span>
             {isMulti && (
-              <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-mbti-yellow/15 text-amber-700">
-                Select All That Apply
+              <span className="text-zinc-400 border border-zinc-700 px-2 py-0.5 uppercase tracking-wider text-[10px]">
+                SELECT ALL THAT APPLY
               </span>
             )}
           </div>
 
           {/* Question Title */}
-          <h2 className="text-xl md:text-2xl font-extrabold text-mbti-text leading-snug mb-2">
+          <h2 className="text-lg md:text-2xl font-bold text-white leading-snug mb-2 font-sans">
             {question.title}
           </h2>
 
           {question.subtitle && (
-            <p className="text-xs md:text-sm text-mbti-muted mb-6">
-              {question.subtitle}
+            <p className="font-mono text-xs text-zinc-400 mb-8">
+              // {question.subtitle}
             </p>
           )}
 
@@ -80,36 +79,25 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = ({
               return (
                 <motion.div
                   key={option.id}
-                  whileHover={{ scale: 1.01 }}
                   whileTap={{ scale: 0.99 }}
                   onClick={() => onSelectOption(option.id)}
-                  className={`relative cursor-pointer rounded-2xl p-4 transition-all border flex items-center justify-between ${
+                  className={`cursor-pointer p-4 transition-all border flex items-center justify-between font-mono text-xs md:text-sm ${
                     selected
-                      ? 'bg-gradient-to-r from-mbti-pink/10 to-mbti-purple/10 border-mbti-purple shadow-md ring-2 ring-mbti-purple/20'
-                      : 'bg-white/80 hover:bg-white border-mbti-border hover:border-mbti-purple/40 shadow-sm'
+                      ? 'bg-white text-black border-white font-bold'
+                      : 'bg-zinc-950 text-zinc-300 border-zinc-800 hover:border-zinc-500 hover:text-white'
                   }`}
                 >
                   <div className="flex items-center gap-3.5 pr-2">
-                    <div
-                      className={`w-7 h-7 rounded-xl flex items-center justify-center font-bold text-xs shrink-0 transition-colors ${
-                        selected
-                          ? 'bg-mbti-purple text-white'
-                          : 'bg-mbti-purple/10 text-mbti-purple'
-                      }`}
-                    >
+                    <span className={`px-2 py-0.5 text-xs font-mono border ${selected ? 'border-black text-black bg-white' : 'border-zinc-700 text-zinc-400 bg-black'}`}>
                       {optionLetters[idx] || idx + 1}
-                    </div>
-                    <span className={`text-sm md:text-base font-medium leading-relaxed ${selected ? 'text-mbti-purple font-semibold' : 'text-mbti-text'}`}>
+                    </span>
+                    <span className="leading-relaxed">
                       {option.label}
                     </span>
                   </div>
 
                   <div className="shrink-0 ml-2">
-                    {selected ? (
-                      <CheckCircle2 className="w-5 h-5 text-mbti-purple" />
-                    ) : (
-                      <Circle className="w-5 h-5 text-mbti-muted/40" />
-                    )}
+                    {selected ? '[ ✓ ]' : '[   ]'}
                   </div>
                 </motion.div>
               );
@@ -117,31 +105,29 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = ({
           </div>
 
           {/* Navigation Controls */}
-          <div className="flex items-center justify-between pt-4 border-t border-mbti-border/60">
+          <div className="flex items-center justify-between pt-6 border-t border-zinc-800 font-mono text-xs">
             <button
               onClick={onPrev}
               disabled={currentIndex === 0}
-              className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs md:text-sm font-semibold transition-all ${
+              className={`px-4 py-2.5 border uppercase tracking-widest transition-all ${
                 currentIndex === 0
-                  ? 'opacity-40 cursor-not-allowed text-mbti-muted'
-                  : 'text-mbti-text hover:bg-mbti-purple/10'
+                  ? 'border-zinc-900 text-zinc-700 cursor-not-allowed'
+                  : 'border-zinc-700 text-zinc-300 hover:border-white hover:text-white'
               }`}
             >
-              <ArrowLeft className="w-4 h-4" />
-              Previous
+              ← PREVIOUS
             </button>
 
             <button
               onClick={onNext}
               disabled={!canProceed}
-              className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs md:text-sm font-bold shadow-sm transition-all ${
+              className={`px-6 py-2.5 uppercase tracking-widest font-bold border transition-all ${
                 canProceed
-                  ? 'bg-gradient-mbti text-white hover:opacity-95 shadow-glow-purple cursor-pointer'
-                  : 'bg-mbti-border/70 text-mbti-muted opacity-60 cursor-not-allowed'
+                  ? 'bg-white text-black border-white hover:bg-zinc-200 cursor-pointer'
+                  : 'bg-zinc-900 text-zinc-600 border-zinc-800 cursor-not-allowed'
               }`}
             >
-              <span>{currentIndex === totalQuestions - 1 ? 'Generate Analysis' : 'Next'}</span>
-              <ArrowRight className="w-4 h-4" />
+              <span>{currentIndex === totalQuestions - 1 ? 'GENERATE DIAGNOSIS →' : 'NEXT QUESTION →'}</span>
             </button>
           </div>
         </motion.div>
