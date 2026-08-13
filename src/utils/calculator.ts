@@ -74,11 +74,11 @@ export function calculateQuizResult(userAnswers: Record<number, string | string[
 
   let freeSummary = '';
   if (gap > 20) {
-    freeSummary = `对你有高吸引力 (${normalizedScores.attraction}分)，但关系承诺与投入滞后 (${normalizedScores.commitment}分)，表现出明显的吸引与承诺落差！`;
+    freeSummary = `High raw attraction (${normalizedScores.attraction}/100) paired with lagging commitment (${normalizedScores.commitment}/100)—exposing a major ${gap}-point Delulu Gap!`;
   } else if (totalScore >= 75) {
-    freeSummary = `他对你展现出稳定且深刻的好感，各项行为指标均表现良好，正在积极向正式关系推进。`;
+    freeSummary = `He shows high, consistent attraction across all behavioral metrics, actively moving this dynamic toward an official relationship.`;
   } else {
-    freeSummary = `关系处于观望调和期，好感与投入度尚有提升空间，建议注意后续行动信号。`;
+    freeSummary = `The dynamic is currently in an observation phase. Attraction and effort are present, but key exclusivity signals require testing.`;
   }
 
   return {
