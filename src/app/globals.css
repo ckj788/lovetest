@@ -3,61 +3,68 @@
 @tailwind utilities;
 
 :root {
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --bg-cream: #FDF8E2;
+  --text-slate: #504E76;
 }
 
 body {
-  background-color: #050505;
-  color: #FFFFFF;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: #FDF8E2;
+  color: #504E76;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   overflow-x: hidden;
   min-height: 100vh;
-  background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
-  background-size: 24px 24px;
 }
 
-/* Co-Star Line-Art & Box Styles */
-.costar-box {
-  background: #09090B;
-  border: 1px solid #27272A;
-  position: relative;
+/* Soft Flat Card Utility */
+.soft-card {
+  background-color: #FFFFFF;
+  border: 1px solid rgba(80, 78, 118, 0.12);
+  border-radius: 1.75rem;
+  box-shadow: 0 10px 30px rgba(80, 78, 118, 0.06), 0 2px 8px rgba(80, 78, 118, 0.03);
 }
 
-.costar-box-white {
-  background: #09090B;
-  border: 1px solid #FFFFFF;
-  position: relative;
+.soft-card-dark {
+  background-color: #504E76;
+  color: #FFFFFF;
+  border-radius: 1.75rem;
+  box-shadow: 0 12px 36px rgba(80, 78, 118, 0.18);
 }
 
-/* Custom 1px crosshair marks at container corners */
-.corner-ticks::before,
-.corner-ticks::after {
-  content: '+';
-  position: absolute;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: #71717A;
-  line-height: 1;
-}
-.corner-ticks::before {
-  top: -6px;
-  left: -4px;
-}
-.corner-ticks::after {
-  top: -6px;
-  right: -4px;
+.soft-card-lilac {
+  background-color: #C4C3E3;
+  color: #504E76;
+  border-radius: 1.75rem;
 }
 
-/* Custom scrollbar */
+.soft-card-sand {
+  background-color: #FCDD9D;
+  color: #504E76;
+  border-radius: 1.75rem;
+}
+
+.soft-card-sage {
+  background-color: #A3B565;
+  color: #FFFFFF;
+  border-radius: 1.75rem;
+}
+
+/* Flower Accent Badge */
+.flower-icon {
+  display: inline-block;
+  user-select: none;
+}
+
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 4px;
+  width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #050505;
+  background: #FDF8E2;
 }
 ::-webkit-scrollbar-thumb {
-  background: #27272A;
+  background: #C4C3E3;
+  border-radius: 999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #71717A;
+  background: #504E76;
 }

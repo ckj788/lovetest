@@ -47,7 +47,6 @@ export default function Home() {
     if (currentQuestionIndex < QUIZ_QUESTIONS.length - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
     } else {
-      // Finished all 8 questions -> go to calculating screen
       const computedResult = calculateQuizResult(userAnswers);
       setResult(computedResult);
       setStep('calculating');
@@ -72,7 +71,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-mbti-bg text-mbti-text flex flex-col font-sans">
+    <div className="min-h-screen bg-palette-cream text-palette-slate flex flex-col font-sans selection:bg-palette-lilac">
       <Header
         currentStep={step}
         currentQuestionIndex={currentQuestionIndex}
@@ -105,7 +104,7 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="py-6 border-t border-mbti-border/40 text-center text-xs text-mbti-muted">
+      <footer className="py-6 border-t border-palette-slate/10 text-center text-xs font-semibold text-palette-slate/60">
         <p>© 2026 SignalQuiz PRO · Co-Star AI Relationship Engine</p>
       </footer>
     </div>

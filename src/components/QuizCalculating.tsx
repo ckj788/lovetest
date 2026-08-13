@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { CelestialArt } from './CelestialArt';
+import { Heart, Activity, Compass, Lock, Sparkles, CheckCircle2 } from 'lucide-react';
 
 interface QuizCalculatingProps {
   onComplete: () => void;
@@ -13,11 +13,11 @@ export const QuizCalculating: React.FC<QuizCalculatingProps> = ({ onComplete }) 
   const [stepIndex, setStepIndex] = useState(0);
 
   const steps = [
-    'ALIGNING CELESTIAL VECTORS (ATTRACTION SPARK)',
-    'MEASURING REAL EFFORT & AVAILABILITY DENSITY',
-    'CALCULATING DTR WILLINGNESS & STATUS INTENT',
-    'COMPUTING ROSTER & SOCIAL BOUNDARY MATRIX',
-    'GENERATING ASTROLOGICAL PERSONA & 7-DAY PLAYBOOK',
+    { label: 'Analyzing Subconscious Chemistry (Raw Attraction)', icon: Heart, badgeColor: 'bg-palette-lilac text-palette-slate' },
+    { label: 'Measuring Real Effort & Availability (Real Effort)', icon: Activity, badgeColor: 'bg-palette-slate text-white' },
+    { label: 'Calculating DTR Willingness (Commitment)', icon: Compass, badgeColor: 'bg-palette-sage text-white' },
+    { label: 'Fitting Roster & Boundary Model (Exclusivity)', icon: Lock, badgeColor: 'bg-palette-sand text-palette-slate' },
+    { label: 'Generating Persona & 7-Day Power Playbook...', icon: Sparkles, badgeColor: 'bg-palette-coral text-white' },
   ];
 
   useEffect(() => {
@@ -45,61 +45,63 @@ export const QuizCalculating: React.FC<QuizCalculatingProps> = ({ onComplete }) 
     else setStepIndex(4);
   }, [progress]);
 
+  const CurrentIcon = steps[stepIndex].icon;
+
   return (
-    <div className="max-w-xl mx-auto px-4 py-16 text-center font-mono">
+    <div className="max-w-xl mx-auto px-4 py-16 text-center">
       <motion.div
-        initial={{ opacity: 0, scale: 0.98 }}
+        initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="costar-box p-8 md:p-12 corner-ticks"
+        className="soft-card p-8 md:p-12 bg-palette-white relative overflow-hidden"
       >
-        {/* Celestial Line Art Animation */}
-        <div className="relative w-36 h-36 mx-auto mb-8 flex items-center justify-center">
-          <CelestialArt size={140} />
+        {/* Animated Circle Icon */}
+        <div className="relative w-24 h-24 mx-auto mb-8 flex items-center justify-center">
+          <div className="absolute inset-0 rounded-3xl bg-palette-coral/20 animate-ping" />
+          <div className="relative w-20 h-20 rounded-3xl bg-palette-coral text-white flex items-center justify-center shadow-soft-coral">
+            <CurrentIcon className="w-9 h-9 animate-bounce" />
+          </div>
         </div>
 
         {/* Title */}
-        <h2 className="text-lg font-bold text-white mb-2 uppercase tracking-widest">
-          CO-STAR ALGORITHM PROCESSING
+        <h2 className="text-2xl font-black text-palette-slate mb-2">
+          Cosmic Algorithm Processing...
         </h2>
-        <p className="text-xs text-zinc-400 mb-8">
-          // CROSS-REFERENCING 8 PROOFS AGAINST 20+ BEHAVIORAL INDICATORS
+        <p className="text-xs md:text-sm text-palette-slate/70 mb-8 font-medium">
+          Cross-referencing 8 behavioral proofs against 20+ red & green flag indicators
         </p>
 
-        {/* Progress Line */}
-        <div className="w-full bg-zinc-900 border border-zinc-800 h-2 p-0 mb-4">
+        {/* Progress Bar */}
+        <div className="w-full bg-palette-slate/10 h-3 rounded-full overflow-hidden p-0.5 mb-6">
           <div
-            className="h-full bg-white transition-all duration-100 ease-linear"
+            className="h-full bg-palette-coral rounded-full transition-all duration-100 ease-linear"
             style={{ width: `${progress}%` }}
           />
         </div>
 
-        <div className="text-right text-xs text-zinc-400 font-bold mb-6">
-          [ {progress}% COMPLETED ]
-        </div>
-
         {/* Dynamic Status Steps */}
-        <div className="space-y-2 text-left max-w-md mx-auto text-xs">
+        <div className="space-y-2.5 text-left max-w-md mx-auto">
           {steps.map((s, idx) => {
             const isFinished = stepIndex > idx;
             const isCurrent = stepIndex === idx;
+            const StepIcon = s.icon;
 
             return (
               <div
                 key={idx}
-                className={`flex items-center gap-3 px-3 py-2 border transition-all ${
+                className={`flex items-center gap-3 px-4 py-2.5 rounded-2xl text-xs md:text-sm transition-all border ${
                   isCurrent
-                    ? 'border-white bg-white text-black font-bold'
+                    ? 'bg-palette-slate text-white border-palette-slate font-bold shadow-sm'
                     : isFinished
-                    ? 'border-zinc-800 bg-zinc-950 text-zinc-400'
-                    : 'border-zinc-900 text-zinc-700'
+                    ? 'bg-palette-cream/40 text-palette-slate/60 border-palette-slate/10'
+                    : 'bg-palette-cream/20 text-palette-slate/30 border-palette-slate/5'
                 }`}
               >
-                <span className="shrink-0">
-                  {isFinished ? '[ ✓ ]' : isCurrent ? '[ ✦ ]' : '[   ]'}
-                </span>
-                <span className="truncate">
-                  0{idx + 1} // {s}
-                </span>
+                {isFinished ? (
+                  <CheckCircle2 className="w-4 h-4 text-palette-sage shrink-0" />
+                ) : (
+                  <StepIcon className={`w-4 h-4 shrink-0 ${isCurrent ? 'animate-spin text-palette-sand' : 'text-palette-slate/40'}`} />
+                )}
+                <span className="truncate">{s.label}</span>
               </div>
             );
           })}
