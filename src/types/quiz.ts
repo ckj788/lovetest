@@ -22,6 +22,22 @@ export interface Question {
   options: Option[];
 }
 
+export interface ReportSection {
+  tag: string;
+  title: string;
+  paragraphs: string[];
+  bullets?: string[];
+}
+
+export interface FullArchetypeReport {
+  hook: string;
+  summaryHighlights: string[];
+  sections: ReportSection[];
+  bottomLine: string[];
+  socialQuote: string;
+  shareSummary: string;
+}
+
 export interface Archetype {
   id: string;
   name: string;
@@ -32,6 +48,7 @@ export interface Archetype {
   gradient: string;
   description: string;
   gapAnalysis: string;
+  report: FullArchetypeReport;
   unlockedInsights: {
     whyNotAdvancing: string;
     seriousVsAmbiguous: string;

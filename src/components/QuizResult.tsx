@@ -3,8 +3,9 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { QuizResultData } from '../types/quiz';
-import { Lock, Unlock, Sparkles, AlertCircle, CheckCircle2, ChevronRight, Compass, Heart, Activity } from 'lucide-react';
+import { Lock, Unlock, Sparkles, AlertCircle, CheckCircle2, ChevronRight, Compass, Heart, Activity, Check } from 'lucide-react';
 import { PaywallModal } from './PaywallModal';
+import { ShareCard } from './ShareCard';
 
 interface QuizResultProps {
   result: QuizResultData;
@@ -16,6 +17,7 @@ export const QuizResult: React.FC<QuizResultProps> = ({ result, onReset }) => {
   const [isPaywallOpen, setIsPaywallOpen] = useState(false);
 
   const { scores, totalScore, gap, archetype, freeSummary } = result;
+  const report = archetype.report;
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-8 md:py-12">
@@ -176,6 +178,9 @@ export const QuizResult: React.FC<QuizResultProps> = ({ result, onReset }) => {
         </div>
       </div>
 
+      {/* MBTI Social Share Card Preview */}
+      <ShareCard result={result} />
+
       {/* Paywall / Unlocked Deep Report Container */}
       {!isUnlocked ? (
         <div className="soft-card p-6 md:p-8 relative overflow-hidden mb-8 border border-palette-slate/20 bg-palette-white">
@@ -189,51 +194,23 @@ export const QuizResult: React.FC<QuizResultProps> = ({ result, onReset }) => {
               </h3>
             </div>
             <span className="text-xs text-palette-slate font-bold bg-palette-lilac/50 px-3 py-1 rounded-full border border-palette-slate/15">
-              4 Sections Locked
+              5 Sections + 7-Day Plan Locked
             </span>
           </div>
 
           {/* Locked Insight Cards Preview */}
           <div className="space-y-4 mb-8">
-            <div className="bg-palette-cream/40 border border-palette-slate/10 rounded-2xl p-4 filter blur-[1.5px] opacity-70 select-none">
-              <div className="flex items-center justify-between font-bold text-sm text-palette-slate mb-1">
-                <span>🔒 Section 1: Why does he flirt like a boyfriend but avoid the DTR?</span>
-                <ChevronRight className="w-4 h-4" />
+            {report.sections.slice(0, 4).map((sec, idx) => (
+              <div key={idx} className="bg-palette-cream/40 border border-palette-slate/10 rounded-2xl p-4 filter blur-[1.5px] opacity-70 select-none">
+                <div className="flex items-center justify-between font-bold text-sm text-palette-slate mb-1">
+                  <span>🔒 {sec.tag}: {sec.title}</span>
+                  <ChevronRight className="w-4 h-4" />
+                </div>
+                <p className="text-xs text-palette-slate/60">
+                  {sec.paragraphs[0]}
+                </p>
               </div>
-              <p className="text-xs text-palette-slate/60">
-                He enjoys low-pressure romance without giving up single perks...
-              </p>
-            </div>
-
-            <div className="bg-palette-cream/40 border border-palette-slate/10 rounded-2xl p-4 filter blur-[1.5px] opacity-70 select-none">
-              <div className="flex items-center justify-between font-bold text-sm text-palette-slate mb-1">
-                <span>🔒 Section 2: Is he genuine, or is he just enjoying the free trial?</span>
-                <ChevronRight className="w-4 h-4" />
-              </div>
-              <p className="text-xs text-palette-slate/60">
-                3 behavioral receipts that reveal his real motives...
-              </p>
-            </div>
-
-            <div className="bg-palette-cream/40 border border-palette-slate/10 rounded-2xl p-4 filter blur-[1.5px] opacity-70 select-none">
-              <div className="flex items-center justify-between font-bold text-sm text-palette-slate mb-1">
-                <span>🔒 Section 3: Stealth Roster & Social Boundaries Check</span>
-                <ChevronRight className="w-4 h-4" />
-              </div>
-              <p className="text-xs text-palette-slate/60">
-                Analyzing his IG activity, story likes, and roster energy...
-              </p>
-            </div>
-
-            <div className="bg-palette-cream/40 border border-palette-slate/10 rounded-2xl p-4 filter blur-[1.5px] opacity-70 select-none">
-              <div className="flex items-center justify-between font-bold text-sm text-palette-slate mb-1">
-                <span>🔒 Section 4: 7-Day Power Playbook (Should you text or pull back?)</span>
-                <ChevronRight className="w-4 h-4" />
-              </div>
-              <p className="text-xs text-palette-slate/60">
-                4 tactical steps: Stop text firsts, match his energy, the 72h test...
-              </p>
-            </div>
+            ))}
           </div>
 
           {/* Big Unlock Button */}
@@ -254,12 +231,13 @@ export const QuizResult: React.FC<QuizResultProps> = ({ result, onReset }) => {
           </div>
         </div>
       ) : (
-        /* UNLOCKED FULL REPORT VIEW */
+        /* UNLOCKED FULL REPORT VIEW (DEEP ESSAY FORMAT MATCHING SLOW BURNER) */
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="space-y-6 mb-8"
         >
+          {/* Header Unlocked Banner */}
           <div className="bg-palette-sage text-white rounded-3xl p-6 text-center shadow-soft-flat">
             <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white text-palette-slate text-xs font-extrabold mb-2">
               <CheckCircle2 className="w-4 h-4 text-palette-sage" />
@@ -268,58 +246,71 @@ export const QuizResult: React.FC<QuizResultProps> = ({ result, onReset }) => {
             <h3 className="text-xl md:text-2xl font-black text-white">
               《{archetype.name}》Deep Blueprint & Action Guide
             </h3>
-          </div>
-
-          {/* Insight 1 */}
-          <div className="bg-palette-white rounded-3xl p-6 shadow-xs border border-palette-slate/15">
-            <h4 className="font-extrabold text-base md:text-lg text-palette-slate mb-2 flex items-center gap-2">
-              <span className="w-6 h-6 rounded-lg bg-palette-coral text-white flex items-center justify-center text-xs font-bold">01</span>
-              Why does he flirt like a boyfriend but avoid the DTR?
-            </h4>
-            <p className="text-xs md:text-sm text-palette-slate/80 leading-relaxed bg-palette-cream/50 p-4 rounded-2xl border border-palette-slate/10 font-medium">
-              {archetype.unlockedInsights.whyNotAdvancing}
+            <p className="text-xs text-palette-cream/80 font-medium mt-1">
+              Full behavioral breakdown & psychological analysis
             </p>
           </div>
 
-          {/* Insight 2 */}
+          {/* Core Hook Block */}
           <div className="bg-palette-white rounded-3xl p-6 shadow-xs border border-palette-slate/15">
-            <h4 className="font-extrabold text-base md:text-lg text-palette-slate mb-2 flex items-center gap-2">
-              <span className="w-6 h-6 rounded-lg bg-palette-slate text-white flex items-center justify-center text-xs font-bold">02</span>
-              Is he genuine, or is he just enjoying the free trial?
+            <h4 className="text-xs font-bold uppercase tracking-wider text-palette-coral mb-2">
+              EXECUTIVE DIAGNOSIS
             </h4>
-            <p className="text-xs md:text-sm text-palette-slate/80 leading-relaxed bg-palette-cream/50 p-4 rounded-2xl border border-palette-slate/10 font-medium">
-              {archetype.unlockedInsights.seriousVsAmbiguous}
+            <p className="text-sm md:text-base font-extrabold text-palette-slate leading-relaxed">
+              {report.hook}
             </p>
-          </div>
 
-          {/* Insight 3 */}
-          <div className="bg-palette-white rounded-3xl p-6 shadow-xs border border-palette-slate/15">
-            <h4 className="font-extrabold text-base md:text-lg text-palette-slate mb-2 flex items-center gap-2">
-              <span className="w-6 h-6 rounded-lg bg-palette-lilac text-palette-slate flex items-center justify-center text-xs font-bold">03</span>
-              Stealth Roster & Social Boundaries Analysis
-            </h4>
-            <p className="text-xs md:text-sm text-palette-slate/80 leading-relaxed bg-palette-cream/50 p-4 rounded-2xl border border-palette-slate/10 font-medium">
-              {archetype.unlockedInsights.exclusivitySignals}
-            </p>
-          </div>
-
-          {/* Insight 4: Action Guide 7 Days */}
-          <div className="bg-palette-sand/60 rounded-3xl p-6 border border-palette-slate/15 shadow-xs">
-            <h4 className="font-extrabold text-base md:text-lg text-palette-slate mb-3 flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-palette-coral" />
-              7-Day Power Playbook (Action Plan)
-            </h4>
-
-            <div className="space-y-2.5">
-              {archetype.unlockedInsights.actionGuide7Days.map((step, idx) => (
-                <div key={idx} className="bg-palette-white rounded-2xl p-3.5 border border-palette-slate/10 flex items-start gap-3 shadow-xs">
-                  <div className="w-5 h-5 rounded-full bg-palette-slate text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
-                    {idx + 1}
-                  </div>
-                  <span className="text-xs md:text-sm font-semibold text-palette-slate leading-relaxed">
-                    {step}
-                  </span>
+            <div className="mt-4 pt-4 border-t border-palette-slate/10 space-y-2">
+              {report.summaryHighlights.map((highlight, hIdx) => (
+                <div key={hIdx} className="flex items-start gap-2 text-xs font-semibold text-palette-slate/80">
+                  <span className="text-palette-coral">✦</span>
+                  <span>{highlight}</span>
                 </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Deep Sections Render */}
+          {report.sections.map((sec, secIdx) => (
+            <div key={secIdx} className="bg-palette-white rounded-3xl p-6 shadow-xs border border-palette-slate/15">
+              <div className="inline-block text-[11px] font-extrabold px-3 py-0.5 rounded-full bg-palette-lilac/40 text-palette-slate mb-2">
+                {sec.tag}
+              </div>
+              <h4 className="font-extrabold text-base md:text-lg text-palette-slate mb-3">
+                {sec.title}
+              </h4>
+
+              <div className="space-y-3 text-xs md:text-sm text-palette-slate/80 leading-relaxed font-medium">
+                {sec.paragraphs.map((p, pIdx) => (
+                  <p key={pIdx}>{p}</p>
+                ))}
+              </div>
+
+              {sec.bullets && sec.bullets.length > 0 && (
+                <div className="mt-4 pt-4 border-t border-palette-slate/10 space-y-2.5">
+                  {sec.bullets.map((b, bIdx) => (
+                    <div key={bIdx} className="bg-palette-cream/60 p-3 rounded-2xl border border-palette-slate/10 text-xs font-semibold text-palette-slate flex items-start gap-2.5">
+                      <span className="w-5 h-5 rounded-full bg-palette-slate text-white flex items-center justify-center text-[10px] shrink-0 mt-0.5">
+                        {bIdx + 1}
+                      </span>
+                      <span>{b}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+
+          {/* Bottom Line Summary Card */}
+          <div className="bg-palette-slate text-white rounded-3xl p-6 md:p-8 shadow-soft-flat">
+            <h4 className="text-xs font-extrabold tracking-widest uppercase text-palette-sand mb-3 flex items-center gap-1.5">
+              <Sparkles className="w-4 h-4 text-palette-coral" />
+              THE BOTTOM LINE
+            </h4>
+
+            <div className="space-y-3 text-xs md:text-sm text-palette-cream/90 leading-relaxed font-medium">
+              {report.bottomLine.map((line, lIdx) => (
+                <p key={lIdx}>{line}</p>
               ))}
             </div>
           </div>
