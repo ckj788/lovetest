@@ -37,6 +37,33 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = ({
     ? Array.isArray(selectedAnswers) && selectedAnswers.length > 0
     : Boolean(selectedAnswers);
 
+  // Helper to format bolded text with emphasis
+  const renderOptionLabel = (label: string, selected: boolean) => {
+    const parts = label.split(/(\*\*.*?\*\*)/g);
+    return (
+      <span className={`text-xs sm:text-sm leading-relaxed ${selected ? 'text-white' : 'text-palette-slate/90'}`}>
+        {parts.map((part, i) => {
+          if (part.startsWith('**') && part.endsWith('**')) {
+            const boldContent = part.slice(2, -2);
+            return (
+              <strong
+                key={i}
+                className={`font-black ${
+                  selected
+                    ? 'text-white underline decoration-palette-sand decoration-2 underline-offset-2'
+                    : 'text-palette-slate underline decoration-palette-coral/40 decoration-2 underline-offset-2'
+                }`}
+              >
+                {boldContent}
+              </strong>
+            );
+          }
+          return <span key={i} className="font-normal">{part}</span>;
+        })}
+      </span>
+    );
+  };
+
   return (
     <div className="max-w-2xl mx-auto px-4 py-6 md:py-10">
       <AnimatePresence mode="wait">
@@ -46,7 +73,7 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = ({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -12 }}
           transition={{ duration: 0.2 }}
-          className="soft-card p-6 md:p-8 bg-palette-white relative"
+          className="soft-card p-5 sm:p-7 md:p-8 bg-palette-white relative"
         >
           {/* Top Badge */}
           <div className="flex items-center justify-between mb-4">
@@ -61,12 +88,12 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = ({
           </div>
 
           {/* Question Title */}
-          <h2 className="text-xl md:text-2xl font-black text-palette-slate leading-snug mb-1">
+          <h2 className="text-xl sm:text-2xl font-black text-palette-slate leading-snug mb-1.5 break-normal">
             {question.title}
           </h2>
 
           {question.subtitle && (
-            <p className="text-xs md:text-sm text-palette-slate/60 font-medium mb-6">
+            <p className="text-xs sm:text-sm text-palette-slate/65 font-medium mb-6">
               {question.subtitle}
             </p>
           )}
@@ -86,7 +113,7 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = ({
                   className={`relative cursor-pointer rounded-2xl p-4 transition-all border flex items-center justify-between ${
                     selected
                       ? 'bg-palette-slate text-white border-palette-slate shadow-md'
-                      : 'bg-palette-cream/50 hover:bg-palette-cream border-palette-slate/15 text-palette-slate shadow-xs'
+                      : 'bg-palette-cream/45 hover:bg-palette-cream/70 border-palette-slate/15 text-palette-slate shadow-xs'
                   }`}
                 >
                   <div className="flex items-center gap-3.5 pr-2">
@@ -99,9 +126,7 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = ({
                     >
                       {optionLetters[idx] || idx + 1}
                     </div>
-                    <span className={`text-xs md:text-sm font-semibold leading-relaxed ${selected ? 'text-white font-bold' : 'text-palette-slate'}`}>
-                      {option.label}
-                    </span>
+                    {renderOptionLabel(option.label, selected)}
                   </div>
 
                   <div className="shrink-0 ml-2">

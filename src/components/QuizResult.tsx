@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { QuizResultData } from '../types/quiz';
-import { Lock, Unlock, Sparkles, AlertCircle, CheckCircle2, ChevronRight, Compass, Heart, Activity, Check } from 'lucide-react';
+import { Lock, Unlock, Sparkles, AlertCircle, CheckCircle2, ChevronRight, Compass, Heart, Activity } from 'lucide-react';
 import { PaywallModal } from './PaywallModal';
 import { ShareCard } from './ShareCard';
 
@@ -83,7 +83,7 @@ export const QuizResult: React.FC<QuizResultProps> = ({ result, onReset }) => {
         </p>
       </motion.div>
 
-      {/* 4 Dimension Scores Matrix (Palette Colors from Image) */}
+      {/* 4 Dimension Scores Matrix (Updated Names) */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5 mb-8">
         {/* Attraction: Lilac */}
         <div className="bg-palette-lilac rounded-2xl p-4 shadow-xs border border-palette-slate/10">
@@ -97,25 +97,25 @@ export const QuizResult: React.FC<QuizResultProps> = ({ result, onReset }) => {
           <div className="w-full bg-palette-white/60 h-2 rounded-full overflow-hidden">
             <div className="h-full bg-palette-coral rounded-full" style={{ width: `${scores.attraction}%` }} />
           </div>
-          <span className="text-[10px] text-palette-slate/75 mt-1.5 block font-semibold">Subconscious Spark</span>
+          <span className="text-[10px] text-palette-slate/75 mt-1.5 block font-semibold">Natural Spark</span>
         </div>
 
-        {/* Investment: Slate */}
+        {/* Time & Effort: Slate */}
         <div className="bg-palette-slate text-white rounded-2xl p-4 shadow-xs">
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs font-bold text-palette-cream flex items-center gap-1">
               <Activity className="w-3.5 h-3.5 text-palette-sand" />
-              Investment
+              Time & Effort
             </span>
             <span className="text-sm font-black text-palette-sand">{scores.investment}</span>
           </div>
           <div className="w-full bg-white/20 h-2 rounded-full overflow-hidden">
             <div className="h-full bg-palette-sand rounded-full" style={{ width: `${scores.investment}%` }} />
           </div>
-          <span className="text-[10px] text-palette-cream/70 mt-1.5 block font-medium">Real Time & Effort</span>
+          <span className="text-[10px] text-palette-cream/70 mt-1.5 block font-medium">Real Investment</span>
         </div>
 
-        {/* Commitment: Sage Green */}
+        {/* Commitment Intent: Sage Green */}
         <div className="bg-palette-sage text-white rounded-2xl p-4 shadow-xs">
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs font-bold text-white flex items-center gap-1">
@@ -127,10 +127,10 @@ export const QuizResult: React.FC<QuizResultProps> = ({ result, onReset }) => {
           <div className="w-full bg-white/20 h-2 rounded-full overflow-hidden">
             <div className="h-full bg-white rounded-full" style={{ width: `${scores.commitment}%` }} />
           </div>
-          <span className="text-[10px] text-palette-cream/80 mt-1.5 block font-medium">DTR Willingness</span>
+          <span className="text-[10px] text-palette-cream/80 mt-1.5 block font-medium">DTR Readiness</span>
         </div>
 
-        {/* Exclusivity: Sand */}
+        {/* Exclusive Focus: Sand */}
         <div className="bg-palette-sand rounded-2xl p-4 shadow-xs border border-palette-slate/10">
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs font-bold text-palette-slate flex items-center gap-1">
@@ -142,7 +142,7 @@ export const QuizResult: React.FC<QuizResultProps> = ({ result, onReset }) => {
           <div className="w-full bg-palette-white/60 h-2 rounded-full overflow-hidden">
             <div className="h-full bg-palette-coral rounded-full" style={{ width: `${scores.exclusivity}%` }} />
           </div>
-          <span className="text-[10px] text-palette-slate/75 mt-1.5 block font-semibold">Roster & Boundary</span>
+          <span className="text-[10px] text-palette-slate/75 mt-1.5 block font-semibold">Roster & Focus</span>
         </div>
       </div>
 
@@ -160,8 +160,8 @@ export const QuizResult: React.FC<QuizResultProps> = ({ result, onReset }) => {
 
         <div className="bg-palette-cream/60 rounded-2xl p-4 border border-palette-slate/10">
           <div className="flex items-center justify-between text-xs md:text-sm font-bold mb-2">
-            <span className="text-palette-coral">Attraction: {scores.attraction}%</span>
-            <span className="text-palette-slate">Commitment: {scores.commitment}%</span>
+            <span className="text-palette-coral">Natural Attraction: {scores.attraction}%</span>
+            <span className="text-palette-slate">Commitment Intent: {scores.commitment}%</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="flex-1 bg-palette-slate/10 h-3 rounded-full overflow-hidden flex">

@@ -4,27 +4,27 @@ export const QUIZ_QUESTIONS: Question[] = [
   {
     id: 1,
     title: "When you stop texting first, what does he do?",
-    subtitle: "Dimension: Raw Attraction & Subconscious Motivation",
+    subtitle: "Dimension: Natural Attraction & Subconscious Motivation",
     type: 'single',
     options: [
       {
         id: 'q1_a',
-        label: "Double-texts within hours with a real topic or funny meme. He can't help himself.",
+        label: "**Double-texts within hours** with a real topic or funny meme. He can't help himself.",
         weights: { attraction: 25, investment: 20, commitment: 15, exclusivity: 15 }
       },
       {
         id: 'q1_b',
-        label: "Reaches out in 1–2 days asking 'wyd' or sharing random life updates.",
+        label: "**Reaches out in 1–2 days** asking 'wyd' or sharing random life updates.",
         weights: { attraction: 20, investment: 15, commitment: 15, exclusivity: 10 }
       },
       {
         id: 'q1_c',
-        label: "Likes your IG story, but leaves your actual DMs on read.",
+        label: "**Likes your IG story**, but leaves your actual DMs on read.",
         weights: { attraction: 10, investment: 5, commitment: 5, exclusivity: 5 }
       },
       {
         id: 'q1_d',
-        label: "Crickets. If you don't initiate, you basically don't exist.",
+        label: "**Complete crickets.** If you don't initiate, you basically don't exist.",
         weights: { attraction: 2, investment: 0, commitment: 0, exclusivity: 0 }
       }
     ]
@@ -32,27 +32,27 @@ export const QUIZ_QUESTIONS: Question[] = [
   {
     id: 2,
     title: "How do plans with him actually get made?",
-    subtitle: "Dimension: Genuine Effort & Intentionality",
+    subtitle: "Dimension: Time & Effort / Intentionality",
     type: 'single',
     options: [
       {
         id: 'q2_a',
-        label: "Plans 2–3 days ahead, picks a real spot, & handles the details without games.",
+        label: "**Plans 2–3 days ahead**, picks a real spot, & handles the details without games.",
         weights: { attraction: 20, investment: 25, commitment: 20, exclusivity: 20 }
       },
       {
         id: 'q2_b',
-        label: "Spontaneous last-minute hangouts, but the vibe is always great when together.",
+        label: "**Spontaneous last-minute hangouts**, but the vibe is always great when together.",
         weights: { attraction: 18, investment: 15, commitment: 10, exclusivity: 10 }
       },
       {
         id: 'q2_c',
-        label: "You initiate 90% of dates. He agrees, but he's just along for the ride.",
+        label: "**You initiate 90% of dates.** He agrees, but he's just along for the ride.",
         weights: { attraction: 10, investment: 8, commitment: 5, exclusivity: 5 }
       },
       {
         id: 'q2_d',
-        label: "Late night 'u up?' texts or only links up at group parties/bars.",
+        label: "**Late night 'u up?' texts** or only links up at group parties/bars.",
         weights: { attraction: 12, investment: 2, commitment: 0, exclusivity: 2 }
       }
     ]
@@ -65,22 +65,22 @@ export const QUIZ_QUESTIONS: Question[] = [
     options: [
       {
         id: 'q3_a',
-        label: "Fast replies or lets you know when he's busy. Keeps you updated seamlessly.",
+        label: "**Fast replies or heads-up.** Keeps you updated seamlessly without leaving you guessing.",
         weights: { attraction: 25, investment: 22, commitment: 22, exclusivity: 22 }
       },
       {
         id: 'q3_b',
-        label: "Dry during work hours, but gives main-character energy late at night.",
+        label: "**Dry during work hours**, but gives main-character energy late at night.",
         weights: { attraction: 20, investment: 15, commitment: 12, exclusivity: 12 }
       },
       {
         id: 'q3_c',
-        label: "Hot & cold. Texts 100 mph on Tuesday, ghosts until Friday.",
+        label: "**Hot & cold whiplash.** Texts 100 mph on Tuesday, ghosts until Friday.",
         weights: { attraction: 15, investment: 8, commitment: 3, exclusivity: 4 }
       },
       {
         id: 'q3_d',
-        label: "One-word answers, dry emojis, zero conversational effort.",
+        label: "**One-word dry answers**, dry emojis, and zero conversational effort.",
         weights: { attraction: 5, investment: 2, commitment: 0, exclusivity: 2 }
       }
     ]
@@ -93,22 +93,22 @@ export const QUIZ_QUESTIONS: Question[] = [
     options: [
       {
         id: 'q4_a',
-        label: "Listens intently, offers genuine comfort, and tries to help fix it.",
+        label: "**Listens intently and comforts you**, offering genuine emotional support and solutions.",
         weights: { attraction: 20, investment: 25, commitment: 22, exclusivity: 20 }
       },
       {
         id: 'q4_b',
-        label: "Gives 2 sentences of sympathy, then turns the topic back to himself.",
+        label: "**Gives 2 sentences of sympathy**, then immediately turns the topic back to himself.",
         weights: { attraction: 12, investment: 8, commitment: 5, exclusivity: 5 }
       },
       {
         id: 'q4_c',
-        label: "Replies with generic 'that sucks 🥺' and changes the subject immediately.",
+        label: "**Replies with a generic emoji** ('that sucks 🥺') and changes the subject quickly.",
         weights: { attraction: 8, investment: 3, commitment: 2, exclusivity: 2 }
       },
       {
         id: 'q4_d',
-        label: "Leaves heavy topics on read and only responds when things are light/flirty.",
+        label: "**Leaves heavy topics on read**, only resurfacing when things are light or flirty.",
         weights: { attraction: 5, investment: 0, commitment: 0, exclusivity: 0 }
       }
     ]
@@ -121,32 +121,32 @@ export const QUIZ_QUESTIONS: Question[] = [
     options: [
       {
         id: 'q5_1',
-        label: "Remembered a tiny micro-detail you mentioned offhand and brought it up later",
+        label: "**Remembered a tiny micro-detail** you mentioned offhand and brought it up later",
         weights: { attraction: 5, investment: 5, commitment: 4, exclusivity: 4 }
       },
       {
         id: 'q5_2',
-        label: "Shifted his own personal schedule just to see you or help you out",
+        label: "**Shifted his personal schedule** just to see you or help you out",
         weights: { attraction: 4, investment: 6, commitment: 5, exclusivity: 4 }
       },
       {
         id: 'q5_3',
-        label: "Soft-launched or introduced you to his close friends, roommates, or circle",
+        label: "**Introduced / soft-launched you** to his close friends, roommates, or circle",
         weights: { attraction: 4, investment: 4, commitment: 6, exclusivity: 6 }
       },
       {
         id: 'q5_4',
-        label: "Brought you food/medicine or provided real help when you were down/sick",
+        label: "**Brought food, medicine, or care** when you were down or sick",
         weights: { attraction: 4, investment: 6, commitment: 5, exclusivity: 4 }
       },
       {
         id: 'q5_5',
-        label: "Brought up future plans (trips, events, concerts) 1–3 months out",
+        label: "**Brought up future plans** (trips, events, concerts) 1–3 months out",
         weights: { attraction: 4, investment: 4, commitment: 5, exclusivity: 5 }
       },
       {
         id: 'q5_6',
-        label: "None of the above (Ouch).",
+        label: "**None of the above** (Ouch, zero receipts).",
         weights: { attraction: 0, investment: 0, commitment: 0, exclusivity: 0 }
       }
     ]
@@ -154,27 +154,27 @@ export const QUIZ_QUESTIONS: Question[] = [
   {
     id: 6,
     title: "Where do you exist in his public/social ecosystem?",
-    subtitle: "Dimension: Commitment & Public Ownership",
+    subtitle: "Dimension: Commitment Intent & Public Ownership",
     type: 'single',
     options: [
       {
         id: 'q6_a',
-        label: "Hard launch energy. Everyone in his circle knows who you are.",
+        label: "**Hard launch energy.** Everyone in his close circle knows who you are.",
         weights: { attraction: 25, investment: 20, commitment: 25, exclusivity: 25 }
       },
       {
         id: 'q6_b',
-        label: "Soft launch. His best friends know about you, but not his main story.",
+        label: "**Soft launch status.** His best friends know about you, but not his main feed.",
         weights: { attraction: 18, investment: 12, commitment: 15, exclusivity: 15 }
       },
       {
         id: 'q6_c',
-        label: "Top Secret. You only exist behind closed doors or private DMs.",
+        label: "**Top secret.** You only exist behind closed doors or private DMs.",
         weights: { attraction: 12, investment: 5, commitment: 5, exclusivity: 5 }
       },
       {
         id: 'q6_d',
-        label: "Gatekeeper. He actively avoids personal topics and hides his social life.",
+        label: "**Gatekeeper mode.** He actively avoids personal topics and hides his social life.",
         weights: { attraction: 5, investment: 2, commitment: 0, exclusivity: 0 }
       }
     ]
@@ -182,27 +182,27 @@ export const QUIZ_QUESTIONS: Question[] = [
   {
     id: 7,
     title: "What's the roster situation? (Exclusivity & Boundaries)",
-    subtitle: "Dimension: Exclusivity & Roster Management",
+    subtitle: "Dimension: Exclusive Focus & Roster Management",
     type: 'single',
     options: [
       {
         id: 'q7_a',
-        label: "Strict boundaries. Made it clear he's only focused on you.",
+        label: "**Strict loyal boundaries.** Made it clear he is only focused on you.",
         weights: { attraction: 20, investment: 20, commitment: 25, exclusivity: 25 }
       },
       {
         id: 'q7_b',
-        label: "Feels exclusive, but you haven't officially had 'The Talk' (DTR).",
+        label: "**Feels exclusive**, but you haven't officially had 'The Talk' (DTR).",
         weights: { attraction: 15, investment: 12, commitment: 12, exclusivity: 18 }
       },
       {
         id: 'q7_c',
-        label: "Flirty with girls on IG/Snapchat, giving you slight trust issues.",
+        label: "**Flirty with others on IG/Snapchat**, giving you subtle trust issues.",
         weights: { attraction: 12, investment: 5, commitment: 5, exclusivity: 6 }
       },
       {
         id: 'q7_d',
-        label: "Active roster energy. Pretty sure you're one of 3 options.",
+        label: "**Active roster energy.** Pretty sure you're one of 3 options in rotation.",
         weights: { attraction: 8, investment: 2, commitment: 0, exclusivity: 0 }
       }
     ]
@@ -215,22 +215,22 @@ export const QUIZ_QUESTIONS: Question[] = [
     options: [
       {
         id: 'q8_a',
-        label: "Steady Escalation: Deeper chats, more dates, heading toward official.",
+        label: "**Steady escalation:** Deeper conversations, more dates, heading toward official.",
         weights: { attraction: 25, investment: 25, commitment: 25, exclusivity: 22 }
       },
       {
         id: 'q8_b',
-        label: "Rollercoaster: Insane initial spark, now stuck in a plateau.",
+        label: "**Rollercoaster:** Insane initial spark that plateaued into uncertainty.",
         weights: { attraction: 22, investment: 12, commitment: 8, exclusivity: 10 }
       },
       {
         id: 'q8_c',
-        label: "Spinning Wheels: Cozy situationship, nobody is making a move.",
+        label: "**Spinning wheels:** Cozy situationship where nobody makes a move.",
         weights: { attraction: 15, investment: 10, commitment: 8, exclusivity: 10 }
       },
       {
         id: 'q8_d',
-        label: "The Slow Fade: Replies getting drier, plans getting flakier.",
+        label: "**The slow fade:** Replies getting drier, plans getting flakier.",
         weights: { attraction: 5, investment: 2, commitment: 2, exclusivity: 2 }
       }
     ]
@@ -248,11 +248,11 @@ export const ARCHETYPES: Archetype[] = [
     color: '#504E76',
     gradient: 'from-[#504E76] to-[#C4C3E3]',
     description: 'He does not love-bomb you or text 24/7, but his actions are steady. His feelings are developing quietly through consistency rather than dramatic chaos.',
-    gapAnalysis: 'Balanced Dynamic: Attraction and Commitment are climbing steadily in parallel with zero destabilizing drops.',
+    gapAnalysis: 'Balanced Dynamic: Natural Attraction and Commitment Intent are climbing steadily in parallel with zero destabilizing drops.',
     report: {
       hook: "He probably likes you more than he knows how to show — but liking you and defining the relationship are moving at different speeds.",
       summaryHighlights: [
-        "Strongest signal: Attraction (High genuine curiosity & emotional pull).",
+        "Strongest signal: Natural Attraction (High genuine curiosity & emotional pull).",
         "Consistency > Intensity: Smaller, quieter actions instead of fake promises.",
         "Core conflict: Enough intimacy to feel important, but not quite enough structure to feel secure."
       ],
@@ -281,7 +281,7 @@ export const ARCHETYPES: Archetype[] = [
           tag: "03 // THE GAP BREAKDOWN",
           title: "A moderate gap represents caution, not deceit.",
           paragraphs: [
-            "Your Attraction score sits above Commitment, but the gap is balanced compared to toxic avoidant dynamics.",
+            "Your Natural Attraction score sits above Commitment Intent, but the gap is balanced compared to toxic avoidant dynamics.",
             "His feelings are developing faster than his willingness to define them.",
             "That happens when someone takes longer to translate emotion into commitment, or when they are protective of their peace.",
             "However: 'He is just slow' must never become an excuse you use forever. Slow movement is healthy only while there is still movement."
@@ -340,7 +340,7 @@ export const ARCHETYPES: Archetype[] = [
     color: '#F1642E',
     gradient: 'from-[#F1642E] to-[#FCDD9D]',
     description: 'You share insane chemistry and 2 AM banter, but the second the dynamic requires real effort or a DTR, he pulls back into comfortable ambiguity.',
-    gapAnalysis: 'Severe Delulu Gap: High Attraction sits on top of lagging Commitment. He enjoys girlfriend privileges without boyfriend accountability.',
+    gapAnalysis: 'Severe Delulu Gap: High Natural Attraction sits on top of lagging Commitment Intent. He enjoys girlfriend privileges without boyfriend accountability.',
     report: {
       hook: "He is addicted to the high of your chemistry — but you are giving wifey treatment on a perpetual free trial.",
       summaryHighlights: [
@@ -373,7 +373,7 @@ export const ARCHETYPES: Archetype[] = [
           tag: "03 // THE GAP BREAKDOWN",
           title: "A massive Attraction–Commitment disconnect.",
           paragraphs: [
-            "Your results show a huge gap between his Raw Attraction and his actual Commitment score.",
+            "Your results show a huge gap between his Natural Attraction and his actual Commitment Intent score.",
             "He enjoys the romantic perks—the intimacy, the late-night venting, the ego boost—while keeping one foot firmly outside the door.",
             "As long as you accept low-effort breadcrumbs, he has zero reason to upgrade to a committed relationship.",
             "Why would he buy the subscription when you give away the full access for free?"
@@ -557,7 +557,7 @@ export const ARCHETYPES: Archetype[] = [
           tag: "03 // THE GAP BREAKDOWN",
           title: "Paying in pennies while demanding gold.",
           paragraphs: [
-            "Your score reveals an alarming Investment Deficit. His Investment score is at the floor compared to your emotional output.",
+            "Your score reveals an alarming Investment Deficit. His Time & Effort score is at the floor compared to your emotional output.",
             "He is treating you like a backup tab in his browser—one he never closes, but never actually focuses on.",
             "You are investing deep emotional currency into someone who spends 3 seconds of thumb movement on you.",
             "The math will never work in your favor until you stop over-paying."
@@ -616,11 +616,11 @@ export const ARCHETYPES: Archetype[] = [
     color: '#A3B565',
     gradient: 'from-[#A3B565] to-[#504E76]',
     description: 'His actions match his words. He shows up consistently, integrates you into his world, and respects your boundaries without mental games.',
-    gapAnalysis: 'Elite Alignment: Attraction and Commitment are in high harmony. Minimal mind games detected in his behavioral profile.',
+    gapAnalysis: 'Elite Alignment: Natural Attraction and Commitment Intent are in high harmony. Minimal mind games detected in his behavioral profile.',
     report: {
       hook: "No games, no confusion. His actions match his words because a man with real intentions never makes you guess.",
       summaryHighlights: [
-        "High score alignment across Attraction, Effort, Commitment, and Exclusivity.",
+        "High score alignment across Natural Attraction, Time & Effort, Commitment Intent, and Exclusive Focus.",
         "Reliable execution: Promises made are promises kept.",
         "Core reality: He is genuinely preparing the runway to make things official."
       ],
@@ -649,7 +649,7 @@ export const ARCHETYPES: Archetype[] = [
           tag: "03 // THE GAP BREAKDOWN",
           title: "High harmony across all core dimensions.",
           paragraphs: [
-            "Your scores show high, synchronized alignment between his Attraction and his Commitment levels.",
+            "Your scores show high, synchronized alignment between his Natural Attraction and his Commitment Intent levels.",
             "He is not delaying because he is keeping other options open; he is simply taking the time to build a solid foundation.",
             "He treats the connection with respect because he sees long-term value in who you are.",
             "This is the rare dynamic where your vulnerability will be met with protection rather than exploitation."

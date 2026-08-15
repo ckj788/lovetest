@@ -13,10 +13,10 @@ export const QuizCalculating: React.FC<QuizCalculatingProps> = ({ onComplete }) 
   const [stepIndex, setStepIndex] = useState(0);
 
   const steps = [
-    { label: 'Analyzing Subconscious Chemistry (Raw Attraction)', icon: Heart, badgeColor: 'bg-palette-lilac text-palette-slate' },
-    { label: 'Measuring Real Effort & Availability (Real Effort)', icon: Activity, badgeColor: 'bg-palette-slate text-white' },
-    { label: 'Calculating DTR Willingness (Commitment)', icon: Compass, badgeColor: 'bg-palette-sage text-white' },
-    { label: 'Fitting Roster & Boundary Model (Exclusivity)', icon: Lock, badgeColor: 'bg-palette-sand text-palette-slate' },
+    { label: 'Analyzing Subconscious Spark (Natural Attraction)', icon: Heart, badgeColor: 'bg-palette-lilac text-palette-slate' },
+    { label: 'Measuring Real Investment & Availability (Time & Effort)', icon: Activity, badgeColor: 'bg-palette-slate text-white' },
+    { label: 'Calculating DTR & Future Readiness (Commitment Intent)', icon: Compass, badgeColor: 'bg-palette-sage text-white' },
+    { label: 'Evaluating Roster & Boundary Dynamics (Exclusive Focus)', icon: Lock, badgeColor: 'bg-palette-sand text-palette-slate' },
     { label: 'Generating Persona & 7-Day Power Playbook...', icon: Sparkles, badgeColor: 'bg-palette-coral text-white' },
   ];
 

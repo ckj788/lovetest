@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { QuizResultData } from '../types/quiz';
-import { Copy, Check, Share2, Sparkles, Heart, Activity, Compass, Lock } from 'lucide-react';
+import { Copy, Check, Share2, Heart, Activity, Compass, Lock } from 'lucide-react';
 
 interface ShareCardProps {
   result: QuizResultData;
@@ -17,10 +17,10 @@ export const ShareCard: React.FC<ShareCardProps> = ({ result }) => {
     const textToCopy = `✨ My SignalQuiz Diagnosis Report ✨\n` +
       `🔮 Archetype: ${archetype.emoji} ${archetype.name}\n` +
       `📊 Interest Index: ${totalScore}/100 | Delulu Gap: ${gap}%\n` +
-      `🔥 Raw Attraction: ${scores.attraction}%\n` +
-      `⚡ Real Effort: ${scores.investment}%\n` +
+      `🔥 Natural Attraction: ${scores.attraction}%\n` +
+      `⚡ Time & Effort: ${scores.investment}%\n` +
       `💍 Commitment Intent: ${scores.commitment}%\n` +
-      `🔒 Exclusivity: ${scores.exclusivity}%\n\n` +
+      `🔒 Exclusive Focus: ${scores.exclusivity}%\n\n` +
       `💡 Golden Insight: "${archetype.report.socialQuote}"\n\n` +
       `👉 Take the 60s quiz: https://signalquiz.app`;
 

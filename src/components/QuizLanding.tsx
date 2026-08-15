@@ -47,46 +47,46 @@ export const QuizLanding: React.FC<QuizLandingProps> = ({ onStart }) => {
           Stop over-analyzing his 2 AM texts in the group chat. We measure his real behavior—his effort, availability, and roster energy—to tell you the cold, cosmic truth.
         </p>
 
-        {/* 4 Core Dimensions Cards (Palette Colors from User Image) */}
+        {/* 4 Core Dimensions Cards (Updated Names) */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5 mb-8 max-w-2xl mx-auto text-left">
-          {/* Dimension 1: Lilac */}
+          {/* Dimension 1: Lilac - Natural Attraction */}
           <div className="bg-palette-lilac rounded-2xl p-4 relative shadow-sm border border-palette-slate/10">
             <div className="absolute top-3 right-3 text-palette-slate/40 text-xs">✿</div>
             <div className="w-8 h-8 rounded-xl bg-palette-white flex items-center justify-center text-palette-coral mb-2 shadow-xs">
               <Heart className="w-4 h-4" />
             </div>
-            <div className="text-xs font-black text-palette-slate">Raw Attraction</div>
+            <div className="text-xs font-black text-palette-slate">Natural Attraction</div>
             <div className="text-[10px] text-palette-slate/75 font-medium mt-0.5">Subconscious Spark</div>
           </div>
 
-          {/* Dimension 2: Slate Dark */}
+          {/* Dimension 2: Slate Dark - Time & Effort */}
           <div className="bg-palette-slate rounded-2xl p-4 relative shadow-sm text-white">
             <div className="absolute top-3 right-3 text-palette-cream/40 text-xs">✿</div>
             <div className="w-8 h-8 rounded-xl bg-palette-white/15 flex items-center justify-center text-palette-cream mb-2">
               <Activity className="w-4 h-4" />
             </div>
-            <div className="text-xs font-black text-white">Real Effort</div>
+            <div className="text-xs font-black text-white">Time & Effort</div>
             <div className="text-[10px] text-palette-cream/70 font-medium mt-0.5">Action vs Words</div>
           </div>
 
-          {/* Dimension 3: Sage Green */}
+          {/* Dimension 3: Sage Green - Commitment Intent */}
           <div className="bg-palette-sage rounded-2xl p-4 relative shadow-sm text-white">
             <div className="absolute top-3 right-3 text-palette-cream/40 text-xs">✿</div>
             <div className="w-8 h-8 rounded-xl bg-palette-white/20 flex items-center justify-center text-white mb-2">
               <Compass className="w-4 h-4" />
             </div>
-            <div className="text-xs font-black text-white">Commitment</div>
-            <div className="text-[10px] text-palette-cream/80 font-medium mt-0.5">DTR Willingness</div>
+            <div className="text-xs font-black text-white">Commitment Intent</div>
+            <div className="text-[10px] text-palette-cream/80 font-medium mt-0.5">DTR & Future Plans</div>
           </div>
 
-          {/* Dimension 4: Sand Orange */}
+          {/* Dimension 4: Sand Orange - Exclusive Focus */}
           <div className="bg-palette-sand rounded-2xl p-4 relative shadow-sm border border-palette-slate/10">
             <div className="absolute top-3 right-3 text-palette-coral/50 text-xs">✿</div>
             <div className="w-8 h-8 rounded-xl bg-palette-white flex items-center justify-center text-palette-coral mb-2 shadow-xs">
               <Lock className="w-4 h-4" />
             </div>
-            <div className="text-xs font-black text-palette-slate">Exclusivity</div>
-            <div className="text-[10px] text-palette-slate/75 font-medium mt-0.5">Roster Status</div>
+            <div className="text-xs font-black text-palette-slate">Exclusive Focus</div>
+            <div className="text-[10px] text-palette-slate/75 font-medium mt-0.5">Roster & Boundaries</div>
           </div>
         </div>
 
