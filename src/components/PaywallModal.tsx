@@ -1,27 +1,49 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Lock, Check, Sparkles, ShieldCheck, Zap, ArrowRight } from 'lucide-react';
 
 interface PaywallModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onUnlockSuccess: () => void;
+  onUnlockSuccess?: () => void;
   archetypeName: string;
 }
 
 export const PaywallModal: React.FC<PaywallModalProps> = ({
   isOpen,
   onClose,
+  onUnlockSuccess,
   archetypeName,
 }) => {
   const [isProcessing, setIsProcessing] = useState(false);
 
+  // Reset processing state when modal opens, or when returning via browser back button (pageshow event)
+  useEffect(() => {
+    setIsProcessing(false);
+
+    const handlePageShow = () => {
+      setIsProcessing(false);
+    };
+
+    window.addEventListener('pageshow', handlePageShow);
+    return () => {
+      window.removeEventListener('pageshow', handlePageShow);
+    };
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   const handleStripeCheckout = async () => {
+    if (isProcessing) return;
     setIsProcessing(true);
+
+    // Safety timeout: reset processing state after 6s in case redirect is canceled or delayed
+    const timer = setTimeout(() => {
+      setIsProcessing(false);
+    }, 6000);
+
     try {
       const res = await fetch('/api/checkout', {
         method: 'POST',
@@ -38,12 +60,15 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
       if (res.ok && data.url) {
         window.location.href = data.url;
       } else {
-        throw new Error(data.error || 'Failed to initialize checkout');
+        clearTimeout(timer);
+        setIsProcessing(false);
+        alert(data.error || 'Unable to connect to Stripe checkout. Please try again.');
       }
     } catch (err: any) {
+      clearTimeout(timer);
       console.error('Stripe redirect error:', err);
       setIsProcessing(false);
-      alert(err.message || 'Unable to connect to Stripe checkout. Please try again.');
+      alert(err.message || 'Unable to connect to Stripe checkout. Please check your connection.');
     }
   };
 
@@ -59,7 +84,10 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
         >
           {/* Close Button */}
           <button
-            onClick={onClose}
+            onClick={() => {
+              setIsProcessing(false);
+              onClose();
+            }}
             className="absolute top-4 right-4 p-2 rounded-full text-palette-slate/60 hover:text-palette-slate hover:bg-palette-lilac/30 transition-all cursor-pointer"
             title="Close to view free summary"
           >
@@ -79,25 +107,23 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
             Custom deep analysis & 7-day power playbook for <span className="font-bold text-palette-coral">{archetypeName}</span>
           </p>
 
-          {/* Single Focused Pricing Offer ($3.99) */}
+          {/* Single Focused Pricing Offer ($3.99) - Clean without 80% OFF badge */}
           <div className="rounded-2xl p-4 sm:p-5 border-2 border-palette-slate bg-palette-lilac/35 shadow-xs mb-5 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-6 h-6 rounded-full bg-palette-slate text-white flex items-center justify-center shrink-0">
                 <Check className="w-4 h-4" />
               </div>
               <div>
-                <div className="flex items-center gap-2">
-                  <span className="font-extrabold text-palette-slate text-sm sm:text-base">Full Deep Report + 7-Day Plan</span>
-                  <span className="text-[10px] bg-palette-coral text-white px-2 py-0.5 rounded-full font-bold">80% OFF</span>
-                </div>
+                <span className="font-extrabold text-palette-slate text-sm sm:text-base block">
+                  Full Deep Report + 7-Day Plan
+                </span>
                 <p className="text-[11px] sm:text-xs text-palette-slate/70 font-medium mt-0.5">
                   Instant unlock on all devices · 100% Confidential
                 </p>
               </div>
             </div>
             <div className="text-right shrink-0">
-              <div className="text-xl sm:text-2xl font-black text-palette-slate">$3.99</div>
-              <div className="text-xs text-palette-slate/50 line-through">$19.99</div>
+              <div className="text-2xl font-black text-palette-slate">$3.99</div>
             </div>
           </div>
 
@@ -145,7 +171,10 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
 
           {/* Secondary Option: View Free Summary */}
           <button
-            onClick={onClose}
+            onClick={() => {
+              setIsProcessing(false);
+              onClose();
+            }}
             className="w-full mt-3 py-2 text-xs font-bold text-palette-slate/65 hover:text-palette-slate hover:underline flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
           >
             <span>Or continue to Free Summary Report</span>
