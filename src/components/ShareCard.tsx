@@ -114,7 +114,7 @@ export const ShareCard: React.FC<ShareCardProps> = ({ result }) => {
               ✿
             </span>
             <span className="font-extrabold text-[11px] sm:text-xs tracking-wider uppercase text-palette-slate">
-              MIXEDSIGN · RELATIONSHIP MBTI
+              MIXEDSIGN · RELATIONSHIP SIGNAL ENGINE
             </span>
           </div>
           <span className="text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-full bg-palette-lilac/40 text-palette-slate border border-palette-slate/10">
