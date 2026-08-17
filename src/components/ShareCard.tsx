@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { QuizResultData } from '../types/quiz';
-import { Copy, Check, Share2, Heart, Activity, Compass, Lock } from 'lucide-react';
+import { Copy, Check, Download, Share2, Heart, Activity, Compass, Lock, Loader2, X, Sparkles } from 'lucide-react';
+import { toPng, toBlob } from 'html-to-image';
 
 interface ShareCardProps {
   result: QuizResultData;
@@ -11,8 +12,15 @@ interface ShareCardProps {
 
 export const ShareCard: React.FC<ShareCardProps> = ({ result }) => {
   const [copied, setCopied] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [generatedImgUrl, setGeneratedImgUrl] = useState<string | null>(null);
+  const [showImageModal, setShowImageModal] = useState(false);
+  const [statusMessage, setStatusMessage] = useState<string | null>(null);
+
+  const cardRef = useRef<HTMLDivElement>(null);
   const { archetype, totalScore, scores, gap } = result;
 
+  // Copy text for group chats
   const handleCopy = () => {
     const textToCopy = `✨ My SignalQuiz Diagnosis Report ✨\n` +
       `🔮 Archetype: ${archetype.emoji} ${archetype.name}\n` +
@@ -29,12 +37,78 @@ export const ShareCard: React.FC<ShareCardProps> = ({ result }) => {
     setTimeout(() => setCopied(false), 2500);
   };
 
+  // High-Resolution Image Export & Native Mobile Share/Download
+  const handleDownloadImage = async () => {
+    if (!cardRef.current) return;
+    setIsGenerating(true);
+    setStatusMessage('Generating High-Res Story Card...');
+
+    try {
+      // 1. Render card to high-DPI data URL & blob
+      const dataUrl = await toPng(cardRef.current, {
+        pixelRatio: 3,
+        cacheBust: true,
+        backgroundColor: '#FFFFFF',
+      });
+      setGeneratedImgUrl(dataUrl);
+
+      const blob = await toBlob(cardRef.current, {
+        pixelRatio: 3,
+        cacheBust: true,
+        backgroundColor: '#FFFFFF',
+      });
+
+      // 2. Try Native Mobile Web Share API (iOS / Android System Sheet)
+      let sharedNatively = false;
+      if (blob && typeof navigator !== 'undefined' && navigator.share) {
+        const file = new File([blob], `signalquiz-${archetype.id}.png`, { type: 'image/png' });
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          try {
+            await navigator.share({
+              files: [file],
+              title: `${archetype.name} · SignalQuiz Report`,
+              text: `My SignalQuiz Diagnosis: ${archetype.name} (${archetype.report.socialQuote})`,
+            });
+            sharedNatively = true;
+          } catch (shareErr) {
+            console.log('Share canceled or not supported, falling back to download:', shareErr);
+          }
+        }
+      }
+
+      // 3. If not shared natively, trigger direct browser download & show preview modal
+      if (!sharedNatively) {
+        const link = document.createElement('a');
+        link.download = `signalquiz-${archetype.id}.png`;
+        link.href = dataUrl;
+        link.click();
+        setShowImageModal(true);
+      }
+    } catch (err) {
+      console.error('Failed to generate image:', err);
+      // Fallback: Show modal with dataUrl
+      if (cardRef.current) {
+        try {
+          const fallbackUrl = await toPng(cardRef.current, { pixelRatio: 2 });
+          setGeneratedImgUrl(fallbackUrl);
+          setShowImageModal(true);
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    } finally {
+      setIsGenerating(false);
+      setStatusMessage(null);
+    }
+  };
+
   return (
     <div className="my-8">
       {/* Social Card Preview Container */}
       <motion.div
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
+        ref={cardRef}
         className="soft-card p-6 md:p-8 bg-palette-white border-2 border-palette-slate/15 relative overflow-hidden shadow-soft-flat max-w-lg mx-auto"
       >
         {/* Top Header */}
@@ -47,13 +121,13 @@ export const ShareCard: React.FC<ShareCardProps> = ({ result }) => {
               SIGNALQUIZ · RELATIONSHIP MBTI
             </span>
           </div>
-          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-palette-lilac/40 text-palette-slate border border-palette-slate/10">
-            OFFICIAL REPORT
+          <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-palette-lilac/40 text-palette-slate border border-palette-slate/10">
+            OFFICIAL DIAGNOSIS
           </span>
         </div>
 
         {/* Archetype Hero Box */}
-        <div className="bg-palette-cream/70 rounded-3xl p-5 mb-5 border border-palette-slate/10 relative text-center">
+        <div className="bg-palette-cream/75 rounded-3xl p-5 mb-5 border border-palette-slate/10 relative text-center">
           <div className="absolute top-4 right-4 text-palette-coral text-sm">✿</div>
           
           <div className="w-16 h-16 rounded-2xl bg-palette-white flex items-center justify-center text-4xl mx-auto mb-2 shadow-xs border border-palette-slate/10">
@@ -95,7 +169,7 @@ export const ShareCard: React.FC<ShareCardProps> = ({ result }) => {
           <div className="bg-palette-sand/40 p-2.5 rounded-xl border border-palette-slate/10 flex items-center justify-between">
             <span className="flex items-center gap-1">
               <Activity className="w-3.5 h-3.5 text-palette-slate" />
-              Effort
+              Time & Effort
             </span>
             <span className="font-black text-palette-slate">{scores.investment}%</span>
           </div>
@@ -124,30 +198,99 @@ export const ShareCard: React.FC<ShareCardProps> = ({ result }) => {
             <span className="text-base font-black text-palette-coral">{totalScore} <span className="text-[10px] text-palette-slate/50 font-normal">/100</span></span>
           </div>
           <div className="text-right">
-            <span className="text-[10px] text-palette-slate/60 font-bold uppercase block">Diagnosis Stamp</span>
+            <span className="text-[10px] text-palette-slate/60 font-bold uppercase block">Algorithm Verified</span>
             <span className="text-xs font-mono font-extrabold text-palette-slate">#SIGNALQUIZ</span>
           </div>
         </div>
       </motion.div>
 
-      {/* Share & Copy Buttons */}
+      {/* Share & Download Action Buttons (Mobile-Optimized) */}
       <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-4 max-w-lg mx-auto">
         <button
-          onClick={handleCopy}
-          className="w-full sm:w-1/2 py-3 px-4 rounded-2xl bg-palette-slate text-white font-extrabold text-xs flex items-center justify-center gap-2 shadow-xs hover:bg-palette-slate/90 transition-all cursor-pointer"
+          onClick={handleDownloadImage}
+          disabled={isGenerating}
+          className="w-full sm:w-1/2 py-3.5 px-4 rounded-2xl bg-palette-coral text-white font-extrabold text-xs flex items-center justify-center gap-2 shadow-soft-coral hover:opacity-95 transition-all cursor-pointer border border-palette-coral disabled:opacity-50"
         >
-          {copied ? <Check className="w-4 h-4 text-palette-sand" /> : <Copy className="w-4 h-4" />}
-          <span>{copied ? 'Copied Summary!' : 'Copy for Group Chat'}</span>
+          {isGenerating ? (
+            <>
+              <Loader2 className="w-4 h-4 animate-spin" />
+              <span>Generating HD Card...</span>
+            </>
+          ) : (
+            <>
+              <Download className="w-4 h-4" />
+              <span>Save HD Card (Mobile)</span>
+            </>
+          )}
         </button>
 
         <button
           onClick={handleCopy}
-          className="w-full sm:w-1/2 py-3 px-4 rounded-2xl bg-palette-coral text-white font-extrabold text-xs flex items-center justify-center gap-2 shadow-soft-coral hover:opacity-95 transition-all cursor-pointer border border-palette-coral"
+          className="w-full sm:w-1/2 py-3.5 px-4 rounded-2xl bg-palette-slate text-white font-extrabold text-xs flex items-center justify-center gap-2 shadow-xs hover:bg-palette-slate/90 transition-all cursor-pointer"
         >
-          <Share2 className="w-4 h-4" />
-          <span>Share to Instagram Story</span>
+          {copied ? <Check className="w-4 h-4 text-palette-sand" /> : <Copy className="w-4 h-4" />}
+          <span>{copied ? 'Copied to Clipboard!' : 'Copy Text for Group Chat'}</span>
         </button>
       </div>
+
+      {/* Mobile Long-Press / Save Modal (100% Mobile Compatibility) */}
+      <AnimatePresence>
+        {showImageModal && generatedImgUrl && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-palette-slate/80 backdrop-blur-sm">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-palette-white rounded-3xl p-5 max-w-md w-full relative shadow-2xl border border-palette-slate/15 max-h-[90vh] overflow-y-auto"
+            >
+              <button
+                onClick={() => setShowImageModal(false)}
+                className="absolute top-4 right-4 p-2 rounded-full text-palette-slate/70 hover:text-palette-slate hover:bg-palette-lilac/30 cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              <div className="text-center mb-3">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-palette-coral/10 text-palette-coral text-xs font-extrabold mb-1">
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>CARD READY TO SHARE</span>
+                </div>
+                <h4 className="text-base font-black text-palette-slate">
+                  Your High-Res Story Card
+                </h4>
+                <p className="text-xs text-palette-slate/70 font-medium">
+                  📱 On mobile: Long-press the image to <span className="font-bold text-palette-coral">"Save to Photos"</span> or share directly to Instagram!
+                </p>
+              </div>
+
+              {/* Generated Image Container */}
+              <div className="rounded-2xl overflow-hidden border border-palette-slate/15 shadow-sm mb-4 bg-palette-cream/40 p-2">
+                <img
+                  src={generatedImgUrl}
+                  alt="SignalQuiz Report Card"
+                  className="w-full h-auto rounded-xl object-contain"
+                />
+              </div>
+
+              <div className="flex gap-2">
+                <a
+                  href={generatedImgUrl}
+                  download={`signalquiz-${archetype.id}.png`}
+                  className="flex-1 py-3 rounded-xl bg-palette-coral text-white font-extrabold text-xs text-center shadow-soft-coral border border-palette-coral"
+                >
+                  Direct Download PNG
+                </a>
+                <button
+                  onClick={() => setShowImageModal(false)}
+                  className="px-5 py-3 rounded-xl bg-palette-slate/10 hover:bg-palette-slate/20 text-palette-slate font-bold text-xs"
+                >
+                  Done
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

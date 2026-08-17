@@ -222,7 +222,7 @@ export const QuizResult: React.FC<QuizResultProps> = ({ result, onReset }) => {
               className="w-full sm:w-auto px-10 py-4 rounded-2xl bg-palette-coral text-white font-extrabold text-base shadow-soft-coral flex items-center justify-center gap-3 mx-auto cursor-pointer border border-palette-coral"
             >
               <Unlock className="w-5 h-5" />
-              <span>Unlock Full Report ($9.90 Trial)</span>
+              <span>Unlock Full Report ($3.99 Trial)</span>
             </motion.button>
 
             <p className="mt-3 text-xs text-palette-slate/60 font-medium">

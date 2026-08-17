@@ -70,7 +70,7 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
             Custom deep analysis & 7-day power playbook for <span className="font-bold text-palette-coral">{archetypeName}</span>
           </p>
 
-          {/* Pricing Options Cards */}
+          {/* Pricing Options Cards (Updated to $3.99) */}
           <div className="space-y-3 mb-6">
             <div
               onClick={() => setSelectedPlan('basic')}
@@ -87,14 +87,14 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="font-extrabold text-palette-slate text-sm md:text-base">Standard Unlock</span>
-                    <span className="text-[10px] bg-palette-coral text-white px-2 py-0.5 rounded-full font-bold">Popular</span>
+                    <span className="text-[10px] bg-palette-coral text-white px-2 py-0.5 rounded-full font-bold">Limited Offer</span>
                   </div>
                   <p className="text-xs text-palette-slate/70 font-medium">Full report + 7-Day Power Playbook</p>
                 </div>
               </div>
               <div className="text-right">
-                <div className="text-lg font-black text-palette-slate">$9.90</div>
-                <div className="text-[10px] text-palette-slate/50 line-through">$29.90</div>
+                <div className="text-xl font-black text-palette-slate">$3.99</div>
+                <div className="text-[10px] text-palette-slate/50 line-through">$19.99</div>
               </div>
             </div>
 
@@ -121,8 +121,8 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
                 </div>
               </div>
               <div className="text-right">
-                <div className={`text-lg font-black ${selectedPlan === 'pro' ? 'text-palette-sand' : 'text-palette-coral'}`}>$19.90</div>
-                <div className={`text-[10px] line-through ${selectedPlan === 'pro' ? 'text-palette-cream/50' : 'text-palette-slate/50'}`}>$49.90</div>
+                <div className={`text-xl font-black ${selectedPlan === 'pro' ? 'text-palette-sand' : 'text-palette-coral'}`}>$7.99</div>
+                <div className={`text-[10px] line-through ${selectedPlan === 'pro' ? 'text-palette-cream/50' : 'text-palette-slate/50'}`}>$39.99</div>
               </div>
             </div>
           </div>
@@ -165,7 +165,7 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
                 Generating Access Key...
               </span>
             ) : (
-              <span>Unlock Report ({selectedPlan === 'basic' ? '$9.90' : '$19.90'})</span>
+              <span>Unlock Report ({selectedPlan === 'basic' ? '$3.99' : '$7.99'})</span>
             )}
           </button>
 
