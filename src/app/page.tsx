@@ -122,7 +122,7 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="py-6 border-t border-palette-slate/10 text-center text-xs font-semibold text-palette-slate/60">
-        <p>© 2026 mixedsign · Relationship Signal Engine</p>
+        <p>© 2026 mixedsigns · Relationship Signal Engine</p>
       </footer>
     </div>
   );

@@ -3,7 +3,7 @@
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { QuizResultData } from '../types/quiz';
-import { Copy, Check, Download, Share2, Heart, Activity, Compass, Lock, Loader2, X, Sparkles } from 'lucide-react';
+import { Download, Heart, Activity, Compass, Lock, Loader2, X, Sparkles } from 'lucide-react';
 import { toPng, toBlob } from 'html-to-image';
 
 interface ShareCardProps {
@@ -11,30 +11,12 @@ interface ShareCardProps {
 }
 
 export const ShareCard: React.FC<ShareCardProps> = ({ result }) => {
-  const [copied, setCopied] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedImgUrl, setGeneratedImgUrl] = useState<string | null>(null);
   const [showImageModal, setShowImageModal] = useState(false);
 
   const cardRef = useRef<HTMLDivElement>(null);
-  const { archetype, totalScore, scores, gap } = result;
-
-  // Copy text for group chats
-  const handleCopy = () => {
-    const textToCopy = `✨ My mixedsign Diagnosis Report ✨\n` +
-      `🔮 Archetype: ${archetype.emoji} ${archetype.name}\n` +
-      `📊 Interest Index: ${totalScore}/100 | Delulu Gap: ${gap}%\n` +
-      `🔥 Natural Attraction: ${scores.attraction}%\n` +
-      `⚡ Time & Effort: ${scores.investment}%\n` +
-      `💍 Commitment Intent: ${scores.commitment}%\n` +
-      `🔒 Exclusive Focus: ${scores.exclusivity}%\n\n` +
-      `💡 Golden Insight: "${archetype.report.socialQuote}"\n\n` +
-      `👉 Take the 60s quiz: https://mixedsign.app`;
-
-    navigator.clipboard.writeText(textToCopy);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2500);
-  };
+  const { archetype, totalScore, scores } = result;
 
   // High-Resolution Image Export & Native Mobile Share/Download
   const handleDownloadImage = async () => {
@@ -59,13 +41,13 @@ export const ShareCard: React.FC<ShareCardProps> = ({ result }) => {
       // 2. Try Native Mobile Web Share API (iOS / Android System Sheet)
       let sharedNatively = false;
       if (blob && typeof navigator !== 'undefined' && navigator.share) {
-        const file = new File([blob], `mixedsign-${archetype.id}.png`, { type: 'image/png' });
+        const file = new File([blob], `mixedsigns-${archetype.id}.png`, { type: 'image/png' });
         if (navigator.canShare && navigator.canShare({ files: [file] })) {
           try {
             await navigator.share({
               files: [file],
-              title: `${archetype.name} · mixedsign Report`,
-              text: `My mixedsign Diagnosis: ${archetype.name} (${archetype.report.socialQuote})`,
+              title: `${archetype.name} · mixedsigns Report`,
+              text: `My mixedsigns Diagnosis: ${archetype.name} (${archetype.report.socialQuote})`,
             });
             sharedNatively = true;
           } catch (shareErr) {
@@ -77,7 +59,7 @@ export const ShareCard: React.FC<ShareCardProps> = ({ result }) => {
       // 3. If not shared natively, trigger direct browser download & show preview modal
       if (!sharedNatively) {
         const link = document.createElement('a');
-        link.download = `mixedsign-${archetype.id}.png`;
+        link.download = `mixedsigns-${archetype.id}.png`;
         link.href = dataUrl;
         link.click();
         setShowImageModal(true);
@@ -107,18 +89,18 @@ export const ShareCard: React.FC<ShareCardProps> = ({ result }) => {
         ref={cardRef}
         className="soft-card p-5 sm:p-7 md:p-8 bg-palette-white border-2 border-palette-slate/15 relative overflow-hidden shadow-soft-flat max-w-lg mx-auto"
       >
-        {/* Top Header */}
-        <div className="flex items-center justify-between pb-3.5 mb-3.5 border-b border-palette-slate/10">
-          <div className="flex items-center gap-2">
-            <span className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-palette-slate text-palette-cream flex items-center justify-center font-bold text-[10px] sm:text-xs">
+        {/* Top Header - Spacious & Clean */}
+        <div className="flex items-center justify-between pb-3.5 mb-3.5 border-b border-palette-slate/10 gap-3">
+          <div className="flex items-center gap-2 min-w-0">
+            <span className="w-6 h-6 rounded-lg bg-palette-slate text-palette-cream flex items-center justify-center font-bold text-xs shrink-0">
               ✿
             </span>
-            <span className="font-extrabold text-[11px] sm:text-xs tracking-wider uppercase text-palette-slate">
-              MIXEDSIGN · RELATIONSHIP SIGNAL ENGINE
+            <span className="font-black text-xs sm:text-sm tracking-wider uppercase text-palette-slate truncate">
+              MIXEDSIGNS
             </span>
           </div>
-          <span className="text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-full bg-palette-lilac/40 text-palette-slate border border-palette-slate/10">
-            OFFICIAL DIAGNOSIS
+          <span className="text-[9px] sm:text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-palette-lilac/50 text-palette-slate border border-palette-slate/15 shrink-0">
+            OFFICIAL REPORT
           </span>
         </div>
 
@@ -195,22 +177,22 @@ export const ShareCard: React.FC<ShareCardProps> = ({ result }) => {
           </div>
           <div className="text-right">
             <span className="text-[9px] sm:text-[10px] text-palette-slate/60 font-bold uppercase block">Algorithm Verified</span>
-            <span className="text-[11px] sm:text-xs font-mono font-extrabold text-palette-slate lowercase">#mixedsign</span>
+            <span className="text-[11px] sm:text-xs font-mono font-extrabold text-palette-slate lowercase">#mixedsigns</span>
           </div>
         </div>
       </motion.div>
 
-      {/* Share & Download Action Buttons (Mobile-Optimized) */}
-      <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 sm:gap-3 mt-4 max-w-lg mx-auto">
+      {/* Save HD Card Button (Single Primary Mobile CTA) */}
+      <div className="mt-4 max-w-lg mx-auto">
         <button
           onClick={handleDownloadImage}
           disabled={isGenerating}
-          className="w-full sm:w-1/2 py-3 sm:py-3.5 px-4 rounded-2xl bg-palette-coral text-white font-extrabold text-xs flex items-center justify-center gap-2 shadow-soft-coral hover:opacity-95 transition-all cursor-pointer border border-palette-coral disabled:opacity-50"
+          className="w-full py-4 px-6 rounded-2xl bg-palette-coral text-white font-extrabold text-sm flex items-center justify-center gap-2.5 shadow-soft-coral hover:opacity-95 transition-all cursor-pointer border border-palette-coral disabled:opacity-50"
         >
           {isGenerating ? (
             <>
               <Loader2 className="w-4 h-4 animate-spin" />
-              <span>Generating HD Card...</span>
+              <span>Generating HD Story Card...</span>
             </>
           ) : (
             <>
@@ -218,14 +200,6 @@ export const ShareCard: React.FC<ShareCardProps> = ({ result }) => {
               <span>Save HD Card (Mobile)</span>
             </>
           )}
-        </button>
-
-        <button
-          onClick={handleCopy}
-          className="w-full sm:w-1/2 py-3 sm:py-3.5 px-4 rounded-2xl bg-palette-slate text-white font-extrabold text-xs flex items-center justify-center gap-2 shadow-xs hover:bg-palette-slate/90 transition-all cursor-pointer"
-        >
-          {copied ? <Check className="w-4 h-4 text-palette-sand" /> : <Copy className="w-4 h-4" />}
-          <span>{copied ? 'Copied to Clipboard!' : 'Copy Text for Group Chat'}</span>
         </button>
       </div>
 
@@ -263,7 +237,7 @@ export const ShareCard: React.FC<ShareCardProps> = ({ result }) => {
               <div className="rounded-2xl overflow-hidden border border-palette-slate/15 shadow-sm mb-4 bg-palette-cream/40 p-2">
                 <img
                   src={generatedImgUrl}
-                  alt="mixedsign Report Card"
+                  alt="mixedsigns Report Card"
                   className="w-full h-auto rounded-xl object-contain"
                 />
               </div>
@@ -271,7 +245,7 @@ export const ShareCard: React.FC<ShareCardProps> = ({ result }) => {
               <div className="flex gap-2">
                 <a
                   href={generatedImgUrl}
-                  download={`mixedsign-${archetype.id}.png`}
+                  download={`mixedsigns-${archetype.id}.png`}
                   className="flex-1 py-3 rounded-xl bg-palette-coral text-white font-extrabold text-xs text-center shadow-soft-coral border border-palette-coral"
                 >
                   Direct Download PNG

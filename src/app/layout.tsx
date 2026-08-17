@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "mixedsign - Are they into you or are you delulu? | Relationship Signal Engine",
+  title: "mixedsigns - Are they into you or are you delulu? | Relationship Signal Engine",
   description: "Decode their unspoken intent using 8 behavioral proofs. Measure natural attraction, time & effort, commitment intent, and exclusive focus with precision.",
 };
 

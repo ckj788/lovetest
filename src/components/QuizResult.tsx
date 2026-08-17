@@ -178,7 +178,7 @@ export const QuizResult: React.FC<QuizResultProps> = ({ result, onReset }) => {
         </div>
       </div>
 
-      {/* mixedsign Social Share Card Preview */}
+      {/* mixedsigns Social Share Card Preview */}
       <ShareCard result={result} />
 
       {/* Paywall / Unlocked Deep Report Container */}
