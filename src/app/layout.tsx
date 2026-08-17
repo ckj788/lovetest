@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "SignalQuiz - Is he into you or are you delulu? | Relationship Diagnosis",
-  description: "Decode his unspoken intent using 8 behavioral proofs. Measure raw attraction, effort, commitment, and roster status with Co-Star level precision.",
+  title: "mixedsign - Are they into you or are you delulu? | Relationship Signal Engine",
+  description: "Decode their unspoken intent using 8 behavioral proofs. Measure natural attraction, time & effort, commitment intent, and exclusive focus with precision.",
 };
 
 export default function RootLayout({
@@ -13,7 +13,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased selection:bg-mbti-purple/20 selection:text-mbti-purple">
+      <body className="antialiased selection:bg-palette-lilac selection:text-palette-slate">
         {children}
       </body>
     </html>

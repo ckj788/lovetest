@@ -15,14 +15,13 @@ export const ShareCard: React.FC<ShareCardProps> = ({ result }) => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedImgUrl, setGeneratedImgUrl] = useState<string | null>(null);
   const [showImageModal, setShowImageModal] = useState(false);
-  const [statusMessage, setStatusMessage] = useState<string | null>(null);
 
   const cardRef = useRef<HTMLDivElement>(null);
   const { archetype, totalScore, scores, gap } = result;
 
   // Copy text for group chats
   const handleCopy = () => {
-    const textToCopy = `✨ My SignalQuiz Diagnosis Report ✨\n` +
+    const textToCopy = `✨ My mixedsign Diagnosis Report ✨\n` +
       `🔮 Archetype: ${archetype.emoji} ${archetype.name}\n` +
       `📊 Interest Index: ${totalScore}/100 | Delulu Gap: ${gap}%\n` +
       `🔥 Natural Attraction: ${scores.attraction}%\n` +
@@ -30,7 +29,7 @@ export const ShareCard: React.FC<ShareCardProps> = ({ result }) => {
       `💍 Commitment Intent: ${scores.commitment}%\n` +
       `🔒 Exclusive Focus: ${scores.exclusivity}%\n\n` +
       `💡 Golden Insight: "${archetype.report.socialQuote}"\n\n` +
-      `👉 Take the 60s quiz: https://signalquiz.app`;
+      `👉 Take the 60s quiz: https://mixedsign.app`;
 
     navigator.clipboard.writeText(textToCopy);
     setCopied(true);
@@ -41,7 +40,6 @@ export const ShareCard: React.FC<ShareCardProps> = ({ result }) => {
   const handleDownloadImage = async () => {
     if (!cardRef.current) return;
     setIsGenerating(true);
-    setStatusMessage('Generating High-Res Story Card...');
 
     try {
       // 1. Render card to high-DPI data URL & blob
@@ -61,17 +59,17 @@ export const ShareCard: React.FC<ShareCardProps> = ({ result }) => {
       // 2. Try Native Mobile Web Share API (iOS / Android System Sheet)
       let sharedNatively = false;
       if (blob && typeof navigator !== 'undefined' && navigator.share) {
-        const file = new File([blob], `signalquiz-${archetype.id}.png`, { type: 'image/png' });
+        const file = new File([blob], `mixedsign-${archetype.id}.png`, { type: 'image/png' });
         if (navigator.canShare && navigator.canShare({ files: [file] })) {
           try {
             await navigator.share({
               files: [file],
-              title: `${archetype.name} · SignalQuiz Report`,
-              text: `My SignalQuiz Diagnosis: ${archetype.name} (${archetype.report.socialQuote})`,
+              title: `${archetype.name} · mixedsign Report`,
+              text: `My mixedsign Diagnosis: ${archetype.name} (${archetype.report.socialQuote})`,
             });
             sharedNatively = true;
           } catch (shareErr) {
-            console.log('Share canceled or not supported, falling back to download:', shareErr);
+            console.log('Share canceled or not supported, falling back to modal:', shareErr);
           }
         }
       }
@@ -79,14 +77,13 @@ export const ShareCard: React.FC<ShareCardProps> = ({ result }) => {
       // 3. If not shared natively, trigger direct browser download & show preview modal
       if (!sharedNatively) {
         const link = document.createElement('a');
-        link.download = `signalquiz-${archetype.id}.png`;
+        link.download = `mixedsign-${archetype.id}.png`;
         link.href = dataUrl;
         link.click();
         setShowImageModal(true);
       }
     } catch (err) {
       console.error('Failed to generate image:', err);
-      // Fallback: Show modal with dataUrl
       if (cardRef.current) {
         try {
           const fallbackUrl = await toPng(cardRef.current, { pixelRatio: 2 });
@@ -98,93 +95,92 @@ export const ShareCard: React.FC<ShareCardProps> = ({ result }) => {
       }
     } finally {
       setIsGenerating(false);
-      setStatusMessage(null);
     }
   };
 
   return (
-    <div className="my-8">
+    <div className="my-6 sm:my-8">
       {/* Social Card Preview Container */}
       <motion.div
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         ref={cardRef}
-        className="soft-card p-6 md:p-8 bg-palette-white border-2 border-palette-slate/15 relative overflow-hidden shadow-soft-flat max-w-lg mx-auto"
+        className="soft-card p-5 sm:p-7 md:p-8 bg-palette-white border-2 border-palette-slate/15 relative overflow-hidden shadow-soft-flat max-w-lg mx-auto"
       >
         {/* Top Header */}
-        <div className="flex items-center justify-between pb-4 mb-4 border-b border-palette-slate/10">
+        <div className="flex items-center justify-between pb-3.5 mb-3.5 border-b border-palette-slate/10">
           <div className="flex items-center gap-2">
-            <span className="w-6 h-6 rounded-lg bg-palette-slate text-palette-cream flex items-center justify-center font-bold text-xs">
+            <span className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-palette-slate text-palette-cream flex items-center justify-center font-bold text-[10px] sm:text-xs">
               ✿
             </span>
-            <span className="font-extrabold text-xs tracking-wider uppercase text-palette-slate">
-              SIGNALQUIZ · RELATIONSHIP MBTI
+            <span className="font-extrabold text-[11px] sm:text-xs tracking-wider uppercase text-palette-slate">
+              MIXEDSIGN · RELATIONSHIP MBTI
             </span>
           </div>
-          <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-palette-lilac/40 text-palette-slate border border-palette-slate/10">
+          <span className="text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-full bg-palette-lilac/40 text-palette-slate border border-palette-slate/10">
             OFFICIAL DIAGNOSIS
           </span>
         </div>
 
         {/* Archetype Hero Box */}
-        <div className="bg-palette-cream/75 rounded-3xl p-5 mb-5 border border-palette-slate/10 relative text-center">
-          <div className="absolute top-4 right-4 text-palette-coral text-sm">✿</div>
+        <div className="bg-palette-cream/75 rounded-3xl p-4 sm:p-5 mb-4 sm:mb-5 border border-palette-slate/10 relative text-center">
+          <div className="absolute top-3.5 right-3.5 text-palette-coral text-xs sm:text-sm">✿</div>
           
-          <div className="w-16 h-16 rounded-2xl bg-palette-white flex items-center justify-center text-4xl mx-auto mb-2 shadow-xs border border-palette-slate/10">
+          <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-palette-white flex items-center justify-center text-3xl sm:text-4xl mx-auto mb-2 shadow-xs border border-palette-slate/10">
             {archetype.emoji}
           </div>
 
-          <div className="inline-block text-[11px] font-extrabold px-3 py-0.5 rounded-full bg-palette-sand text-palette-slate mb-1">
+          <div className="inline-block text-[10px] sm:text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-palette-sand text-palette-slate mb-1">
             {archetype.tag}
           </div>
 
-          <h3 className="text-2xl font-black text-palette-slate">
+          <h3 className="text-xl sm:text-2xl font-black text-palette-slate">
             {archetype.name}
           </h3>
 
-          <p className="text-xs text-palette-slate/75 font-medium mt-1 max-w-xs mx-auto">
+          <p className="text-[11px] sm:text-xs text-palette-slate/75 font-medium mt-1 max-w-xs mx-auto">
             {archetype.report.shareSummary}
           </p>
         </div>
 
         {/* Core Golden Quote Box (High Sharability) */}
-        <div className="bg-palette-slate text-white rounded-2xl p-4 mb-5 shadow-xs relative">
-          <div className="text-palette-sand text-lg font-serif leading-none mb-1">“</div>
-          <p className="text-xs md:text-sm font-bold leading-relaxed text-palette-cream italic px-1">
+        <div className="bg-palette-slate text-white rounded-2xl p-3.5 sm:p-4 mb-4 sm:mb-5 shadow-xs relative">
+          <div className="text-palette-sand text-base sm:text-lg font-serif leading-none mb-0.5">“</div>
+          <p className="text-xs sm:text-sm font-bold leading-relaxed text-palette-cream italic px-1">
             {archetype.report.socialQuote}
           </p>
-          <div className="text-right text-palette-sand text-lg font-serif leading-none mt-1">”</div>
+          <div className="text-right text-palette-sand text-base sm:text-lg font-serif leading-none mt-0.5">”</div>
         </div>
 
         {/* 4 Dimension Bar Snapshot */}
-        <div className="grid grid-cols-2 gap-2 mb-5 text-[11px] font-bold text-palette-slate">
-          <div className="bg-palette-lilac/40 p-2.5 rounded-xl border border-palette-slate/10 flex items-center justify-between">
+        <div className="grid grid-cols-2 gap-2 mb-4 sm:mb-5 text-[10px] sm:text-[11px] font-bold text-palette-slate">
+          <div className="bg-palette-lilac/40 p-2 sm:p-2.5 rounded-xl border border-palette-slate/10 flex items-center justify-between">
             <span className="flex items-center gap-1">
-              <Heart className="w-3.5 h-3.5 text-palette-coral" />
+              <Heart className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-palette-coral" />
               Attraction
             </span>
             <span className="font-black text-palette-coral">{scores.attraction}%</span>
           </div>
 
-          <div className="bg-palette-sand/40 p-2.5 rounded-xl border border-palette-slate/10 flex items-center justify-between">
+          <div className="bg-palette-sand/40 p-2 sm:p-2.5 rounded-xl border border-palette-slate/10 flex items-center justify-between">
             <span className="flex items-center gap-1">
-              <Activity className="w-3.5 h-3.5 text-palette-slate" />
+              <Activity className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-palette-slate" />
               Time & Effort
             </span>
             <span className="font-black text-palette-slate">{scores.investment}%</span>
           </div>
 
-          <div className="bg-palette-sage/30 p-2.5 rounded-xl border border-palette-slate/10 flex items-center justify-between">
+          <div className="bg-palette-sage/30 p-2 sm:p-2.5 rounded-xl border border-palette-slate/10 flex items-center justify-between">
             <span className="flex items-center gap-1">
-              <Compass className="w-3.5 h-3.5 text-palette-sage" />
+              <Compass className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-palette-sage" />
               Commitment
             </span>
             <span className="font-black text-palette-slate">{scores.commitment}%</span>
           </div>
 
-          <div className="bg-palette-cream p-2.5 rounded-xl border border-palette-slate/10 flex items-center justify-between">
+          <div className="bg-palette-cream p-2 sm:p-2.5 rounded-xl border border-palette-slate/10 flex items-center justify-between">
             <span className="flex items-center gap-1">
-              <Lock className="w-3.5 h-3.5 text-palette-coral" />
+              <Lock className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-palette-coral" />
               Exclusivity
             </span>
             <span className="font-black text-palette-coral">{scores.exclusivity}%</span>
@@ -194,22 +190,22 @@ export const ShareCard: React.FC<ShareCardProps> = ({ result }) => {
         {/* Score & Stamp */}
         <div className="flex items-center justify-between pt-3 border-t border-palette-slate/10 text-xs">
           <div>
-            <span className="text-[10px] text-palette-slate/60 font-bold uppercase block">Overall Match</span>
-            <span className="text-base font-black text-palette-coral">{totalScore} <span className="text-[10px] text-palette-slate/50 font-normal">/100</span></span>
+            <span className="text-[9px] sm:text-[10px] text-palette-slate/60 font-bold uppercase block">Overall Match</span>
+            <span className="text-sm sm:text-base font-black text-palette-coral">{totalScore} <span className="text-[10px] text-palette-slate/50 font-normal">/100</span></span>
           </div>
           <div className="text-right">
-            <span className="text-[10px] text-palette-slate/60 font-bold uppercase block">Algorithm Verified</span>
-            <span className="text-xs font-mono font-extrabold text-palette-slate">#SIGNALQUIZ</span>
+            <span className="text-[9px] sm:text-[10px] text-palette-slate/60 font-bold uppercase block">Algorithm Verified</span>
+            <span className="text-[11px] sm:text-xs font-mono font-extrabold text-palette-slate lowercase">#mixedsign</span>
           </div>
         </div>
       </motion.div>
 
       {/* Share & Download Action Buttons (Mobile-Optimized) */}
-      <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-4 max-w-lg mx-auto">
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 sm:gap-3 mt-4 max-w-lg mx-auto">
         <button
           onClick={handleDownloadImage}
           disabled={isGenerating}
-          className="w-full sm:w-1/2 py-3.5 px-4 rounded-2xl bg-palette-coral text-white font-extrabold text-xs flex items-center justify-center gap-2 shadow-soft-coral hover:opacity-95 transition-all cursor-pointer border border-palette-coral disabled:opacity-50"
+          className="w-full sm:w-1/2 py-3 sm:py-3.5 px-4 rounded-2xl bg-palette-coral text-white font-extrabold text-xs flex items-center justify-center gap-2 shadow-soft-coral hover:opacity-95 transition-all cursor-pointer border border-palette-coral disabled:opacity-50"
         >
           {isGenerating ? (
             <>
@@ -226,14 +222,14 @@ export const ShareCard: React.FC<ShareCardProps> = ({ result }) => {
 
         <button
           onClick={handleCopy}
-          className="w-full sm:w-1/2 py-3.5 px-4 rounded-2xl bg-palette-slate text-white font-extrabold text-xs flex items-center justify-center gap-2 shadow-xs hover:bg-palette-slate/90 transition-all cursor-pointer"
+          className="w-full sm:w-1/2 py-3 sm:py-3.5 px-4 rounded-2xl bg-palette-slate text-white font-extrabold text-xs flex items-center justify-center gap-2 shadow-xs hover:bg-palette-slate/90 transition-all cursor-pointer"
         >
           {copied ? <Check className="w-4 h-4 text-palette-sand" /> : <Copy className="w-4 h-4" />}
           <span>{copied ? 'Copied to Clipboard!' : 'Copy Text for Group Chat'}</span>
         </button>
       </div>
 
-      {/* Mobile Long-Press / Save Modal (100% Mobile Compatibility) */}
+      {/* Mobile Long-Press / Save Modal */}
       <AnimatePresence>
         {showImageModal && generatedImgUrl && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-palette-slate/80 backdrop-blur-sm">
@@ -258,7 +254,7 @@ export const ShareCard: React.FC<ShareCardProps> = ({ result }) => {
                 <h4 className="text-base font-black text-palette-slate">
                   Your High-Res Story Card
                 </h4>
-                <p className="text-xs text-palette-slate/70 font-medium">
+                <p className="text-xs text-palette-slate/70 font-medium mt-1">
                   📱 On mobile: Long-press the image to <span className="font-bold text-palette-coral">"Save to Photos"</span> or share directly to Instagram!
                 </p>
               </div>
@@ -267,7 +263,7 @@ export const ShareCard: React.FC<ShareCardProps> = ({ result }) => {
               <div className="rounded-2xl overflow-hidden border border-palette-slate/15 shadow-sm mb-4 bg-palette-cream/40 p-2">
                 <img
                   src={generatedImgUrl}
-                  alt="SignalQuiz Report Card"
+                  alt="mixedsign Report Card"
                   className="w-full h-auto rounded-xl object-contain"
                 />
               </div>
@@ -275,7 +271,7 @@ export const ShareCard: React.FC<ShareCardProps> = ({ result }) => {
               <div className="flex gap-2">
                 <a
                   href={generatedImgUrl}
-                  download={`signalquiz-${archetype.id}.png`}
+                  download={`mixedsign-${archetype.id}.png`}
                   className="flex-1 py-3 rounded-xl bg-palette-coral text-white font-extrabold text-xs text-center shadow-soft-coral border border-palette-coral"
                 >
                   Direct Download PNG

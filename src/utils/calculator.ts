@@ -74,9 +74,9 @@ export function calculateQuizResult(userAnswers: Record<number, string | string[
 
   let freeSummary = '';
   if (gap > 20) {
-    freeSummary = `High raw attraction (${normalizedScores.attraction}/100) paired with lagging commitment (${normalizedScores.commitment}/100)—exposing a major ${gap}-point Delulu Gap!`;
+    freeSummary = `High natural attraction (${normalizedScores.attraction}/100) paired with lagging commitment (${normalizedScores.commitment}/100)—exposing a major ${gap}-point Delulu Gap!`;
   } else if (totalScore >= 75) {
-    freeSummary = `He shows high, consistent attraction across all behavioral metrics, actively moving this dynamic toward an official relationship.`;
+    freeSummary = `They (he/she) show high, consistent attraction across all behavioral metrics, actively moving this dynamic toward an official relationship.`;
   } else {
     freeSummary = `The dynamic is currently in an observation phase. Attraction and effort are present, but key exclusivity signals require testing.`;
   }
