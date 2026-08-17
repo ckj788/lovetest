@@ -33,9 +33,9 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = ({
     return selectedAnswers === optId;
   };
 
-  const canProceed = isMulti
+  const canProceedMulti = isMulti
     ? Array.isArray(selectedAnswers) && selectedAnswers.length > 0
-    : Boolean(selectedAnswers);
+    : false;
 
   // Helper to format bolded text with emphasis
   const renderOptionLabel = (label: string, selected: boolean) => {
@@ -80,9 +80,13 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = ({
             <span className="text-xs font-extrabold px-3 py-1 rounded-full bg-palette-lilac/40 text-palette-slate border border-palette-slate/10">
               QUESTION {currentIndex + 1} OF {totalQuestions}
             </span>
-            {isMulti && (
+            {isMulti ? (
               <span className="text-xs font-bold px-3 py-1 rounded-full bg-palette-sand text-palette-slate">
                 Select All That Apply
+              </span>
+            ) : (
+              <span className="text-[11px] font-semibold text-palette-slate/60">
+                Tap to answer & auto-advance
               </span>
             )}
           </div>
@@ -99,7 +103,7 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = ({
           )}
 
           {/* Options List */}
-          <div className="space-y-3 mb-8">
+          <div className="space-y-3 mb-6">
             {question.options.map((option, idx) => {
               const selected = isOptionSelected(option.id);
               const optionLetters = ['A', 'B', 'C', 'D', 'E', 'F'];
@@ -108,7 +112,7 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = ({
                 <motion.div
                   key={option.id}
                   whileHover={{ scale: 1.01 }}
-                  whileTap={{ scale: 0.99 }}
+                  whileTap={{ scale: 0.98 }}
                   onClick={() => onSelectOption(option.id)}
                   className={`relative cursor-pointer rounded-2xl p-4 transition-all border flex items-center justify-between ${
                     selected
@@ -148,7 +152,7 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = ({
               disabled={currentIndex === 0}
               className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs md:text-sm font-bold transition-all cursor-pointer ${
                 currentIndex === 0
-                  ? 'opacity-30 cursor-not-allowed text-palette-slate'
+                  ? 'opacity-20 cursor-not-allowed text-palette-slate'
                   : 'text-palette-slate hover:bg-palette-lilac/30 border border-palette-slate/15'
               }`}
             >
@@ -156,18 +160,24 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = ({
               <span>Previous</span>
             </button>
 
-            <button
-              onClick={onNext}
-              disabled={!canProceed}
-              className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs md:text-sm font-extrabold shadow-sm transition-all cursor-pointer ${
-                canProceed
-                  ? 'bg-palette-coral text-white hover:opacity-95 shadow-soft-coral border border-palette-coral'
-                  : 'bg-palette-slate/15 text-palette-slate/40 opacity-50 cursor-not-allowed'
-              }`}
-            >
-              <span>{currentIndex === totalQuestions - 1 ? 'Generate Analysis' : 'Next Question'}</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
+            {isMulti ? (
+              <button
+                onClick={onNext}
+                disabled={!canProceedMulti}
+                className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs md:text-sm font-extrabold shadow-sm transition-all cursor-pointer ${
+                  canProceedMulti
+                    ? 'bg-palette-coral text-white hover:opacity-95 shadow-soft-coral border border-palette-coral'
+                    : 'bg-palette-slate/15 text-palette-slate/40 opacity-50 cursor-not-allowed'
+                }`}
+              >
+                <span>Confirm & Continue</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            ) : (
+              <div className="text-[11px] text-palette-slate/50 font-medium hidden sm:block">
+                Auto-advances on select
+              </div>
+            )}
           </div>
         </motion.div>
       </AnimatePresence>

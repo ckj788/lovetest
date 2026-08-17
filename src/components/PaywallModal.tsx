@@ -17,7 +17,6 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
   onUnlockSuccess,
   archetypeName,
 }) => {
-  const [selectedPlan, setSelectedPlan] = useState<'basic' | 'pro'>('basic');
   const [isProcessing, setIsProcessing] = useState(false);
 
   if (!isOpen) return null;
@@ -70,60 +69,25 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
             Custom deep analysis & 7-day power playbook for <span className="font-bold text-palette-coral">{archetypeName}</span>
           </p>
 
-          {/* Pricing Options Cards (Updated to $3.99) */}
-          <div className="space-y-3 mb-6">
-            <div
-              onClick={() => setSelectedPlan('basic')}
-              className={`cursor-pointer rounded-2xl p-4 border transition-all flex items-center justify-between ${
-                selectedPlan === 'basic'
-                  ? 'border-palette-slate bg-palette-lilac/40 shadow-xs'
-                  : 'border-palette-slate/15 bg-palette-cream/40 hover:border-palette-slate/30'
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${selectedPlan === 'basic' ? 'border-palette-slate bg-palette-slate text-white' : 'border-palette-slate/30'}`}>
-                  {selectedPlan === 'basic' && <Check className="w-3.5 h-3.5" />}
-                </div>
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-extrabold text-palette-slate text-sm md:text-base">Standard Unlock</span>
-                    <span className="text-[10px] bg-palette-coral text-white px-2 py-0.5 rounded-full font-bold">Limited Offer</span>
-                  </div>
-                  <p className="text-xs text-palette-slate/70 font-medium">Full report + 7-Day Power Playbook</p>
-                </div>
+          {/* Single Focused Pricing Offer ($3.99) */}
+          <div className="rounded-2xl p-5 border-2 border-palette-slate bg-palette-lilac/35 shadow-xs mb-6 flex items-center justify-between">
+            <div className="flex items-center gap-3.5">
+              <div className="w-6 h-6 rounded-full bg-palette-slate text-white flex items-center justify-center shrink-0">
+                <Check className="w-4 h-4" />
               </div>
-              <div className="text-right">
-                <div className="text-xl font-black text-palette-slate">$3.99</div>
-                <div className="text-[10px] text-palette-slate/50 line-through">$19.99</div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="font-extrabold text-palette-slate text-base">Full Deep Report + 7-Day Plan</span>
+                  <span className="text-[10px] bg-palette-coral text-white px-2 py-0.5 rounded-full font-bold">80% OFF</span>
+                </div>
+                <p className="text-xs text-palette-slate/70 font-medium mt-0.5">
+                  Instant unlock on all devices · 100% Confidential
+                </p>
               </div>
             </div>
-
-            <div
-              onClick={() => setSelectedPlan('pro')}
-              className={`cursor-pointer rounded-2xl p-4 border transition-all flex items-center justify-between ${
-                selectedPlan === 'pro'
-                  ? 'border-palette-slate bg-palette-slate text-white shadow-xs'
-                  : 'border-palette-slate/15 bg-palette-cream/40 hover:border-palette-slate/30'
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${selectedPlan === 'pro' ? 'border-palette-coral bg-palette-coral text-white' : 'border-palette-slate/30'}`}>
-                  {selectedPlan === 'pro' && <Check className="w-3.5 h-3.5" />}
-                </div>
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className={`font-extrabold text-sm md:text-base ${selectedPlan === 'pro' ? 'text-white' : 'text-palette-slate'}`}>PRO Master Blueprint</span>
-                    <span className="text-[10px] bg-palette-sand text-palette-slate px-2 py-0.5 rounded-full font-bold">Best Value</span>
-                  </div>
-                  <p className={`text-xs font-medium ${selectedPlan === 'pro' ? 'text-palette-cream/80' : 'text-palette-slate/70'}`}>
-                    Standard + Texting Scripts & Roster Audit
-                  </p>
-                </div>
-              </div>
-              <div className="text-right">
-                <div className={`text-xl font-black ${selectedPlan === 'pro' ? 'text-palette-sand' : 'text-palette-coral'}`}>$7.99</div>
-                <div className={`text-[10px] line-through ${selectedPlan === 'pro' ? 'text-palette-cream/50' : 'text-palette-slate/50'}`}>$39.99</div>
-              </div>
+            <div className="text-right shrink-0">
+              <div className="text-2xl font-black text-palette-slate">$3.99</div>
+              <div className="text-xs text-palette-slate/50 line-through">$19.99</div>
             </div>
           </div>
 
@@ -165,7 +129,7 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
                 Generating Access Key...
               </span>
             ) : (
-              <span>Unlock Report ({selectedPlan === 'basic' ? '$3.99' : '$7.99'})</span>
+              <span>Unlock Full Report ($3.99)</span>
             )}
           </button>
 

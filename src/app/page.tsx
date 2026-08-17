@@ -28,19 +28,36 @@ export default function Home() {
   const handleSelectOption = (optionId: string) => {
     const isMulti = currentQuestion.type === 'multi';
 
-    setUserAnswers((prev) => {
-      if (!isMulti) {
-        return { ...prev, [currentQuestion.id]: optionId };
-      } else {
+    if (!isMulti) {
+      const updatedAnswers = { ...userAnswers, [currentQuestion.id]: optionId };
+      setUserAnswers(updatedAnswers);
+
+      // Auto-advance directly on click with 160ms visual feedback
+      setTimeout(() => {
+        if (currentQuestionIndex < QUIZ_QUESTIONS.length - 1) {
+          setCurrentQuestionIndex((prev) => prev + 1);
+        } else {
+          const computedResult = calculateQuizResult(updatedAnswers);
+          setResult(computedResult);
+          setStep('calculating');
+        }
+      }, 160);
+    } else {
+      setUserAnswers((prev) => {
         const currentArr = (prev[currentQuestion.id] as string[]) || [];
         if (currentArr.includes(optionId)) {
           const filtered = currentArr.filter((id) => id !== optionId);
           return { ...prev, [currentQuestion.id]: filtered };
         } else {
-          return { ...prev, [currentQuestion.id]: [...currentArr, optionId] };
+          if (optionId === 'q5_6') {
+            return { ...prev, [currentQuestion.id]: [optionId] };
+          } else {
+            const noNone = currentArr.filter((id) => id !== 'q5_6');
+            return { ...prev, [currentQuestion.id]: [...noNone, optionId] };
+          }
         }
-      }
-    });
+      });
+    }
   };
 
   const handleNext = () => {
