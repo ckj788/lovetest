@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Header } from '../components/Header';
 import { QuizLanding } from '../components/QuizLanding';
 import { QuizQuestion } from '../components/QuizQuestion';
@@ -15,6 +15,33 @@ export default function Home() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState<Record<number, string | string[]>>({});
   const [result, setResult] = useState<QuizResultData | null>(null);
+  const [initialUnlocked, setInitialUnlocked] = useState(false);
+
+  // Restore state if returning from Stripe Checkout (e.g. ?unlocked=true)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const isUnlockedParam = params.get('unlocked') === 'true';
+      const sessionId = params.get('session_id');
+
+      const savedResult = localStorage.getItem('mixedsigns_quiz_result');
+      if (savedResult) {
+        try {
+          const parsed = JSON.parse(savedResult);
+          if (parsed && parsed.archetype) {
+            setResult(parsed);
+            if (isUnlockedParam || sessionId) {
+              setStep('result');
+              setInitialUnlocked(true);
+              window.history.replaceState({}, document.title, window.location.pathname);
+            }
+          }
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    }
+  }, []);
 
   const currentQuestion = QUIZ_QUESTIONS[currentQuestionIndex];
 
@@ -23,6 +50,10 @@ export default function Home() {
     setCurrentQuestionIndex(0);
     setUserAnswers({});
     setResult(null);
+    setInitialUnlocked(false);
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('mixedsigns_quiz_result');
+    }
   };
 
   const handleSelectOption = (optionId: string) => {
@@ -39,6 +70,9 @@ export default function Home() {
         } else {
           const computedResult = calculateQuizResult(updatedAnswers);
           setResult(computedResult);
+          if (typeof window !== 'undefined') {
+            localStorage.setItem('mixedsigns_quiz_result', JSON.stringify(computedResult));
+          }
           setStep('calculating');
         }
       }, 160);
@@ -66,6 +100,9 @@ export default function Home() {
     } else {
       const computedResult = calculateQuizResult(userAnswers);
       setResult(computedResult);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('mixedsigns_quiz_result', JSON.stringify(computedResult));
+      }
       setStep('calculating');
     }
   };
@@ -85,6 +122,10 @@ export default function Home() {
     setCurrentQuestionIndex(0);
     setUserAnswers({});
     setResult(null);
+    setInitialUnlocked(false);
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('mixedsigns_quiz_result');
+    }
   };
 
   return (
@@ -116,7 +157,11 @@ export default function Home() {
         )}
 
         {step === 'result' && result && (
-          <QuizResult result={result} onReset={handleReset} />
+          <QuizResult
+            result={result}
+            onReset={handleReset}
+            initialUnlocked={initialUnlocked}
+          />
         )}
       </main>
 

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { QuizResultData } from '../types/quiz';
 import { Lock, Unlock, Sparkles, AlertCircle, CheckCircle2, ChevronRight, Compass, Heart, Activity } from 'lucide-react';
@@ -10,11 +10,30 @@ import { ShareCard } from './ShareCard';
 interface QuizResultProps {
   result: QuizResultData;
   onReset: () => void;
+  initialUnlocked?: boolean;
 }
 
-export const QuizResult: React.FC<QuizResultProps> = ({ result, onReset }) => {
-  const [isUnlocked, setIsUnlocked] = useState(false);
-  const [isPaywallOpen, setIsPaywallOpen] = useState(false);
+export const QuizResult: React.FC<QuizResultProps> = ({ result, onReset, initialUnlocked = false }) => {
+  const [isUnlocked, setIsUnlocked] = useState(initialUnlocked);
+  // Auto-open paywall modal upfront on diagnosis completion (only if not already unlocked)
+  const [isPaywallOpen, setIsPaywallOpen] = useState(!initialUnlocked);
+
+  useEffect(() => {
+    if (initialUnlocked) {
+      setIsUnlocked(true);
+      setIsPaywallOpen(false);
+      import('canvas-confetti')
+        .then((confettiModule) => {
+          const fireConfetti = confettiModule.default || confettiModule;
+          fireConfetti({
+            particleCount: 100,
+            spread: 80,
+            origin: { y: 0.6 },
+          });
+        })
+        .catch((e) => console.error(e));
+    }
+  }, [initialUnlocked]);
 
   const { scores, totalScore, gap, archetype, freeSummary } = result;
   const report = archetype.report;
