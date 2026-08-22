@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Lock, Check, Sparkles, ShieldCheck, Zap, ArrowRight } from 'lucide-react';
+import posthog from 'posthog-js';
 
 interface PaywallModalProps {
   isOpen: boolean;
@@ -19,9 +20,15 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
 }) => {
   const [isProcessing, setIsProcessing] = useState(false);
 
-  // Reset processing state when modal opens, or when returning via browser back button (pageshow event)
+  // Track paywall view and reset processing state
   useEffect(() => {
     setIsProcessing(false);
+
+    if (isOpen) {
+      posthog.capture('paywall_viewed', {
+        archetype: archetypeName,
+      });
+    }
 
     const handlePageShow = () => {
       setIsProcessing(false);
@@ -31,13 +38,18 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
     return () => {
       window.removeEventListener('pageshow', handlePageShow);
     };
-  }, [isOpen]);
+  }, [isOpen, archetypeName]);
 
   if (!isOpen) return null;
 
   const handleStripeCheckout = async () => {
     if (isProcessing) return;
     setIsProcessing(true);
+
+    posthog.capture('checkout_clicked', {
+      archetype: archetypeName,
+      price: 9.9,
+    });
 
     // Safety timeout: reset processing state after 6s in case redirect is canceled or delayed
     const timer = setTimeout(() => {

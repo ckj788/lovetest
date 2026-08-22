@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import posthog from 'posthog-js';
 import { Header } from '../components/Header';
 import { QuizLanding } from '../components/QuizLanding';
 import { QuizQuestion } from '../components/QuizQuestion';
@@ -33,6 +34,10 @@ export default function Home() {
             if (isUnlockedParam || sessionId) {
               setStep('result');
               setInitialUnlocked(true);
+              posthog.capture('payment_success', {
+                archetype: parsed.archetype.name,
+                total_score: parsed.totalScore,
+              });
               window.history.replaceState({}, document.title, window.location.pathname);
             }
           }
@@ -46,6 +51,7 @@ export default function Home() {
   const currentQuestion = QUIZ_QUESTIONS[currentQuestionIndex];
 
   const handleStart = () => {
+    posthog.capture('quiz_start');
     setStep('quiz');
     setCurrentQuestionIndex(0);
     setUserAnswers({});
@@ -70,6 +76,10 @@ export default function Home() {
         } else {
           const computedResult = calculateQuizResult(updatedAnswers);
           setResult(computedResult);
+          posthog.capture('quiz_completed', {
+            archetype: computedResult.archetype.name,
+            total_score: computedResult.totalScore,
+          });
           if (typeof window !== 'undefined') {
             localStorage.setItem('mixedsigns_quiz_result', JSON.stringify(computedResult));
           }
@@ -95,11 +105,22 @@ export default function Home() {
   };
 
   const handleNext = () => {
+    if (currentQuestion.type === 'multi') {
+      posthog.capture('quiz_multi_confirmed', {
+        question_id: currentQuestion.id,
+        question_index: currentQuestionIndex + 1,
+      });
+    }
+
     if (currentQuestionIndex < QUIZ_QUESTIONS.length - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
     } else {
       const computedResult = calculateQuizResult(userAnswers);
       setResult(computedResult);
+      posthog.capture('quiz_completed', {
+        archetype: computedResult.archetype.name,
+        total_score: computedResult.totalScore,
+      });
       if (typeof window !== 'undefined') {
         localStorage.setItem('mixedsigns_quiz_result', JSON.stringify(computedResult));
       }
