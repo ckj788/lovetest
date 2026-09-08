@@ -101,16 +101,21 @@ export const QuizLanding: React.FC<QuizLandingProps> = ({ onStart }) => {
           <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
         </motion.button>
 
-        {/* Time guarantee */}
-        <div className="mt-4 sm:mt-5 flex items-center justify-center gap-3 sm:gap-4 text-[11px] sm:text-xs font-semibold text-palette-slate/70">
+        {/* Value props */}
+        <div className="mt-4 sm:mt-5 flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-[11px] sm:text-xs font-semibold text-palette-slate/70">
+          <span className="flex items-center gap-1">
+            <Activity className="w-3.5 h-3.5 text-palette-coral" />
+            Free Quiz
+          </span>
+          <span>•</span>
           <span className="flex items-center gap-1">
             <Clock className="w-3.5 h-3.5 text-palette-coral" />
-            Takes ~60 Seconds
+            Instant Result Preview
           </span>
           <span>•</span>
           <span className="flex items-center gap-1">
             <ShieldCheck className="w-3.5 h-3.5 text-palette-sage" />
-            100% Anonymous & Free
+            100% Anonymous
           </span>
         </div>
       </motion.div>

@@ -15,8 +15,20 @@ interface QuizResultProps {
 
 export const QuizResult: React.FC<QuizResultProps> = ({ result, onReset, initialUnlocked = false }) => {
   const [isUnlocked, setIsUnlocked] = useState(initialUnlocked);
-  // Auto-open paywall modal upfront on diagnosis completion (only if not already unlocked)
-  const [isPaywallOpen, setIsPaywallOpen] = useState(!initialUnlocked);
+  // Auto-open paywall modal 3 seconds after diagnosis completion
+  const [isPaywallOpen, setIsPaywallOpen] = useState(false);
+  const autoOpenTriggered = React.useRef(false);
+
+  useEffect(() => {
+    if (initialUnlocked || autoOpenTriggered.current) return;
+
+    const timer = setTimeout(() => {
+      autoOpenTriggered.current = true;
+      setIsPaywallOpen(true);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     if (initialUnlocked) {
@@ -232,20 +244,35 @@ export const QuizResult: React.FC<QuizResultProps> = ({ result, onReset, initial
             ))}
           </div>
 
-          {/* Big Unlock Button */}
+          {/* Big Unlock Button with 80% OFF Price Anchor */}
           <div className="text-center relative z-20">
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => setIsPaywallOpen(true)}
-              className="w-full sm:w-auto px-8 sm:px-10 py-3.5 sm:py-4 rounded-2xl bg-palette-coral text-white font-extrabold text-sm sm:text-base shadow-soft-coral flex items-center justify-center gap-2.5 sm:gap-3 mx-auto cursor-pointer border border-palette-coral"
-            >
-              <Unlock className="w-4 h-4 sm:w-5 sm:h-5" />
-              <span>Unlock Full Report ($3.99)</span>
-            </motion.button>
+            {/* Price badge container */}
+            <div className="inline-flex items-center gap-2 mb-3.5 bg-palette-coral/10 border border-palette-coral/20 px-3.5 py-1 rounded-full">
+              <span className="text-xs font-bold text-palette-slate/50 line-through">
+                $19.99
+              </span>
+              <span className="text-base font-black text-palette-coral">
+                $3.99
+              </span>
+              <span className="px-2 py-0.5 rounded-full bg-palette-coral text-white text-[10px] font-black uppercase tracking-wide">
+                80% OFF
+              </span>
+            </div>
 
-            <p className="mt-2.5 text-[11px] sm:text-xs text-palette-slate/60 font-medium">
-              Demo Mode: Click to preview full unlocked report instantly
+            <div>
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => setIsPaywallOpen(true)}
+                className="w-full sm:w-auto px-8 sm:px-10 py-3.5 sm:py-4 rounded-2xl bg-palette-coral text-white font-extrabold text-sm sm:text-base shadow-soft-coral flex items-center justify-center gap-2.5 sm:gap-3 mx-auto cursor-pointer border border-palette-coral"
+              >
+                <Unlock className="w-4 h-4 sm:w-5 sm:h-5" />
+                <span>Claim 80% Off · Unlock Full Report ($3.99)</span>
+              </motion.button>
+            </div>
+
+            <p className="mt-2.5 text-[11px] sm:text-xs text-palette-slate/60 font-medium flex items-center justify-center gap-1.5">
+              <span>🔒 Instant unlock on all devices · 100% Confidential</span>
             </p>
           </div>
         </div>
