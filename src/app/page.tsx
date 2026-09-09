@@ -83,6 +83,7 @@ export default function Home() {
           if (typeof window !== 'undefined') {
             localStorage.setItem('mixedsigns_quiz_result', JSON.stringify(computedResult));
           }
+          fetch('/api/stats', { method: 'POST' }).catch(() => {});
           setStep('calculating');
         }
       }, 160);
@@ -124,6 +125,7 @@ export default function Home() {
       if (typeof window !== 'undefined') {
         localStorage.setItem('mixedsigns_quiz_result', JSON.stringify(computedResult));
       }
+      fetch('/api/stats', { method: 'POST' }).catch(() => {});
       setStep('calculating');
     }
   };

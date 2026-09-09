@@ -80,13 +80,9 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = ({
             <span className="text-xs font-extrabold px-3 py-1 rounded-full bg-palette-lilac/40 text-palette-slate border border-palette-slate/10">
               QUESTION {currentIndex + 1} OF {totalQuestions}
             </span>
-            {isMulti ? (
+            {isMulti && (
               <span className="text-xs font-bold px-3 py-1 rounded-full bg-palette-sand text-palette-slate">
                 Select All That Apply
-              </span>
-            ) : (
-              <span className="text-[11px] font-semibold text-palette-slate/60">
-                Tap to answer & auto-advance
               </span>
             )}
           </div>

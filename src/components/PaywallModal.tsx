@@ -2,14 +2,17 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Lock, Check, Sparkles, ShieldCheck, Zap, ArrowRight, Clock } from 'lucide-react';
+import { X, Lock, Check, Sparkles, ShieldCheck, Zap, ArrowRight } from 'lucide-react';
 import posthog from 'posthog-js';
+import { ModalContent } from '../utils/cliffhangers';
 
 interface PaywallModalProps {
   isOpen: boolean;
   onClose: () => void;
   onUnlockSuccess?: () => void;
   archetypeName: string;
+  archetypeId?: string;
+  modalContent?: ModalContent;
 }
 
 export const PaywallModal: React.FC<PaywallModalProps> = ({
@@ -17,24 +20,21 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
   onClose,
   onUnlockSuccess,
   archetypeName,
+  archetypeId,
+  modalContent,
 }) => {
   const [isProcessing, setIsProcessing] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(600); // 10 minutes countdown
 
-  // Countdown timer for urgency
-  useEffect(() => {
-    if (!isOpen) return;
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
-    }, 1000);
-    return () => clearInterval(timer);
-  }, [isOpen]);
-
-  const formatTime = (secs: number) => {
-    const m = Math.floor(secs / 60);
-    const s = secs % 60;
-    return `${m}:${s < 10 ? '0' : ''}${s}`;
-  };
+  const headline = modalContent?.headline || "So... Are They Actually Going to Commit?";
+  const subtitle = modalContent?.subtitle || "You already know the attraction is there. Your answers reveal whether this looks like a slow burn — or a connection they're comfortable keeping undefined.";
+  const offerTitle = modalContent?.offerTitle || "Find Out What's Really Keeping This Stuck";
+  const bullets = modalContent?.bullets || [
+    "The 2 signals revealing their real intentions",
+    "What would prove they're ready to commit",
+    "Exactly what to do over the next 7 days",
+    "What to say next — without chasing or forcing “the talk”"
+  ];
+  const ctaText = modalContent?.cta || "Show Me What To Do Next — $3.99";
 
   // Track paywall view and reset processing state
   useEffect(() => {
@@ -43,6 +43,7 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
     if (isOpen) {
       posthog.capture('paywall_viewed', {
         archetype: archetypeName,
+        archetypeId,
       });
     }
 
@@ -54,7 +55,7 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
     return () => {
       window.removeEventListener('pageshow', handlePageShow);
     };
-  }, [isOpen, archetypeName]);
+  }, [isOpen, archetypeName, archetypeId]);
 
   if (!isOpen) return null;
 
@@ -64,6 +65,7 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
 
     posthog.capture('checkout_clicked', {
       archetype: archetypeName,
+      archetypeId,
       price: 3.99,
     });
 
@@ -80,6 +82,7 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
         },
         body: JSON.stringify({
           archetypeName,
+          archetypeId,
         }),
       });
 
@@ -125,85 +128,53 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
           {/* Badge */}
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-palette-coral/10 text-palette-coral text-xs font-extrabold mb-3">
             <Lock className="w-3.5 h-3.5" />
-            <span>UNLOCK DEEP BLUEPRINT</span>
+            <span>DIAGNOSIS FOR {archetypeName.toUpperCase()}</span>
           </div>
 
-          <h3 className="text-xl sm:text-2xl font-black text-palette-slate mb-1">
-            See Through Their Real Intentions
+          <h3 className="text-xl sm:text-2xl font-black text-palette-slate mb-2 leading-tight">
+            {headline}
           </h3>
-          <p className="text-xs text-palette-slate/70 mb-4 font-medium">
-            Custom deep analysis & 7-day power playbook for <span className="font-bold text-palette-coral">{archetypeName}</span>
+          <p className="text-xs sm:text-[13px] text-palette-slate/75 mb-5 font-medium leading-relaxed">
+            {subtitle}
           </p>
 
-          {/* Limited Time Offer Card ($19.99 -> $3.99 with 80% OFF) */}
-          <div className="rounded-2xl p-3.5 sm:p-4 border-2 border-palette-slate bg-palette-lilac/35 shadow-xs mb-3">
-            <div className="flex items-center justify-between gap-3">
-              <div className="flex items-center gap-2.5 sm:gap-3">
-                <div className="w-6 h-6 rounded-full bg-palette-slate text-white flex items-center justify-center shrink-0">
-                  <Check className="w-4 h-4" />
-                </div>
-                <div>
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <span className="font-extrabold text-palette-slate text-sm sm:text-base">
-                      Full Deep Report + 7-Day Plan
-                    </span>
-                    <span className="px-2 py-0.5 rounded-full bg-palette-coral text-white text-[10px] font-black uppercase tracking-wide">
-                      80% OFF
-                    </span>
-                  </div>
-                  <p className="text-[11px] sm:text-xs text-palette-slate/70 font-medium mt-0.5">
-                    Instant unlock on all devices · 100% Confidential
-                  </p>
-                </div>
+          {/* Offer Card */}
+          <div className="rounded-2xl p-4 sm:p-5 border-2 border-palette-slate bg-palette-lilac/35 shadow-xs mb-4 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-6 h-6 rounded-full bg-palette-slate text-white flex items-center justify-center shrink-0">
+                <Check className="w-4 h-4" />
               </div>
-
-              <div className="text-right shrink-0">
-                <div className="text-xs sm:text-sm font-bold text-palette-slate/50 line-through">
-                  $19.99
-                </div>
-                <div className="text-2xl sm:text-3xl font-black text-palette-coral">
-                  $3.99
-                </div>
+              <div>
+                <span className="font-extrabold text-palette-slate text-sm sm:text-base block">
+                  {offerTitle}
+                </span>
+                <p className="text-[11px] sm:text-xs text-palette-slate/70 font-medium mt-0.5">
+                  Instant unlock on all devices · 100% Confidential
+                </p>
               </div>
+            </div>
+            <div className="text-right shrink-0">
+              <div className="text-2xl font-black text-palette-slate">$3.99</div>
             </div>
           </div>
 
-          {/* Urgency countdown ticker */}
-          <div className="flex items-center justify-center gap-1.5 text-[11px] sm:text-xs font-bold text-palette-coral mb-4 bg-palette-coral/10 py-1.5 px-3 rounded-xl border border-palette-coral/20">
-            <Clock className="w-3.5 h-3.5 animate-pulse" />
-            <span>Special 80% launch discount reserved for:</span>
-            <span className="font-black font-mono text-palette-coral tracking-wider">
-              {formatTime(timeLeft)}
-            </span>
-          </div>
-
           {/* Unlocked Benefits List */}
-          <div className="bg-palette-cream/60 rounded-2xl p-3.5 sm:p-4 mb-4 border border-palette-slate/10">
-            <h4 className="text-xs font-bold text-palette-slate mb-2 flex items-center gap-1.5">
+          <div className="bg-palette-cream/60 rounded-2xl p-3.5 sm:p-4 mb-4 border border-palette-slate/10 text-left">
+            <h4 className="text-xs font-bold text-palette-slate mb-2.5 flex items-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5 text-palette-coral" />
-              Includes Instant Access To:
+              <span>Includes Instant Access To:</span>
             </h4>
-            <ul className="grid grid-cols-2 gap-2 text-[11px] sm:text-xs text-palette-slate/80 font-medium">
-              <li className="flex items-center gap-1.5">
-                <Check className="w-3.5 h-3.5 text-palette-sage shrink-0" />
-                <span>Why they flirt but avoid DTR</span>
-              </li>
-              <li className="flex items-center gap-1.5">
-                <Check className="w-3.5 h-3.5 text-palette-sage shrink-0" />
-                <span>Real Intent vs Free Trial</span>
-              </li>
-              <li className="flex items-center gap-1.5">
-                <Check className="w-3.5 h-3.5 text-palette-sage shrink-0" />
-                <span>Stealth Roster Audit</span>
-              </li>
-              <li className="flex items-center gap-1.5">
-                <Check className="w-3.5 h-3.5 text-palette-sage shrink-0" />
-                <span>7-Day Power Playbook</span>
-              </li>
+            <ul className="space-y-2 text-[11px] sm:text-xs text-palette-slate/85 font-medium">
+              {bullets.map((bullet, idx) => (
+                <li key={idx} className="flex items-start gap-2">
+                  <Check className="w-3.5 h-3.5 text-palette-sage shrink-0 mt-0.5" />
+                  <span>{bullet}</span>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Action Button: Primary Pay ($3.99) */}
+          {/* Action Button: Show Me What To Do Next — $3.99 */}
           <button
             onClick={handleStripeCheckout}
             disabled={isProcessing}
@@ -215,14 +186,14 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
                 Connecting to Stripe Checkout...
               </span>
             ) : (
-              <span>Claim 80% Off · Unlock for $3.99</span>
+              <span>{ctaText}</span>
             )}
           </button>
 
           {/* Micro-trust line */}
-          <div className="mt-2 text-center text-[10px] text-palette-slate/60 font-semibold flex items-center justify-center gap-1.5">
-            <ShieldCheck className="w-3 h-3 text-palette-sage" />
-            <span>256-bit SSL encrypted checkout · Instant digital delivery</span>
+          <div className="mt-2.5 text-center text-[10px] sm:text-[11px] text-palette-slate/70 font-semibold flex items-center justify-center gap-1.5">
+            <ShieldCheck className="w-3.5 h-3.5 text-palette-sage" />
+            <span>One-time payment · Instant access · No subscription</span>
           </div>
 
           {/* Secondary Option: View Free Summary */}
@@ -236,12 +207,6 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
             <span>Or continue to Free Summary Report</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
-
-          {/* Guarantee / Security note */}
-          <p className="mt-2.5 text-[10px] sm:text-[11px] text-center text-palette-slate/50 flex items-center justify-center gap-1 font-medium">
-            <ShieldCheck className="w-3.5 h-3.5 text-palette-sage" />
-            <span>Encrypted 256-Bit SSL · Apple Pay, Google Pay & All Major Cards</span>
-          </p>
         </motion.div>
       </div>
     </AnimatePresence>

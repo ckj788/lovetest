@@ -6,6 +6,7 @@ import { QuizResultData } from '../types/quiz';
 import { Lock, Unlock, Sparkles, AlertCircle, CheckCircle2, ChevronRight, Compass, Heart, Activity } from 'lucide-react';
 import { PaywallModal } from './PaywallModal';
 import { ShareCard } from './ShareCard';
+import { getArchetypeCliffhanger } from '../utils/cliffhangers';
 
 interface QuizResultProps {
   result: QuizResultData;
@@ -48,6 +49,7 @@ export const QuizResult: React.FC<QuizResultProps> = ({ result, onReset, initial
   }, [initialUnlocked]);
 
   const { scores, totalScore, gap, archetype, freeSummary } = result;
+  const cliffhanger = getArchetypeCliffhanger(archetype.id, gap, scores);
   const report = archetype.report;
 
   return (
@@ -92,8 +94,8 @@ export const QuizResult: React.FC<QuizResultProps> = ({ result, onReset, initial
             <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-white mb-1.5 sm:mb-2">
               {archetype.name}
             </h2>
-            <p className="text-xs sm:text-sm font-semibold text-palette-cream/80 leading-relaxed">
-              {archetype.subtitle}
+            <p className="text-xs sm:text-sm font-bold text-palette-sand leading-relaxed">
+              {cliffhanger.tagline}
             </p>
           </div>
 
@@ -110,7 +112,7 @@ export const QuizResult: React.FC<QuizResultProps> = ({ result, onReset, initial
         </div>
 
         <p className="mt-5 sm:mt-6 pt-5 sm:pt-6 border-t border-white/15 text-xs sm:text-sm text-palette-cream/90 leading-relaxed font-medium">
-          {archetype.description}
+          {cliffhanger.subSummary}
         </p>
       </motion.div>
 
@@ -177,19 +179,10 @@ export const QuizResult: React.FC<QuizResultProps> = ({ result, onReset, initial
         </div>
       </div>
 
-      {/* Free Attraction vs Commitment Gap Box */}
-      <div className="bg-palette-white border border-palette-slate/15 rounded-3xl p-5 sm:p-6 mb-6 sm:mb-8 shadow-soft-flat">
-        <div className="flex items-center gap-2 mb-2">
-          <AlertCircle className="w-4 h-4 sm:w-5 sm:h-5 text-palette-coral shrink-0" />
-          <h3 className="font-extrabold text-palette-slate text-sm sm:text-base md:text-lg">
-            Core Dynamic: Attraction vs Commitment Gap
-          </h3>
-        </div>
-        <p className="text-xs sm:text-sm text-palette-slate/80 mb-3.5 sm:mb-4 leading-relaxed font-medium">
-          {freeSummary}
-        </p>
-
-        <div className="bg-palette-cream/60 rounded-2xl p-3.5 sm:p-4 border border-palette-slate/10">
+      {/* Dynamic Dichotomy Cliffhanger Box */}
+      <div className="bg-palette-white border border-palette-slate/15 rounded-3xl p-5 sm:p-7 mb-6 sm:mb-8 shadow-soft-flat">
+        {/* Attraction vs Commitment Meter (Kept for scientific data trust) */}
+        <div className="bg-palette-cream/60 rounded-2xl p-3.5 sm:p-4 border border-palette-slate/10 mb-5 sm:mb-6">
           <div className="flex items-center justify-between text-xs sm:text-sm font-bold mb-2">
             <span className="text-palette-coral">Natural Attraction: {scores.attraction}%</span>
             <span className="text-palette-slate">Commitment Intent: {scores.commitment}%</span>
@@ -200,12 +193,62 @@ export const QuizResult: React.FC<QuizResultProps> = ({ result, onReset, initial
               <div className="h-full bg-palette-slate" style={{ width: `${scores.commitment}%` }} />
             </div>
             <span className="text-[11px] sm:text-xs font-black text-white px-2 sm:px-2.5 py-0.5 rounded-lg bg-palette-slate shrink-0">
-              Gap = {gap}%
+              Gap = {Math.abs(gap)}%
             </span>
           </div>
-          <p className="text-[11px] sm:text-xs text-palette-slate/75 mt-2.5 font-medium">
-            💡 Cosmic Insight: {archetype.gapAnalysis}
+        </div>
+
+        {/* The Cliffhanger Hook Header */}
+        <div className="mb-4">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-palette-coral/10 text-palette-coral text-[11px] font-extrabold mb-2.5">
+            <AlertCircle className="w-3.5 h-3.5" />
+            <span>CRITICAL BEHAVIORAL DISCONNECT DETECTED</span>
+          </div>
+          <h3 className="font-black text-palette-slate text-base sm:text-lg md:text-xl leading-snug">
+            {cliffhanger.headline}
+          </h3>
+          <p className="text-xs sm:text-sm text-palette-slate/75 mt-1.5 font-medium leading-relaxed">
+            {cliffhanger.lead}
           </p>
+        </div>
+
+        {/* The Two Divergent Paths (Dichotomy) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
+          <div className="rounded-2xl p-3.5 sm:p-4 bg-palette-lilac/30 border border-palette-slate/10">
+            <span className="font-extrabold text-xs sm:text-sm text-palette-slate block mb-1">
+              {cliffhanger.optionA.title}
+            </span>
+            <p className="text-[11px] sm:text-xs text-palette-slate/70 font-medium leading-relaxed">
+              {cliffhanger.optionA.description}
+            </p>
+          </div>
+
+          <div className="rounded-2xl p-3.5 sm:p-4 bg-palette-coral/10 border border-palette-coral/20">
+            <span className="font-extrabold text-xs sm:text-sm text-palette-coral block mb-1">
+              {cliffhanger.optionB.title}
+            </span>
+            <p className="text-[11px] sm:text-xs text-palette-slate/70 font-medium leading-relaxed">
+              {cliffhanger.optionB.description}
+            </p>
+          </div>
+        </div>
+
+        {/* Evidence Teaser & Unlock Hook */}
+        <div className="bg-palette-slate text-white rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xs">
+          <div>
+            <p className="text-xs sm:text-sm font-bold text-palette-sand">
+              {cliffhanger.evidenceTeaser}
+            </p>
+            <p className="text-sm sm:text-base font-black text-white mt-0.5">
+              {cliffhanger.lockQuestion}
+            </p>
+          </div>
+          <button
+            onClick={() => setIsPaywallOpen(true)}
+            className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-palette-coral text-white font-extrabold text-xs sm:text-sm hover:opacity-95 transition-all shrink-0 cursor-pointer shadow-soft-coral"
+          >
+            {cliffhanger.ctaText}
+          </button>
         </div>
       </div>
 
@@ -221,7 +264,7 @@ export const QuizResult: React.FC<QuizResultProps> = ({ result, onReset, initial
                 <Lock className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </div>
               <h3 className="text-base sm:text-lg md:text-xl font-black text-palette-slate">
-                Locked Deep Diagnosis Report
+                {cliffhanger.modal.offerTitle}
               </h3>
             </div>
             <span className="text-[10px] sm:text-xs text-palette-slate font-bold bg-palette-lilac/50 px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full border border-palette-slate/15">
@@ -244,35 +287,20 @@ export const QuizResult: React.FC<QuizResultProps> = ({ result, onReset, initial
             ))}
           </div>
 
-          {/* Big Unlock Button with 80% OFF Price Anchor */}
+          {/* Big Unlock Button */}
           <div className="text-center relative z-20">
-            {/* Price badge container */}
-            <div className="inline-flex items-center gap-2 mb-3.5 bg-palette-coral/10 border border-palette-coral/20 px-3.5 py-1 rounded-full">
-              <span className="text-xs font-bold text-palette-slate/50 line-through">
-                $19.99
-              </span>
-              <span className="text-base font-black text-palette-coral">
-                $3.99
-              </span>
-              <span className="px-2 py-0.5 rounded-full bg-palette-coral text-white text-[10px] font-black uppercase tracking-wide">
-                80% OFF
-              </span>
-            </div>
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => setIsPaywallOpen(true)}
+              className="w-full sm:w-auto px-8 sm:px-10 py-3.5 sm:py-4 rounded-2xl bg-palette-coral text-white font-extrabold text-sm sm:text-base shadow-soft-coral flex items-center justify-center gap-2.5 sm:gap-3 mx-auto cursor-pointer border border-palette-coral"
+            >
+              <Unlock className="w-4 h-4 sm:w-5 sm:h-5" />
+              <span>{cliffhanger.modal.cta}</span>
+            </motion.button>
 
-            <div>
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => setIsPaywallOpen(true)}
-                className="w-full sm:w-auto px-8 sm:px-10 py-3.5 sm:py-4 rounded-2xl bg-palette-coral text-white font-extrabold text-sm sm:text-base shadow-soft-coral flex items-center justify-center gap-2.5 sm:gap-3 mx-auto cursor-pointer border border-palette-coral"
-              >
-                <Unlock className="w-4 h-4 sm:w-5 sm:h-5" />
-                <span>Claim 80% Off · Unlock Full Report ($3.99)</span>
-              </motion.button>
-            </div>
-
-            <p className="mt-2.5 text-[11px] sm:text-xs text-palette-slate/60 font-medium flex items-center justify-center gap-1.5">
-              <span>🔒 Instant unlock on all devices · 100% Confidential</span>
+            <p className="mt-2.5 text-[10px] sm:text-[11px] text-palette-slate/65 font-semibold flex items-center justify-center gap-1.5">
+              <span>One-time payment · Instant access · No subscription</span>
             </p>
           </div>
         </div>
@@ -382,6 +410,8 @@ export const QuizResult: React.FC<QuizResultProps> = ({ result, onReset, initial
           setIsUnlocked(true);
         }}
         archetypeName={archetype.name}
+        archetypeId={archetype.id}
+        modalContent={cliffhanger.modal}
       />
     </div>
   );

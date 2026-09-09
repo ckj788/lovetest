@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Clock, ShieldCheck, Heart, Activity, Compass, Lock } from 'lucide-react';
 
@@ -9,6 +9,23 @@ interface QuizLandingProps {
 }
 
 export const QuizLanding: React.FC<QuizLandingProps> = ({ onStart }) => {
+  const [completedCount, setCompletedCount] = useState<number | null>(null);
+
+  useEffect(() => {
+    let isMounted = true;
+    fetch('/api/stats')
+      .then((res) => res.json())
+      .then((data) => {
+        if (isMounted && typeof data?.count === 'number') {
+          setCompletedCount(data.count);
+        }
+      })
+      .catch(() => {});
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
   return (
     <div className="max-w-3xl mx-auto px-4 py-6 sm:py-8 md:py-12">
       {/* Top Badge */}
@@ -101,8 +118,21 @@ export const QuizLanding: React.FC<QuizLandingProps> = ({ onStart }) => {
           <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
         </motion.button>
 
+        {/* Social Proof Counter */}
+        <div className="mt-3.5 sm:mt-4 flex justify-center">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-palette-lilac/30 border border-palette-slate/10 text-xs sm:text-[13px] font-bold text-palette-slate shadow-xs">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-palette-coral opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-palette-coral"></span>
+            </span>
+            <span>
+              <strong className="font-black text-palette-coral">{(completedCount ?? 666).toLocaleString()}</strong> people already checked their situationship
+            </span>
+          </div>
+        </div>
+
         {/* Value props */}
-        <div className="mt-4 sm:mt-5 flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-[11px] sm:text-xs font-semibold text-palette-slate/70">
+        <div className="mt-3 sm:mt-4 flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-[11px] sm:text-xs font-semibold text-palette-slate/70">
           <span className="flex items-center gap-1">
             <Activity className="w-3.5 h-3.5 text-palette-coral" />
             Free Quiz
