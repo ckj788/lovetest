@@ -13,7 +13,7 @@ export const QuizLanding: React.FC<QuizLandingProps> = ({ onStart }) => {
 
   useEffect(() => {
     let isMounted = true;
-    fetch('/api/stats')
+    fetch('/api/stats', { cache: 'no-store' })
       .then((res) => res.json())
       .then((data) => {
         if (isMounted && typeof data?.count === 'number') {

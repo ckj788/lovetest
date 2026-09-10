@@ -10,8 +10,17 @@ const COUNTER_KEY = 'mixedsigns_quiz_completed_count';
 let localFallbackCount = 0;
 
 function getRedisClient(): Redis | null {
-  const url = process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL;
-  const token = process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
+  const url =
+    process.env.UPSTASH_REDIS_REST_URL ||
+    process.env.KV_REST_API_URL ||
+    process.env.STORAGE_KV_REST_API_URL ||
+    process.env.VERCEL_KV_REST_API_URL;
+
+  const token =
+    process.env.UPSTASH_REDIS_REST_TOKEN ||
+    process.env.KV_REST_API_TOKEN ||
+    process.env.STORAGE_KV_REST_API_TOKEN ||
+    process.env.VERCEL_KV_REST_API_TOKEN;
 
   if (!url || !token) {
     return null;
@@ -31,6 +40,11 @@ export async function GET() {
       return NextResponse.json({
         count: BASE_OFFSET + localFallbackCount,
         isLive: false,
+        warning: 'Redis not connected in Vercel. Connect Vercel KV or Upstash to sync across devices.',
+      }, {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate',
+        },
       });
     }
 
@@ -43,7 +57,7 @@ export async function GET() {
       },
       {
         headers: {
-          'Cache-Control': 'public, s-maxage=10, stale-while-revalidate=30',
+          'Cache-Control': 'no-store, no-cache, must-revalidate',
         },
       }
     );
