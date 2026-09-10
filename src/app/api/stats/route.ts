@@ -9,55 +9,111 @@ const COUNTER_KEY = 'mixedsigns_quiz_completed_count';
 // In-memory fallback for local development or when Redis env vars are not set
 let localFallbackCount = 0;
 
-function getRedisClient(): Redis | null {
+interface RedisResolution {
+  redis: Redis | null;
+  urlKey?: string;
+  tokenKey?: string;
+  error?: string;
+}
+
+function getRedisClient(): RedisResolution {
   let url =
-    process.env.UPSTASH_REDIS_REST_URL ||
-    process.env.KV_REST_API_URL ||
     process.env.STORAGE_KV_REST_API_URL ||
+    process.env.KV_REST_API_URL ||
+    process.env.UPSTASH_REDIS_REST_URL ||
     process.env.VERCEL_KV_REST_API_URL;
 
+  let urlKey = process.env.STORAGE_KV_REST_API_URL
+    ? 'STORAGE_KV_REST_API_URL'
+    : process.env.KV_REST_API_URL
+    ? 'KV_REST_API_URL'
+    : process.env.UPSTASH_REDIS_REST_URL
+    ? 'UPSTASH_REDIS_REST_URL'
+    : process.env.VERCEL_KV_REST_API_URL
+    ? 'VERCEL_KV_REST_API_URL'
+    : '';
+
+  // Write token (Strictly avoid READ_ONLY token)
   let token =
-    process.env.UPSTASH_REDIS_REST_TOKEN ||
-    process.env.KV_REST_API_TOKEN ||
     process.env.STORAGE_KV_REST_API_TOKEN ||
+    process.env.KV_REST_API_TOKEN ||
+    process.env.UPSTASH_REDIS_REST_TOKEN ||
     process.env.VERCEL_KV_REST_API_TOKEN;
 
-  // Auto-detect if Vercel prefixed the keys with the database name (e.g. MY_DB_UPSTASH_REDIS_REST_URL)
+  let tokenKey = process.env.STORAGE_KV_REST_API_TOKEN
+    ? 'STORAGE_KV_REST_API_TOKEN'
+    : process.env.KV_REST_API_TOKEN
+    ? 'KV_REST_API_TOKEN'
+    : process.env.UPSTASH_REDIS_REST_TOKEN
+    ? 'UPSTASH_REDIS_REST_TOKEN'
+    : process.env.VERCEL_KV_REST_API_TOKEN
+    ? 'VERCEL_KV_REST_API_TOKEN'
+    : '';
+
+  // Scan all process.env keys as fallback, strictly ignoring READ_ONLY keys
   if (!url || !token) {
-    for (const key of Object.keys(process.env)) {
-      if (key.includes('REDIS_REST_URL') || key.includes('KV_REST_API_URL')) {
-        url = process.env[key];
+    for (const [k, v] of Object.entries(process.env)) {
+      if (!v) continue;
+      // Skip read-only tokens
+      if (k.toUpperCase().includes('READ_ONLY') || k.toUpperCase().includes('READONLY')) {
+        continue;
       }
-      if (key.includes('REDIS_REST_TOKEN') || key.includes('KV_REST_API_TOKEN')) {
-        token = process.env[key];
+      if (!url && (k.endsWith('REST_API_URL') || k.endsWith('REST_URL'))) {
+        url = v;
+        urlKey = k;
+      }
+      if (!token && (k.endsWith('REST_API_TOKEN') || k.endsWith('REST_TOKEN'))) {
+        token = v;
+        tokenKey = k;
       }
     }
   }
 
   if (!url || !token) {
-    return null;
+    return {
+      redis: null,
+      error: `Missing Redis credentials. Found URL: ${urlKey || 'none'}, Token: ${tokenKey || 'none'}`,
+    };
   }
 
-  return new Redis({
-    url,
-    token,
-  });
+  try {
+    const redis = new Redis({
+      url,
+      token,
+    });
+    return { redis, urlKey, tokenKey };
+  } catch (err: any) {
+    return { redis: null, error: err?.message || 'Redis client initialization failed' };
+  }
 }
 
 export async function GET() {
   try {
-    const redis = getRedisClient();
+    const { redis, urlKey, tokenKey, error: initError } = getRedisClient();
 
     if (!redis) {
-      return NextResponse.json({
-        count: BASE_OFFSET + localFallbackCount,
-        isLive: false,
-        warning: 'Redis not connected in Vercel. Connect Vercel KV or Upstash to sync across devices.',
-      }, {
-        headers: {
-          'Cache-Control': 'no-store, no-cache, must-revalidate',
+      const detectedEnvKeys = Object.keys(process.env).filter(
+        (k) =>
+          k.includes('REDIS') ||
+          k.includes('KV') ||
+          k.includes('UPSTASH') ||
+          k.includes('STORAGE')
+      );
+
+      return NextResponse.json(
+        {
+          count: BASE_OFFSET + localFallbackCount,
+          isLive: false,
+          warning: 'Redis not active. Falling back to temporary in-memory counter.',
+          initError,
+          detectedEnvKeys,
         },
-      });
+        {
+          headers: {
+            'Cache-Control': 'no-store, no-cache, must-revalidate',
+          },
+        }
+      );
     }
 
     const liveCount = (await redis.get<number>(COUNTER_KEY)) || 0;
@@ -66,6 +122,7 @@ export async function GET() {
       {
         count: BASE_OFFSET + Number(liveCount),
         isLive: true,
+        connectedVia: { urlKey, tokenKey },
       },
       {
         headers: {
@@ -73,18 +130,26 @@ export async function GET() {
         },
       }
     );
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching stats counter:', error);
-    return NextResponse.json({
-      count: BASE_OFFSET + localFallbackCount,
-      isLive: false,
-    });
+    return NextResponse.json(
+      {
+        count: BASE_OFFSET + localFallbackCount,
+        isLive: false,
+        error: error?.message || 'Failed to query Redis',
+      },
+      {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate',
+        },
+      }
+    );
   }
 }
 
 export async function POST() {
   try {
-    const redis = getRedisClient();
+    const { redis, urlKey, tokenKey, error: initError } = getRedisClient();
 
     if (!redis) {
       localFallbackCount += 1;
@@ -92,6 +157,8 @@ export async function POST() {
         success: true,
         count: BASE_OFFSET + localFallbackCount,
         isLive: false,
+        warning: 'Redis not active. Incremented temporary in-memory counter.',
+        initError,
       });
     }
 
@@ -101,14 +168,16 @@ export async function POST() {
       success: true,
       count: BASE_OFFSET + Number(newLiveCount),
       isLive: true,
+      connectedVia: { urlKey, tokenKey },
     });
-  } catch (error) {
-    console.error('Error incrementing stats counter:', error);
+  } catch (error: any) {
+    console.error('Error incrementing stats counter in Redis:', error);
     localFallbackCount += 1;
     return NextResponse.json({
-      success: true,
+      success: false,
       count: BASE_OFFSET + localFallbackCount,
       isLive: false,
+      error: error?.message || 'Redis increment failed',
     });
   }
 }
