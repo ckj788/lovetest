@@ -10,17 +10,29 @@ const COUNTER_KEY = 'mixedsigns_quiz_completed_count';
 let localFallbackCount = 0;
 
 function getRedisClient(): Redis | null {
-  const url =
+  let url =
     process.env.UPSTASH_REDIS_REST_URL ||
     process.env.KV_REST_API_URL ||
     process.env.STORAGE_KV_REST_API_URL ||
     process.env.VERCEL_KV_REST_API_URL;
 
-  const token =
+  let token =
     process.env.UPSTASH_REDIS_REST_TOKEN ||
     process.env.KV_REST_API_TOKEN ||
     process.env.STORAGE_KV_REST_API_TOKEN ||
     process.env.VERCEL_KV_REST_API_TOKEN;
+
+  // Auto-detect if Vercel prefixed the keys with the database name (e.g. MY_DB_UPSTASH_REDIS_REST_URL)
+  if (!url || !token) {
+    for (const key of Object.keys(process.env)) {
+      if (key.includes('REDIS_REST_URL') || key.includes('KV_REST_API_URL')) {
+        url = process.env[key];
+      }
+      if (key.includes('REDIS_REST_TOKEN') || key.includes('KV_REST_API_TOKEN')) {
+        token = process.env[key];
+      }
+    }
+  }
 
   if (!url || !token) {
     return null;
