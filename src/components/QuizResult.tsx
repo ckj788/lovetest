@@ -6,7 +6,7 @@ import { QuizResultData } from '../types/quiz';
 import { Lock, Unlock, Sparkles, AlertCircle, CheckCircle2, ChevronRight, Compass, Heart, Activity } from 'lucide-react';
 import { PaywallModal } from './PaywallModal';
 import { ShareCard } from './ShareCard';
-import { getArchetypeCliffhanger } from '../utils/cliffhangers';
+import { getArchetypeCliffhanger, getPathVerdict } from '../utils/cliffhangers';
 
 interface QuizResultProps {
   result: QuizResultData;
@@ -49,6 +49,7 @@ export const QuizResult: React.FC<QuizResultProps> = ({ result, onReset, initial
 
   const { scores, totalScore, gap, archetype, freeSummary } = result;
   const cliffhanger = getArchetypeCliffhanger(archetype.id, gap, scores);
+  const pathVerdict = getPathVerdict(archetype.id, scores, gap);
   const report = archetype.report;
 
   return (
@@ -178,43 +179,6 @@ export const QuizResult: React.FC<QuizResultProps> = ({ result, onReset, initial
         </div>
       </div>
 
-      {/* Core Behavioral Pattern Analysis (Substantive Free Value) */}
-      <div className="bg-palette-white border border-palette-slate/15 rounded-3xl p-5 sm:p-7 mb-6 sm:mb-8 shadow-soft-flat">
-        <div className="flex items-center justify-between mb-3">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-palette-lilac/40 text-palette-slate text-[11px] font-extrabold border border-palette-slate/10">
-            <Sparkles className="w-3.5 h-3.5 text-palette-coral" />
-            <span>BEHAVIORAL PATTERN ANALYSIS</span>
-          </div>
-          <span className="text-[10px] sm:text-xs font-bold text-palette-slate/60">
-            Free Diagnostic Breakdown
-          </span>
-        </div>
-
-        <h3 className="font-black text-palette-slate text-base sm:text-lg md:text-xl leading-snug mb-2">
-          {report.sections[0]?.title || "What Your Behavioral Dynamics Reveal"}
-        </h3>
-        <p className="text-xs sm:text-sm text-palette-slate/75 leading-relaxed font-medium mb-4">
-          {report.sections[0]?.paragraphs[0]}
-        </p>
-
-        <div className="space-y-2.5 pt-3.5 border-t border-palette-slate/10">
-          <div className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider text-palette-slate/60 mb-1">
-            Key Behavioral Observations
-          </div>
-          {report.summaryHighlights.map((highlight, idx) => (
-            <div
-              key={idx}
-              className="flex items-start gap-2.5 p-3 rounded-2xl bg-palette-cream/40 border border-palette-slate/10 text-xs sm:text-sm font-semibold text-palette-slate"
-            >
-              <span className="w-5 h-5 rounded-full bg-palette-slate text-palette-sand flex items-center justify-center text-[10px] shrink-0 font-black mt-0.5">
-                ✦
-              </span>
-              <span className="leading-snug">{highlight}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
       {/* Dynamic Dichotomy Cliffhanger Box */}
       <div className="bg-palette-white border border-palette-slate/15 rounded-3xl p-5 sm:p-7 mb-6 sm:mb-8 shadow-soft-flat">
         {/* Attraction vs Commitment Dual-Track Comparison Meter */}
@@ -309,8 +273,9 @@ export const QuizResult: React.FC<QuizResultProps> = ({ result, onReset, initial
             <p className="text-xs sm:text-sm font-bold text-palette-sand">
               {cliffhanger.evidenceTeaser}
             </p>
-            <p className="text-sm sm:text-base font-black text-white mt-0.5">
-              {cliffhanger.lockQuestion}
+            <p className="text-sm sm:text-base font-black text-white mt-0.5 flex items-center gap-1.5">
+              <span>🔒</span>
+              <span>{cliffhanger.lockQuestion}</span>
             </p>
           </div>
         </div>
@@ -319,7 +284,7 @@ export const QuizResult: React.FC<QuizResultProps> = ({ result, onReset, initial
       {/* Paywall / Unlocked Deep Report Container */}
       {!isUnlocked ? (
         <div className="bg-palette-white border border-palette-slate/20 rounded-3xl p-5 sm:p-7 mb-6 sm:mb-8 shadow-soft-flat">
-          <div className="flex items-center justify-between mb-4 sm:mb-5">
+          <div className="flex items-center justify-between mb-2 sm:mb-2.5">
             <div className="flex items-center gap-2">
               <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-palette-coral/15 flex items-center justify-center text-palette-coral">
                 <Lock className="w-4 h-4" />
@@ -328,17 +293,21 @@ export const QuizResult: React.FC<QuizResultProps> = ({ result, onReset, initial
                 {cliffhanger.modal.offerTitle}
               </h3>
             </div>
-            <span className="text-[10px] sm:text-xs font-bold text-palette-slate bg-palette-lilac/50 px-2.5 py-1 rounded-full border border-palette-slate/15">
+            <span className="text-[10px] sm:text-xs font-bold text-palette-slate bg-palette-lilac/50 px-2.5 py-1 rounded-full border border-palette-slate/15 shrink-0">
               Instant Access · $3.99
             </span>
           </div>
+
+          <p className="text-xs sm:text-sm text-palette-slate/75 font-medium mb-4 sm:mb-5 leading-relaxed">
+            Your answers already point toward one. Unlock the evidence + your next move.
+          </p>
 
           {/* Key Unlocked Deliverables */}
           <div className="space-y-2.5 mb-5 sm:mb-6">
             {cliffhanger.modal.bullets.map((bullet, idx) => (
               <div key={idx} className="flex items-start gap-2.5 p-3 rounded-2xl bg-palette-cream/40 border border-palette-slate/10 text-xs sm:text-sm font-semibold text-palette-slate">
-                <div className="w-5 h-5 rounded-full bg-palette-slate text-palette-sand flex items-center justify-center text-[10px] shrink-0 font-black mt-0.5">
-                  {idx + 1}
+                <div className="w-5 h-5 rounded-full bg-palette-slate text-palette-sand flex items-center justify-center text-[11px] shrink-0 font-black mt-0.5">
+                  ✓
                 </div>
                 <span className="leading-snug">{bullet}</span>
               </div>
@@ -381,6 +350,67 @@ export const QuizResult: React.FC<QuizResultProps> = ({ result, onReset, initial
             <p className="text-xs text-palette-cream/80 font-medium mt-1">
               Full behavioral breakdown & psychological analysis
             </p>
+          </div>
+
+          {/* Definitive Path Verdict Card */}
+          <div className="bg-palette-slate text-white rounded-3xl p-5 sm:p-7 md:p-8 shadow-soft-flat border-2 border-palette-coral/40 relative overflow-hidden">
+            {/* Top Badge */}
+            <div className="flex flex-wrap items-center justify-between gap-2 mb-3 sm:mb-4">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-palette-sand text-palette-slate text-xs font-black tracking-wide">
+                <span>🎯</span>
+                <span>THE DEFINITIVE VERDICT</span>
+              </div>
+              <span className="text-[10px] sm:text-xs font-bold text-palette-cream/70">
+                Determined by your score pattern
+              </span>
+            </div>
+
+            {/* Verdict Path Title */}
+            <div className="mb-3.5 sm:mb-4">
+              <span className="text-[11px] sm:text-xs font-extrabold text-palette-sand block uppercase tracking-wider mb-1">
+                Your Confirmed Dynamic
+              </span>
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-white leading-tight">
+                {pathVerdict.pathTitle}
+              </h3>
+            </div>
+
+            {/* Verdict Summary */}
+            <p className="text-xs sm:text-sm md:text-base text-palette-cream/95 leading-relaxed font-medium mb-5 pb-5 border-b border-white/15">
+              {pathVerdict.verdictSummary}
+            </p>
+
+            {/* 2 Critical Behavioral Signals */}
+            <div className="mb-5">
+              <h4 className="text-[11px] sm:text-xs font-black tracking-wider uppercase text-palette-sand mb-2.5 flex items-center gap-1.5">
+                <span>🔍</span>
+                <span>2 CRITICAL BEHAVIORAL SIGNALS IN YOUR TEST</span>
+              </h4>
+              <div className="space-y-2.5">
+                {pathVerdict.signals.map((signal, sIdx) => (
+                  <div
+                    key={sIdx}
+                    className="bg-white/10 rounded-2xl p-3 sm:p-3.5 border border-white/15 text-xs sm:text-sm font-medium text-white flex items-start gap-2.5"
+                  >
+                    <span className="w-5 h-5 rounded-full bg-palette-coral text-white flex items-center justify-center text-[10px] font-black shrink-0 mt-0.5">
+                      {sIdx + 1}
+                    </span>
+                    <span className="leading-relaxed text-palette-cream/95">{signal}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Immediate Action Directive */}
+            <div className="bg-palette-coral/20 border border-palette-coral/40 rounded-2xl p-4 sm:p-4.5">
+              <h4 className="text-[11px] sm:text-xs font-black uppercase tracking-wider text-palette-coral mb-1 flex items-center gap-1.5">
+                <span>⚡</span>
+                <span>IMMEDIATE STRATEGIC DIRECTIVE</span>
+              </h4>
+              <p className="text-xs sm:text-sm font-bold text-white leading-relaxed">
+                {pathVerdict.actionRecommendation}
+              </p>
+            </div>
           </div>
 
           {/* Core Hook Block */}
