@@ -34,125 +34,125 @@ export function getArchetypeCliffhanger(
   switch (archetypeId) {
     case 'chemistry_trap': // 火焰 🔥
       return {
-        tagline: "Strong natural attraction. Sharp commitment gap.",
-        subSummary: "There is unmistakable chemistry between you — but their behavior isn't matching the spark.",
-        headline: "Is This High Attraction Moving Guardedly — Or Undefined By Choice?",
-        lead: `Your ${gapPoints}-point gap usually points to one of two very different situations:`,
+        tagline: "High natural spark. Sharp commitment gap.",
+        subSummary: "There is undeniable chemistry between you — but their commitment readiness lags far behind the attraction.",
+        headline: "Is This High Attraction Moving Guardedly — Or Kept Undefined By Choice?",
+        lead: `Your behavioral scores point to one of two very different situations:`,
         optionA: {
-          title: "Path A: High Attraction with Pacing Caution",
-          description: "A connection that's moving slowly and guardedly — but genuinely developing."
+          title: "Path A: High Attraction With Pacing Caution",
+          description: "Intense mutual feelings, but holding back to test emotional safety."
         },
         optionB: {
-          title: "Path B: Intense Chemistry Kept Undefined",
-          description: "A connection that feels electric — but may be intentionally kept without accountability."
+          title: "Path B: Addictive Chemistry Kept Undefined",
+          description: "Enjoys the electric dynamic, but intentionally avoids relational accountability."
         },
-        evidenceTeaser: "Your answers contain 2 signals that strongly point toward one of them.",
-        lockQuestion: "🔒 Which one are you actually in?",
-        ctaText: "Find Out Which One + What To Do Next →",
+        evidenceTeaser: "Your answers contain 2 specific signals pointing directly toward one of them.",
+        lockQuestion: "Which one are you actually in?",
+        ctaText: "Reveal My Path & Next Move — $3.99",
         modal: {
-          headline: "So... Are They Actually Going to Commit?",
-          subtitle: "You already know the attraction is there. Your answers reveal whether this looks like a slow burn — or a connection they're comfortable keeping undefined.",
-          offerTitle: "Find Out What's Really Keeping This Stuck",
+          headline: "So... Are They Actually Going To Commit?",
+          subtitle: "You already know the spark is real. Your answers reveal whether this connection has real relationship potential — or is being kept in an undefined holding pattern.",
+          offerTitle: "Unlock Your Full Behavioral Diagnosis & Action Plan",
           bullets: [
-            "The 2 signals revealing their real intentions",
-            "What would prove they're ready to commit",
-            "Exactly what to do over the next 7 days",
-            "What to say next — without chasing or forcing “the talk”"
+            "The 2 signals revealing their true intentions behind the spark",
+            "What would prove they're ready to step up into exclusivity",
+            "Your step-by-step 7-day action playbook to regain leverage",
+            "Word-for-word scripts to establish boundaries without pushing them away"
           ],
-          cta: "Show Me What To Do Next — $3.99"
+          cta: "Reveal My Path & Next Move — $3.99"
         }
       };
 
     case 'slow_burner': // 乌龟 🐢
       return {
-        tagline: "Steady consistency. Lagging relational momentum.",
-        subSummary: "The dynamic is stable and respectful — but the pace is creating quiet uncertainty.",
-        headline: "Is This Slow, Deliberate Investment — Or Comfortable Stagnation?",
+        tagline: "Consistent presence. Lingering commitment hesitation.",
+        subSummary: "They clearly value your connection — but there is a meaningful gap between daily warmth and defining the relationship.",
+        headline: "Is This Deliberate Emotional Pacing — Or Comfortable Stagnation?",
         lead: "Your behavioral scores point to one of two very different situations:",
         optionA: {
-          title: "Path A: Deliberate Emotional Investment",
-          description: "A measured pace built on real, steady observation and cautious care."
+          title: "Path A: Genuinely Taking Things Slowly",
+          description: "Real emotional intent, but deliberately pacing the connection before defining it."
         },
         optionB: {
-          title: "Path B: A Low-Urgency Routine",
-          description: "A comfortable connection that enjoys your presence without urgency to make it official."
+          title: "Path B: Comfortable Leaving It Undefined",
+          description: "Enjoys your warmth and company, but comfortable letting things stay uncommitted."
         },
-        evidenceTeaser: "Your answers contain 2 signals that distinguish genuine patience from quiet comfort.",
-        lockQuestion: "🔒 Which one are you actually in?",
-        ctaText: "Find Out Which One + What To Do Next →",
+        evidenceTeaser: "Your answers contain 2 specific signals that distinguish genuine patience from quiet comfort.",
+        lockQuestion: "Which one are you actually in?",
+        ctaText: "Reveal My Path & Next Move — $3.99",
         modal: {
-          headline: "Is This Just Moving Slowly — Or Going Nowhere?",
+          headline: "Is This Moving Slowly — Or Going Nowhere?",
           subtitle: "They show up consistently, but they won't escalate. Your answers reveal whether they're genuinely cautious — or simply comfortable where things are.",
-          offerTitle: "Find Out What's Really Behind Their Slow Pace",
+          offerTitle: "Unlock Your Full Behavioral Diagnosis & Action Plan",
           bullets: [
-            "The 2 signals distinguishing healthy patience from avoidance",
-            "The exact behavioral shift that proves they're ready to commit",
-            "Exactly what to do over the next 7 days",
-            "What to say next — without chasing or forcing “the talk”"
+            "The 2 signals revealing whether this pace is patience or hesitation",
+            "The exact behavioral test that proves if they're ready to commit",
+            "Your step-by-step 7-day action playbook to shift the dynamic",
+            "Word-for-word scripts to get clarity without chasing or pressure"
           ],
-          cta: "Show Me What To Do Next — $3.99"
+          cta: "Reveal My Path & Next Move — $3.99"
         }
       };
 
     case 'situationship': // 迷雾 🌫️
       return {
-        tagline: "High daily intimacy. Zero structural clarity.",
-        subSummary: "You share couple routines and closeness — but the dynamic remains carefully open-ended.",
-        headline: "Are You Approaching Commitment — Or Trapped In A Gray Area?",
-        lead: "Your intimacy vs commitment scores reveal a split between two possibilities:",
+        tagline: "Relationship-level intimacy. Zero relational clarity.",
+        subSummary: "You share couple routines, emotional depth, and daily closeness — but the dynamic remains carefully open-ended.",
+        headline: "Are You Nearing Commitment — Or Trapped In The Gray Area?",
+        lead: "Your behavioral scores point to one of two very different situations:",
         optionA: {
           title: "Path A: Organic Escalation",
-          description: "A deep, unforced bond naturally finding its rhythm before officially defining the boundaries."
+          description: "A genuine bond naturally finding its rhythm before formally defining the boundaries."
         },
         optionB: {
           title: "Path B: A Protected Comfort Zone",
-          description: "A convenient, affectionate dynamic actively maintained to avoid relational accountability."
+          description: "A convenient, affectionate dynamic actively maintained without commitment responsibility."
         },
-        evidenceTeaser: "Your answers contain 2 signals that reveal whether this dynamic will escalate or stay stuck.",
-        lockQuestion: "🔒 Which one are you actually in?",
-        ctaText: "Find Out Which One + What To Do Next →",
+        evidenceTeaser: "Your answers contain 2 specific signals that reveal whether this dynamic will escalate or stay stuck.",
+        lockQuestion: "Which one are you actually in?",
+        ctaText: "Reveal My Path & Next Move — $3.99",
         modal: {
-          headline: "Are You Building Something — Or Just Killing Time?",
+          headline: "Are You Building Something — Or Just Stuck In Routine?",
           subtitle: "You already act like partners in private. Your answers reveal whether they're quietly preparing for commitment — or protecting an undefined arrangement.",
-          offerTitle: "Find Out What's Keeping This in the Gray Area",
+          offerTitle: "Unlock Your Full Behavioral Diagnosis & Action Plan",
           bullets: [
             "The 2 signals revealing whether they see a real future with you",
-            "The test that proves if they will fight to keep you or let you go",
-            "Exactly what to do over the next 7 days to shift the dynamic",
-            "What to say next — to get clarity without issuing an ultimatum"
+            "The exact test that proves if they will step up or walk away",
+            "Your step-by-step 7-day action playbook to break the stalemate",
+            "Word-for-word scripts to get a clear answer without issuing an ultimatum"
           ],
-          cta: "Show Me What To Do Next — $3.99"
+          cta: "Reveal My Path & Next Move — $3.99"
         }
       };
 
     case 'breadcrumber': // 木头/残渣 🪵
       return {
         tagline: "Sharp dopamine spikes. Unpredictable quiet periods.",
-        subSummary: "Magnetic and warm when present — but inconsistent enough to leave you overthinking.",
-        headline: "Is This Personal Avoidance — Or Calculated Intermittent Attention?",
-        lead: "Your behavioral tracking reveals a pattern that splits into two possibilities:",
+        subSummary: "Magnetic and warm when present — but inconsistent enough to leave you second-guessing where you actually stand.",
+        headline: "Is This Personal Overwhelm — Or Calculated Intermittent Warmth?",
+        lead: "Your behavioral scores point to one of two very different situations:",
         optionA: {
-          title: "Path A: Emotional Hesitation & Overwhelm",
-          description: "Someone wrestling with their own emotional availability and protective pacing."
+          title: "Path A: Emotional Hesitation & Capacity",
+          description: "Someone wrestling with their own emotional bandwidth and protective pacing."
         },
         optionB: {
-          title: "Path B: Strategic Orbiting",
-          description: "A pattern of periodic contact designed to keep you interested without real investment."
+          title: "Path B: Strategic Orbiting & Validation",
+          description: "Periodic bursts of attention designed to keep you interested without real investment."
         },
-        evidenceTeaser: "Your answers contain 2 signals that reveal what actually drives their hot-and-cold cycle.",
-        lockQuestion: "🔒 Which pattern are they actually running?",
-        ctaText: "Find Out Which One + What To Do Next →",
+        evidenceTeaser: "Your answers contain 2 specific signals that reveal what actually drives their hot-and-cold cycle.",
+        lockQuestion: "Which pattern are they actually running?",
+        ctaText: "Reveal My Path & Next Move — $3.99",
         modal: {
           headline: "Why Do They Disappear The Second Things Feel Real?",
           subtitle: "They give you just enough warmth to keep you holding on. Your answers reveal whether this is guarded hesitation — or keeping you on reserve.",
-          offerTitle: "Find Out What's Driving Their Hot & Cold Cycle",
+          offerTitle: "Unlock Your Full Behavioral Diagnosis & Action Plan",
           bullets: [
             "The 2 signals exposing their true availability and intent",
-            "What will immediately prove if they value you or just the validation",
-            "Exactly what to do over the next 7 days to regain your power",
-            "What to text next — to end mixed signals without chasing"
+            "The behavioral test that proves if they value you or just the attention",
+            "Your step-by-step 7-day action playbook to regain your power",
+            "Word-for-word scripts to end mixed signals without chasing"
           ],
-          cta: "Show Me What To Do Next — $3.99"
+          cta: "Reveal My Path & Next Move — $3.99"
         }
       };
 
@@ -160,31 +160,31 @@ export function getArchetypeCliffhanger(
     default:
       return {
         tagline: "High behavioral alignment. Rare emotional consistency.",
-        subSummary: "Actions match words across key indicators — leaving you wondering when the next step happens.",
+        subSummary: "Their actions match their words across key indicators — leaving you wondering when and how the next step happens.",
         headline: "Are They Preparing To Step Up — Or Waiting For Your Green Light?",
         lead: "Your behavioral scores point to one of two final transition phases:",
         optionA: {
           title: "Path A: Quiet Preparation",
-          description: "A mature partner who has already chosen you and is timing the formal commitment."
+          description: "A partner who has already chosen you and is timing the formal commitment."
         },
         optionB: {
           title: "Path B: Waiting For Reassurance",
-          description: "A respectful partner ready to commit, but cautious of overstepping without clear mutual cues."
+          description: "Ready to commit, but cautious of overstepping without clear mutual cues."
         },
-        evidenceTeaser: "Your answers contain 2 signals revealing their exact readiness to make this official.",
-        lockQuestion: "🔒 What is their actual readiness to make this official?",
-        ctaText: "Find Out Which One + What To Do Next →",
+        evidenceTeaser: "Your answers contain 2 specific signals revealing their exact readiness to make this official.",
+        lockQuestion: "What is their actual readiness to make this official?",
+        ctaText: "Reveal My Path & Next Move — $3.99",
         modal: {
           headline: "Are They Waiting On You — Or Ready To Make It Official?",
-          subtitle: "The signs are overwhelmingly strong. Your answers reveal their exact readiness level and how to guide this into a defined, secure commitment.",
-          offerTitle: "Find Out How to Seal This Into a Full Commitment",
+          subtitle: "The signs are overwhelmingly positive. Your answers reveal their exact readiness level and how to guide this into a defined, secure commitment.",
+          offerTitle: "Unlock Your Full Behavioral Diagnosis & Action Plan",
           bullets: [
             "The 2 signals confirming they have already chosen you",
-            "What would prove they're 100% ready for the label",
-            "Exactly what to do over the next 7 days to transition smoothly",
-            "What to say next — to invite commitment with zero awkwardness"
+            "What would prove they're 100% ready for the formal label",
+            "Your step-by-step 7-day action playbook to transition smoothly",
+            "Word-for-word scripts to invite commitment with zero awkwardness"
           ],
-          cta: "Show Me What To Do Next — $3.99"
+          cta: "Reveal My Path & Next Move — $3.99"
         }
       };
   }

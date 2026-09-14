@@ -16,7 +16,6 @@ interface QuizResultProps {
 
 export const QuizResult: React.FC<QuizResultProps> = ({ result, onReset, initialUnlocked = false }) => {
   const [isUnlocked, setIsUnlocked] = useState(initialUnlocked);
-  // Auto-open paywall modal 3 seconds after diagnosis completion
   const [isPaywallOpen, setIsPaywallOpen] = useState(false);
   const autoOpenTriggered = React.useRef(false);
 
@@ -29,7 +28,7 @@ export const QuizResult: React.FC<QuizResultProps> = ({ result, onReset, initial
     }, 3000);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [initialUnlocked]);
 
   useEffect(() => {
     if (initialUnlocked) {
@@ -179,22 +178,90 @@ export const QuizResult: React.FC<QuizResultProps> = ({ result, onReset, initial
         </div>
       </div>
 
+      {/* Core Behavioral Pattern Analysis (Substantive Free Value) */}
+      <div className="bg-palette-white border border-palette-slate/15 rounded-3xl p-5 sm:p-7 mb-6 sm:mb-8 shadow-soft-flat">
+        <div className="flex items-center justify-between mb-3">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-palette-lilac/40 text-palette-slate text-[11px] font-extrabold border border-palette-slate/10">
+            <Sparkles className="w-3.5 h-3.5 text-palette-coral" />
+            <span>BEHAVIORAL PATTERN ANALYSIS</span>
+          </div>
+          <span className="text-[10px] sm:text-xs font-bold text-palette-slate/60">
+            Free Diagnostic Breakdown
+          </span>
+        </div>
+
+        <h3 className="font-black text-palette-slate text-base sm:text-lg md:text-xl leading-snug mb-2">
+          {report.sections[0]?.title || "What Your Behavioral Dynamics Reveal"}
+        </h3>
+        <p className="text-xs sm:text-sm text-palette-slate/75 leading-relaxed font-medium mb-4">
+          {report.sections[0]?.paragraphs[0]}
+        </p>
+
+        <div className="space-y-2.5 pt-3.5 border-t border-palette-slate/10">
+          <div className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider text-palette-slate/60 mb-1">
+            Key Behavioral Observations
+          </div>
+          {report.summaryHighlights.map((highlight, idx) => (
+            <div
+              key={idx}
+              className="flex items-start gap-2.5 p-3 rounded-2xl bg-palette-cream/40 border border-palette-slate/10 text-xs sm:text-sm font-semibold text-palette-slate"
+            >
+              <span className="w-5 h-5 rounded-full bg-palette-slate text-palette-sand flex items-center justify-center text-[10px] shrink-0 font-black mt-0.5">
+                ✦
+              </span>
+              <span className="leading-snug">{highlight}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* Dynamic Dichotomy Cliffhanger Box */}
       <div className="bg-palette-white border border-palette-slate/15 rounded-3xl p-5 sm:p-7 mb-6 sm:mb-8 shadow-soft-flat">
-        {/* Attraction vs Commitment Meter (Kept for scientific data trust) */}
-        <div className="bg-palette-cream/60 rounded-2xl p-3.5 sm:p-4 border border-palette-slate/10 mb-5 sm:mb-6">
-          <div className="flex items-center justify-between text-xs sm:text-sm font-bold mb-2">
-            <span className="text-palette-coral">Natural Attraction: {scores.attraction}%</span>
-            <span className="text-palette-slate">Commitment Intent: {scores.commitment}%</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="flex-1 bg-palette-slate/10 h-2.5 sm:h-3 rounded-full overflow-hidden flex">
-              <div className="h-full bg-palette-coral" style={{ width: `${scores.attraction}%` }} />
-              <div className="h-full bg-palette-slate" style={{ width: `${scores.commitment}%` }} />
-            </div>
-            <span className="text-[11px] sm:text-xs font-black text-white px-2 sm:px-2.5 py-0.5 rounded-lg bg-palette-slate shrink-0">
-              Gap = {Math.abs(gap)}%
+        {/* Attraction vs Commitment Dual-Track Comparison Meter */}
+        <div className="bg-palette-cream/60 rounded-2xl p-4 sm:p-5 border border-palette-slate/10 mb-5 sm:mb-6">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-xs sm:text-sm font-extrabold text-palette-slate">
+              Behavioral Disconnect Comparison
             </span>
+            <span className="text-[11px] sm:text-xs font-black text-white px-2.5 py-0.5 rounded-lg bg-palette-slate shrink-0">
+              Gap = {Math.abs(gap)} pts
+            </span>
+          </div>
+
+          <div className="space-y-2.5">
+            {/* Natural Attraction Track */}
+            <div>
+              <div className="flex items-center justify-between text-xs font-bold mb-1">
+                <span className="text-palette-coral flex items-center gap-1.5 font-extrabold">
+                  <span className="w-2 h-2 rounded-full bg-palette-coral inline-block" />
+                  Natural Attraction
+                </span>
+                <span className="text-palette-slate font-black">{scores.attraction} / 100</span>
+              </div>
+              <div className="w-full bg-palette-white h-2 sm:h-2.5 rounded-full overflow-hidden border border-palette-slate/10">
+                <div
+                  className="h-full bg-palette-coral rounded-full transition-all duration-500"
+                  style={{ width: `${scores.attraction}%` }}
+                />
+              </div>
+            </div>
+
+            {/* Commitment Intent Track */}
+            <div>
+              <div className="flex items-center justify-between text-xs font-bold mb-1">
+                <span className="text-palette-slate flex items-center gap-1.5 font-extrabold">
+                  <span className="w-2 h-2 rounded-full bg-palette-slate inline-block" />
+                  Commitment Intent
+                </span>
+                <span className="text-palette-slate font-black">{scores.commitment} / 100</span>
+              </div>
+              <div className="w-full bg-palette-white h-2 sm:h-2.5 rounded-full overflow-hidden border border-palette-slate/10">
+                <div
+                  className="h-full bg-palette-slate rounded-full transition-all duration-500"
+                  style={{ width: `${scores.commitment}%` }}
+                />
+              </div>
+            </div>
           </div>
         </div>
 
@@ -233,9 +300,12 @@ export const QuizResult: React.FC<QuizResultProps> = ({ result, onReset, initial
           </div>
         </div>
 
-        {/* Evidence Teaser & Unlock Hook */}
-        <div className="bg-palette-slate text-white rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xs">
-          <div>
+        {/* Evidence Teaser Hook (Curiosity transition without duplicate $3.99 button) */}
+        <div className="bg-palette-slate text-white rounded-2xl p-4 sm:p-5 flex items-center gap-3.5 shadow-xs">
+          <div className="w-9 h-9 rounded-xl bg-palette-coral/20 border border-palette-coral/30 flex items-center justify-center text-palette-coral shrink-0 font-black text-base">
+            ?
+          </div>
+          <div className="flex-1">
             <p className="text-xs sm:text-sm font-bold text-palette-sand">
               {cliffhanger.evidenceTeaser}
             </p>
@@ -243,55 +313,43 @@ export const QuizResult: React.FC<QuizResultProps> = ({ result, onReset, initial
               {cliffhanger.lockQuestion}
             </p>
           </div>
-          <button
-            onClick={() => setIsPaywallOpen(true)}
-            className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-palette-coral text-white font-extrabold text-xs sm:text-sm hover:opacity-95 transition-all shrink-0 cursor-pointer shadow-soft-coral"
-          >
-            {cliffhanger.ctaText}
-          </button>
         </div>
       </div>
 
-      {/* mixedsigns Social Share Card Preview */}
-      <ShareCard result={result} />
-
       {/* Paywall / Unlocked Deep Report Container */}
       {!isUnlocked ? (
-        <div className="soft-card p-5 sm:p-8 relative overflow-hidden mb-6 sm:mb-8 border border-palette-slate/20 bg-palette-white">
-          <div className="flex items-center justify-between mb-5 sm:mb-6">
+        <div className="bg-palette-white border border-palette-slate/20 rounded-3xl p-5 sm:p-7 mb-6 sm:mb-8 shadow-soft-flat">
+          <div className="flex items-center justify-between mb-4 sm:mb-5">
             <div className="flex items-center gap-2">
               <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-palette-coral/15 flex items-center justify-center text-palette-coral">
-                <Lock className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                <Lock className="w-4 h-4" />
               </div>
-              <h3 className="text-base sm:text-lg md:text-xl font-black text-palette-slate">
+              <h3 className="text-sm sm:text-base md:text-lg font-black text-palette-slate">
                 {cliffhanger.modal.offerTitle}
               </h3>
             </div>
-            <span className="text-[10px] sm:text-xs text-palette-slate font-bold bg-palette-lilac/50 px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full border border-palette-slate/15">
-              5 Sections + 7-Day Plan Locked
+            <span className="text-[10px] sm:text-xs font-bold text-palette-slate bg-palette-lilac/50 px-2.5 py-1 rounded-full border border-palette-slate/15">
+              Instant Access · $3.99
             </span>
           </div>
 
-          {/* Locked Insight Cards Preview */}
-          <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
-            {report.sections.slice(0, 4).map((sec, idx) => (
-              <div key={idx} className="bg-palette-cream/40 border border-palette-slate/10 rounded-2xl p-3.5 sm:p-4 filter blur-[1.5px] opacity-70 select-none">
-                <div className="flex items-center justify-between font-bold text-xs sm:text-sm text-palette-slate mb-1">
-                  <span>🔒 {sec.tag}: {sec.title}</span>
-                  <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+          {/* Key Unlocked Deliverables */}
+          <div className="space-y-2.5 mb-5 sm:mb-6">
+            {cliffhanger.modal.bullets.map((bullet, idx) => (
+              <div key={idx} className="flex items-start gap-2.5 p-3 rounded-2xl bg-palette-cream/40 border border-palette-slate/10 text-xs sm:text-sm font-semibold text-palette-slate">
+                <div className="w-5 h-5 rounded-full bg-palette-slate text-palette-sand flex items-center justify-center text-[10px] shrink-0 font-black mt-0.5">
+                  {idx + 1}
                 </div>
-                <p className="text-[11px] sm:text-xs text-palette-slate/60 truncate">
-                  {sec.paragraphs[0]}
-                </p>
+                <span className="leading-snug">{bullet}</span>
               </div>
             ))}
           </div>
 
           {/* Big Unlock Button */}
-          <div className="text-center relative z-20">
+          <div className="text-center">
             <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+              whileHover={{ scale: 1.01 }}
+              whileTap={{ scale: 0.99 }}
               onClick={() => setIsPaywallOpen(true)}
               className="w-full sm:w-auto px-8 sm:px-10 py-3.5 sm:py-4 rounded-2xl bg-palette-coral text-white font-extrabold text-sm sm:text-base shadow-soft-coral flex items-center justify-center gap-2.5 sm:gap-3 mx-auto cursor-pointer border border-palette-coral"
             >
@@ -299,8 +357,8 @@ export const QuizResult: React.FC<QuizResultProps> = ({ result, onReset, initial
               <span>{cliffhanger.modal.cta}</span>
             </motion.button>
 
-            <p className="mt-2.5 text-[10px] sm:text-[11px] text-palette-slate/65 font-semibold flex items-center justify-center gap-1.5">
-              <span>One-time payment · Instant access · No subscription</span>
+            <p className="mt-2.5 text-[10px] sm:text-[11px] text-palette-slate/65 font-semibold flex items-center justify-center gap-2">
+              <span>One-time payment · Instant access · 100% Confidential</span>
             </p>
           </div>
         </div>
@@ -390,6 +448,9 @@ export const QuizResult: React.FC<QuizResultProps> = ({ result, onReset, initial
           </div>
         </motion.div>
       )}
+
+      {/* mixedsigns Social Share Card Preview */}
+      <ShareCard result={result} />
 
       {/* Share / Restart Actions */}
       <div className="flex justify-center">

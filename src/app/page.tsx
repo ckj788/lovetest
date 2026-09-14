@@ -7,7 +7,7 @@ import { QuizLanding } from '../components/QuizLanding';
 import { QuizQuestion } from '../components/QuizQuestion';
 import { QuizCalculating } from '../components/QuizCalculating';
 import { QuizResult } from '../components/QuizResult';
-import { QUIZ_QUESTIONS } from '../data/questions';
+import { QUIZ_QUESTIONS, ARCHETYPES } from '../data/questions';
 import { calculateQuizResult } from '../utils/calculator';
 import { QuizResultData } from '../types/quiz';
 
@@ -18,12 +18,32 @@ export default function Home() {
   const [result, setResult] = useState<QuizResultData | null>(null);
   const [initialUnlocked, setInitialUnlocked] = useState(false);
 
-  // Restore state if returning from Stripe Checkout (e.g. ?unlocked=true)
+  // Restore state if returning from Stripe Checkout (e.g. ?unlocked=true) or dev preview (?preview=archetype_id)
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
       const isUnlockedParam = params.get('unlocked') === 'true';
       const sessionId = params.get('session_id');
+      const previewParam = params.get('preview');
+
+      if (previewParam) {
+        const mockArch = ARCHETYPES.find((a) => a.id === previewParam);
+        if (mockArch) {
+          const mockResult: QuizResultData = {
+            scores: { attraction: 79, investment: 62, commitment: 31, exclusivity: 65 },
+            totalScore: 64,
+            gap: 48,
+            archetype: mockArch,
+            freeSummary: mockArch.description,
+          };
+          setResult(mockResult);
+          setStep('result');
+          if (isUnlockedParam) {
+            setInitialUnlocked(true);
+          }
+          return;
+        }
+      }
 
       const savedResult = localStorage.getItem('mixedsigns_quiz_result');
       if (savedResult) {
