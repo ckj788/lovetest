@@ -57,10 +57,53 @@ export interface Archetype {
   };
 }
 
+export interface PersonalizedSignal {
+  number: number;
+  tag: string;
+  headline: string;
+  userStated: string;
+  counterpartObservation: string;
+  whyThisMatters: string;
+}
+
+export interface ProofTest {
+  headline: string;
+  timeframe: string;
+  coreRule: string;
+  checklist: string[];
+  pathASign: string;
+  pathBSign: string;
+}
+
+export interface DayStep {
+  day: number;
+  title: string;
+  instruction: string;
+  focus: string;
+}
+
+export interface ResponseDecoderOption {
+  type: 'green' | 'yellow' | 'red';
+  title: string;
+  sampleQuote: string;
+  psychologicalMeaning: string;
+  recommendedAction: string;
+}
+
+export interface ActionPlaybook {
+  sevenDayPlan: DayStep[];
+  scriptHeadline: string;
+  scriptContext: string;
+  exactScript: string;
+  deliveryTip: string;
+  responseDecoders: ResponseDecoderOption[];
+}
+
 export interface QuizResultData {
   scores: Record<Dimension, number>;
   totalScore: number;
   gap: number; // Attraction - Commitment
   archetype: Archetype;
   freeSummary: string;
+  userAnswers?: Record<number, string | string[]>;
 }

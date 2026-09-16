@@ -353,62 +353,59 @@ export const ARCHETYPES: Archetype[] = [
           tag: "01 // WHAT IS ACTUALLY HAPPENING",
           title: "Chemistry without commitment is high-stakes entertainment.",
           paragraphs: [
-            "When you are together, the energy is undeniable. They stare into your eyes, send flirty memes, and talk as if you are already theirs.",
-            "Yet, when Monday rolls around, plans are vague, texts turn sporadic, and the conversation stays strictly surface-level.",
-            "They are not confused about how attractive you are. They are simply comfortable receiving maximum emotional validation with zero obligation.",
-            "You are confusing intense chemistry with deep compatibility. Chemistry is cheap; intentional effort is expensive."
+            "When you are together, the energy is undeniable. Mutual attraction, playful banter, and magnetic body language come effortlessly.",
+            "Yet, during ordinary weekdays, plans remain vague, communication turns sporadic, and conversations avoid real relationship topics.",
+            "Their actions reflect genuine enjoyment of the chemistry, but observable behavior shows no active effort to translate attraction into relationship structure.",
+            "Intense chemistry is an emotional state; commitment is a behavioral decision. Confusing the two creates perpetual uncertainty."
           ]
         },
         {
           tag: "02 // WHY YOU ARE STILL UNSURE",
-          title: "The dopamine highs are keeping you hooked on potential.",
+          title: "The dopamine highs are keeping you focused on potential rather than patterns.",
           paragraphs: [
-            "Because the highs feel so electric, you convince yourself that the lack of commitment is just 'bad timing' or 'fear of getting hurt.'",
-            "You find yourself re-reading past texts to find hidden proof that they care.",
-            "Here is the brutal truth: If someone treats you like an option, no amount of mental gymnastics will turn them into a committed partner.",
-            "They like you enough to keep you on their roster, but not enough to lock you down."
+            "Because the in-person highs feel electric, it is easy to assume that commitment hesitation is just 'bad timing' or 'fear of vulnerability.'",
+            "However, analyzing their private thoughts will not change their observable behavior.",
+            "Whatever their private feelings are, their actions demonstrate an observable pattern: high enthusiasm for private closeness, but low urgency for shared responsibility."
           ]
         },
         {
           tag: "03 // THE GAP BREAKDOWN",
           title: "A massive Attraction–Commitment disconnect.",
           paragraphs: [
-            "Your results show a huge gap between their Natural Attraction and their actual Commitment Intent score.",
-            "They enjoy the romantic perks—intimacy, late-night chats, ego boost—while keeping one foot firmly outside the door.",
-            "As long as you accept low-effort breadcrumbs, they have zero reason to upgrade to a committed relationship.",
-            "Why would someone buy the subscription when you give away full access for free?"
+            "Your results show a substantial gap between Natural Attraction and actual Commitment Intent.",
+            "The dynamic provides regular validation and intimacy, but lacks the intentional planning required for relationship progression.",
+            "When partner-level access is granted without structural definition, the dynamic naturally remains in comfortable ambiguity."
           ]
         },
         {
           tag: "04 // THE QUESTION TO WATCH",
-          title: "Stop tracking flirts. Start tracking sacrifices.",
+          title: "Stop tracking flirts. Start tracking concrete initiative.",
           paragraphs: [
-            "Stop asking: 'Do they feel the spark when we are together?' (Of course they do).",
-            "Start asking: 'Are they willing to change their schedule, publicly claim me, and define boundaries to keep me in their life?'",
-            "Watch whether they plan dates days in advance or only reach out when bored at 11 PM.",
-            "A partner (man/woman) who is genuinely afraid of losing you will never leave the door wide open for someone else to step in."
+            "Stop asking: 'Do they feel the spark when we are together?' (Your scores already confirm they do).",
+            "Start asking: 'Are they willing to make advance plans, publicly acknowledge this connection, and respect boundaries?'",
+            "Observable behavior will quickly reveal whether someone is ready to invest or merely enjoying the spark."
           ]
         },
         {
           tag: "05 // 7-DAY ACTION BLUEPRINT",
-          title: "Cut the free trial immediately.",
+          title: "Require structural effort.",
           paragraphs: [
-            "Do not start an emotional fight. Simply reclaim your high-value boundaries with cool composure."
+            "Do not start an emotional argument. Calmly shift your posture from passive availability to structured standards."
           ],
           bullets: [
-            "Day 1–2: Stop initiating all texts and calls. Zero outreach.",
-            "Day 3–4: If they text a dry 'wyd' or send a meme, respond warmly after a few hours, but do not prolong the small talk.",
-            "Day 5–7: The 72-Hour Test. If they want to see you, require a concrete day, time, and public plan. Say no to last-minute hangs."
+            "Day 1–2: Stop propping up the conversation. Let communication settle at their unprompted baseline.",
+            "Day 3–4: Respond warmly to check-ins, but decline vague or last-minute hangouts.",
+            "Day 5–7: Deliver the alignment script outlined below. Require advance planning and public clarity."
           ]
         }
       ],
       bottomLine: [
-        "Stop building a home in someone else's waiting room.",
-        "You do not need to prove your worth to someone who only values you when it is convenient.",
-        "Chemistry gets people into a talking stage; character and commitment keep them there. Never settle for the first half without the second."
+        "Don't read their mind. Read the pattern.",
+        "High chemistry is common; consistent behavioral alignment is rare. Measure whether the spark translates into intentional, structured effort.",
+        "When you stop over-functioning to preserve the spark, reality will clearly show whether they are ready to step forward."
       ],
-      socialQuote: "Chemistry without commitment is just high-stakes entertainment. Stop giving partner privileges on a free trial.",
-      shareSummary: "High chemical spark stuck in the Delulu Zone. Time to enforce boundaries or walk."
+      socialQuote: "Don't read their mind. Read the pattern. Measure whether chemistry translates into structural commitment.",
+      shareSummary: "High chemical spark with lagging commitment. Time to test for real forward momentum."
     },
     unlockedInsights: {
       whyNotAdvancing: "They get 100% of your intimacy and emotional focus with 0% relational responsibility. They have no incentive to change.",
@@ -447,17 +444,17 @@ export const ARCHETYPES: Archetype[] = [
           paragraphs: [
             "You have inside jokes, favorite spots together, and regular quality time. To any outsider, you look like a devoted couple.",
             "Yet, whenever the topic of the future, exclusivity, or defining the relationship comes up, the room turns quiet or they give the classic 'Let's just see where things go.'",
-            "They are not looking for a destination; they are enjoying an open-ended layover.",
-            "The dangerous part about a situationship is that it feels cozy enough to keep you from leaving, but ambiguous enough to keep you perpetually anxious."
+            "The dynamic functions with high emotional intimacy, but carefully avoids structural accountability.",
+            "The dangerous part about a situationship is that it feels cozy enough to keep you from leaving, but ambiguous enough to keep you perpetually uncertain."
           ]
         },
         {
           tag: "02 // WHY YOU ARE STILL UNSURE",
-          title: "You are waiting for time to do the work that boundaries must do.",
+          title: "You are waiting for time to do the work that clear standards must do.",
           paragraphs: [
-            "You tell yourself: 'If we just spend another month together, they will realize they cannot live without me.'",
-            "Waiting patiently inside an undefined dynamic does not create respect; it signals that your standards are negotiable.",
-            "They are not confused. They are getting everything they want on their terms."
+            "You tell yourself: 'If we just spend another month together, the bond will naturally become official.'",
+            "However, waiting passively inside an undefined dynamic rarely creates progression; it simply establishes the undefined status as the normal baseline.",
+            "Their current behavior allows them to receive closeness and comfort without making the relationship more defined."
           ]
         },
         {
@@ -465,9 +462,9 @@ export const ARCHETYPES: Archetype[] = [
           title: "Lagging commitment masked by daily routine.",
           paragraphs: [
             "Your scores reveal high habitual investment paired with near-zero forward momentum.",
-            "They are using your emotional availability to meet their need for companionship while preserving freedom to walk away guilt-free at any second.",
-            "The phrase 'I'm not ready for a relationship right now' always has an unsaid ending: '...with you.'",
-            "Recognizing this is not a defeat; it is the moment you reclaim your power."
+            "Whatever their private intentions are, the observable pattern is the same: intimacy is increasing faster than commitment.",
+            "When emotional availability is consistently granted without relational clarity, the dynamic naturally settles into comfortable stagnation.",
+            "Observing this pattern objectively is not a defeat; it is the foundation for making clear, dignified choices about your time."
           ]
         },
         {
@@ -476,30 +473,30 @@ export const ARCHETYPES: Archetype[] = [
           paragraphs: [
             "Stop asking: 'Did we have a sweet time together last night?'",
             "Start asking: 'Is this dynamic moving toward exclusivity, or is it spinning its wheels in the same gray loop?'",
-            "Notice how they react when you mention your own standards or when you spend your weekends with other friends.",
-            "A partner (man/woman) who truly treasures you will secure your place in their life before someone else does."
+            "Notice how they react when you communicate your standards or create healthy personal space.",
+            "Observable behavior will always reveal whether someone is prepared to step up when clarity is invited."
           ]
         },
         {
           tag: "05 // 7-DAY ACTION BLUEPRINT",
           title: "Shift from passive waiting to active boundary setting.",
           paragraphs: [
-            "You cannot negotiate commitment by staying silent. You must be willing to risk losing the situationship to gain a real relationship."
+            "You cannot negotiate commitment by staying silent. A healthy relationship requires both people to be willing to define what they are building."
           ],
           bullets: [
-            "Day 1–3: Withdraw partner privileges. Stop organizing their life or making yourself available at their beck and call.",
-            "Day 4–5: Fill your calendar with your own ambitions, social events, and passions.",
-            "Day 6–7: Have the calm, unapologetic DTR talk. State what you are building toward, and if they balk, walk away with head held high."
+            "Day 1–3: Stop over-functioning. Stop propping up the dynamic with extra initiation or scheduling effort.",
+            "Day 4–5: Reinvest attention into your personal priorities, social circles, and independent goals.",
+            "Day 6–7: Have the calm, low-pressure alignment conversation outlined below. If they resist clarity, step back with dignity."
           ]
         }
       ],
       bottomLine: [
-        "A partner (man/woman) who wants you does not leave room for doubt.",
-        "If you have to play detective to figure out where you stand, you are standing in the wrong place.",
-        "You can never win a situationship by waiting it out. Choose clarity over comfortable confusion every single time."
+        "Don't read their mind. Read the pattern.",
+        "When a connection creates emotional closeness without structural clarity, reality will clarify the dynamic the moment you communicate your standards.",
+        "Stop analyzing private feelings in secret. Start tracking observable forward movement in daylight."
       ],
-      socialQuote: "You cannot negotiate commitment with someone who benefits from your lack of boundaries. Choose clarity over confusion.",
-      shareSummary: "Comfortable gray zone with zero structural progress. Time for a definitive DTR or graceful exit."
+      socialQuote: "Don't read their mind. Read the pattern. Measure whether intimacy translates into intentional commitment.",
+      shareSummary: "Comfortable gray zone with zero structural progress. Time for clear alignment or a dignified exit."
     },
     unlockedInsights: {
       whyNotAdvancing: "They have achieved a perfect equilibrium: relationship intimacy with single freedom. They have no urgency to disrupt this.",
@@ -525,73 +522,72 @@ export const ARCHETYPES: Archetype[] = [
     description: 'Whenever you start moving on, they pop up with a story reply or a random emoji. As soon as you warm up, they disappear again.',
     gapAnalysis: 'Severe Investment Deficit: They pay in zero-cost digital crumbs while consuming your genuine emotional energy.',
     report: {
-      hook: "They do not miss you; they miss the validation of knowing you are still waiting. Breadcrumbs will never make a meal.",
+      hook: "Intermittent attention creates high emotional anxiety. Observable patterns show low-cost digital check-ins with near-zero structural momentum.",
       summaryHighlights: [
-        "Zero-effort digital pings (story likes, fire emojis, random 'wyd').",
-        "Disappears the moment you ask for concrete plans or real presence.",
-        "Core conflict: Keeping you on their bench as an emergency ego boost."
+        "Sporadic digital pings (story reactions, memes, late-night 'wyd').",
+        "Communication drops off when advance planning or emotional depth is requested.",
+        "Core pattern: Keeping the connection warm without investing real effort."
       ],
       sections: [
         {
           tag: "01 // WHAT IS ACTUALLY HAPPENING",
-          title: "You are dealing with minimum effort for maximum ego reward.",
+          title: "Low-cost check-ins without real-world momentum.",
           paragraphs: [
-            "They like your story within 3 minutes of posting, but leave your actual text unanswered for two days.",
-            "They pop into your notifications just often enough to make sure they are still on your mind, then vanish before any real conversation can take place.",
-            "This is not shyness. This is tactical ego hoarding.",
-            "They do not want the responsibility of being with you, but cannot stand the thought of you moving on to someone else."
+            "They react to social posts or send brief messages, but actual conversations remain brief and unstructured.",
+            "Contact occurs just frequently enough to maintain familiarity, but stops short of regular dates or future planning.",
+            "The observable pattern shows low-cost check-ins that preserve contact without generating real-world momentum.",
+            "Whatever their private motivation, the dynamic functions to maintain familiarity without accepting relationship responsibility."
           ]
         },
         {
           tag: "02 // WHY YOU ARE STILL UNSURE",
-          title: "Intermittent reinforcement is the most addictive psychological trap.",
+          title: "Intermittent reinforcement creates behavioral doubt.",
           paragraphs: [
-            "Psychology proves that unpredictable rewards create the strongest chemical obsession. When someone is hot and cold, your brain craves the warm moments like a jackpot.",
-            "Every time they drop a tiny crumb of attention, you think: 'See? They really do care!'",
-            "Look at the scoreboard: How many real dates have they planned this month? How much actual time have they given you?",
-            "Digital crumbs are not love. They are low-cost placeholders."
+            "Unpredictable pacing makes it difficult to distinguish between temporary busy periods and chronic lack of intent.",
+            "Each warm interaction briefly revives hope that the connection is about to stabilize.",
+            "Look at observable metrics: How many advance dates have they planned? How consistent is their communication across an entire week?",
+            "Digital reactions require zero logistical sacrifice and cannot be used as evidence of commitment readiness."
           ]
         },
         {
           tag: "03 // THE GAP BREAKDOWN",
-          title: "Paying in pennies while demanding gold.",
+          title: "An observable investment deficit.",
           paragraphs: [
-            "Your score reveals an alarming Investment Deficit. Their Time & Effort score is at the floor compared to your emotional output.",
-            "They are treating you like a backup tab in a browser—one never closed, but never actually focused on.",
-            "You are investing deep emotional currency into someone who spends 3 seconds of thumb movement on you.",
-            "The math will never work in your favor until you stop over-paying."
+            "Your score reveals a significant imbalance between your emotional responsiveness and their actual investment of time and logistical effort.",
+            "They maintain passive access to your attention without allocating dedicated space in their schedule.",
+            "A connection cannot mature into a relationship when effort remains strictly reactive.",
+            "Setting a standard for consistency is the only way to test whether this dynamic has real potential."
           ]
         },
         {
           tag: "04 // THE QUESTION TO WATCH",
-          title: "Ignore words and emojis. Measure physical presence.",
+          title: "Ignore digital pings. Measure tangible presence.",
           paragraphs: [
-            "Stop asking: 'Why did they send that flame emoji on my picture?'",
-            "Start asking: 'Does this interaction come with a date, time, and physical presence?'",
-            "If an interaction costs them zero effort, it holds zero value.",
-            "A high-value partner does not interpret breadcrumbs as an invitation to chase."
+            "Stop asking: 'Why did they send that reaction or meme?'",
+            "Start asking: 'Does this interaction come with a confirmed time, date, and physical presence?'",
+            "Observable behavior will always reveal whether someone is prepared to invest or simply checking in out of convenience."
           ]
         },
         {
           tag: "05 // 7-DAY ACTION BLUEPRINT",
-          title: "Starve the ego trap. Go completely silent.",
+          title: "Calibrate to observable effort.",
           paragraphs: [
-            "The only way to break a breadcrumb loop is to stop providing the ego fuel they depend on."
+            "The most effective way to test an inconsistent dynamic is to stop rewarding low-effort communication."
           ],
           bullets: [
-            "Day 1–2: Mute their stories and hide your own stories from their view. Stop checking who viewed your profile.",
-            "Day 3–4: When they send a low-effort DM or emoji, leave it on read or react with a simple like. Do not open a conversation.",
-            "Day 5–7: Reinvest your precious attention into your real-world goals, friends, and people who know how to ask you out properly."
+            "Day 1–2: Stop initiating contact and cease responding to low-cost digital reactions.",
+            "Day 3–4: When they reach out with a casual text, respond politely but do not carry the conversation.",
+            "Day 5–7: Deliver the alignment script. Require clear, advance plans or step back completely."
           ]
         }
       ],
       bottomLine: [
-        "A partner (man/woman) who loves you feeds your soul, not your anxiety.",
-        "Take your name off their roster and watch how quickly the silence becomes your peace.",
-        "You deserve a feast of consistency, devotion, and real effort. Stop settling for crumbs."
+        "Don't read their mind. Read the pattern.",
+        "Intermittent attention is an observable pattern, not an enigma to decipher. Measure whether communication is paired with reliable execution.",
+        "When you stop responding to low-cost digital pings, reality will quickly reveal whether they are prepared to invest real effort."
       ],
-      socialQuote: "They do not miss you; they miss the validation of knowing you are still waiting. Breadcrumbs will never make a meal.",
-      shareSummary: "Low-effort ego hoarding with zero genuine investment. Mute the noise and reclaim your peace."
+      socialQuote: "Don't read their mind. Read the pattern. Measure whether digital presence translates into real-world commitment.",
+      shareSummary: "Intermittent attention with lagging investment. Time to require consistency or step back."
     },
     unlockedInsights: {
       whyNotAdvancing: "They hoard your attention for validation. They have no desire to commit, but want to ensure nobody else has you.",

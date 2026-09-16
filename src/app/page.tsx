@@ -29,12 +29,19 @@ export default function Home() {
       if (previewParam) {
         const mockArch = ARCHETYPES.find((a) => a.id === previewParam);
         if (mockArch) {
+          const mockAnswersByArchetype: Record<string, Record<number, string | string[]>> = {
+            situationship: { 1: 'q1_a', 2: 'q2_b', 3: 'q3_b', 4: 'q4_b', 5: ['q5_1', 'q5_2'], 6: 'q6_c', 7: 'q7_b', 8: 'q8_c' },
+            chemistry_trap: { 1: 'q1_a', 2: 'q2_d', 3: 'q3_b', 4: 'q4_c', 5: ['q5_1'], 6: 'q6_c', 7: 'q7_c', 8: 'q8_b' },
+            slow_burner: { 1: 'q1_b', 2: 'q2_c', 3: 'q3_a', 4: 'q4_a', 5: ['q5_1', 'q5_4'], 6: 'q6_b', 7: 'q7_b', 8: 'q8_c' },
+            breadcrumber: { 1: 'q1_c', 2: 'q2_d', 3: 'q3_c', 4: 'q4_c', 5: ['q5_6'], 6: 'q6_c', 7: 'q7_d', 8: 'q8_d' },
+            quietly_serious: { 1: 'q1_a', 2: 'q2_a', 3: 'q3_a', 4: 'q4_a', 5: ['q5_1', 'q5_2', 'q5_3', 'q5_4', 'q5_5'], 6: 'q6_a', 7: 'q7_a', 8: 'q8_a' },
+          };
+
+          const answers = mockAnswersByArchetype[previewParam] || mockAnswersByArchetype.situationship;
+          const calculated = calculateQuizResult(answers);
           const mockResult: QuizResultData = {
-            scores: { attraction: 79, investment: 62, commitment: 31, exclusivity: 65 },
-            totalScore: 64,
-            gap: 48,
+            ...calculated,
             archetype: mockArch,
-            freeSummary: mockArch.description,
           };
           setResult(mockResult);
           setStep('result');

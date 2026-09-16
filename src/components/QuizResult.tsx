@@ -3,10 +3,31 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { QuizResultData } from '../types/quiz';
-import { Lock, Unlock, Sparkles, AlertCircle, CheckCircle2, ChevronRight, Compass, Heart, Activity } from 'lucide-react';
+import {
+  Lock,
+  Unlock,
+  Sparkles,
+  AlertCircle,
+  CheckCircle2,
+  ChevronRight,
+  Compass,
+  Heart,
+  Activity,
+  Calendar,
+  MessageSquare,
+  ArrowRight,
+  ShieldCheck,
+  HelpCircle,
+} from 'lucide-react';
 import { PaywallModal } from './PaywallModal';
 import { ShareCard } from './ShareCard';
-import { getArchetypeCliffhanger, getPathVerdict } from '../utils/cliffhangers';
+import {
+  getArchetypeCliffhanger,
+  getPathVerdict,
+  getPersonalizedSignals,
+  getProofTest,
+  getSevenDayPlaybook,
+} from '../utils/cliffhangers';
 
 interface QuizResultProps {
   result: QuizResultData;
@@ -47,9 +68,12 @@ export const QuizResult: React.FC<QuizResultProps> = ({ result, onReset, initial
     }
   }, [initialUnlocked]);
 
-  const { scores, totalScore, gap, archetype, freeSummary } = result;
+  const { scores, totalScore, gap, archetype, freeSummary, userAnswers } = result;
   const cliffhanger = getArchetypeCliffhanger(archetype.id, gap, scores);
   const pathVerdict = getPathVerdict(archetype.id, scores, gap);
+  const personalizedData = getPersonalizedSignals(archetype.id, userAnswers, scores, gap, pathVerdict.pathKey);
+  const proofTest = getProofTest(archetype.id, pathVerdict.pathKey);
+  const playbook = getSevenDayPlaybook(archetype.id);
   const report = archetype.report;
 
   return (
@@ -345,27 +369,25 @@ export const QuizResult: React.FC<QuizResultProps> = ({ result, onReset, initial
               REPORT UNLOCKED
             </div>
             <h3 className="text-lg sm:text-xl md:text-2xl font-black text-white">
-              《{archetype.name}》Deep Blueprint & Action Guide
+              《{archetype.name}》Behavioral Blueprint & Action Protocol
             </h3>
             <p className="text-xs text-palette-cream/80 font-medium mt-1">
-              Full behavioral breakdown & psychological analysis
+              Personalized Behavioral Diagnostic Instrument · mixedsigns
             </p>
           </div>
 
-          {/* Definitive Path Verdict Card */}
+          {/* 1. THE DEFINITIVE VERDICT CARD */}
           <div className="bg-palette-slate text-white rounded-3xl p-5 sm:p-7 md:p-8 shadow-soft-flat border-2 border-palette-coral/40 relative overflow-hidden">
-            {/* Top Badge */}
             <div className="flex flex-wrap items-center justify-between gap-2 mb-3 sm:mb-4">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-palette-sand text-palette-slate text-xs font-black tracking-wide">
                 <span>🎯</span>
                 <span>THE DEFINITIVE VERDICT</span>
               </div>
               <span className="text-[10px] sm:text-xs font-bold text-palette-cream/70">
-                Determined by your score pattern
+                Determined by your observable response pattern
               </span>
             </div>
 
-            {/* Verdict Path Title */}
             <div className="mb-3.5 sm:mb-4">
               <span className="text-[11px] sm:text-xs font-extrabold text-palette-sand block uppercase tracking-wider mb-1">
                 Your Confirmed Dynamic
@@ -375,33 +397,10 @@ export const QuizResult: React.FC<QuizResultProps> = ({ result, onReset, initial
               </h3>
             </div>
 
-            {/* Verdict Summary */}
             <p className="text-xs sm:text-sm md:text-base text-palette-cream/95 leading-relaxed font-medium mb-5 pb-5 border-b border-white/15">
               {pathVerdict.verdictSummary}
             </p>
 
-            {/* 2 Critical Behavioral Signals */}
-            <div className="mb-5">
-              <h4 className="text-[11px] sm:text-xs font-black tracking-wider uppercase text-palette-sand mb-2.5 flex items-center gap-1.5">
-                <span>🔍</span>
-                <span>2 CRITICAL BEHAVIORAL SIGNALS IN YOUR TEST</span>
-              </h4>
-              <div className="space-y-2.5">
-                {pathVerdict.signals.map((signal, sIdx) => (
-                  <div
-                    key={sIdx}
-                    className="bg-white/10 rounded-2xl p-3 sm:p-3.5 border border-white/15 text-xs sm:text-sm font-medium text-white flex items-start gap-2.5"
-                  >
-                    <span className="w-5 h-5 rounded-full bg-palette-coral text-white flex items-center justify-center text-[10px] font-black shrink-0 mt-0.5">
-                      {sIdx + 1}
-                    </span>
-                    <span className="leading-relaxed text-palette-cream/95">{signal}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Immediate Action Directive */}
             <div className="bg-palette-coral/20 border border-palette-coral/40 rounded-2xl p-4 sm:p-4.5">
               <h4 className="text-[11px] sm:text-xs font-black uppercase tracking-wider text-palette-coral mb-1 flex items-center gap-1.5">
                 <span>⚡</span>
@@ -413,67 +412,305 @@ export const QuizResult: React.FC<QuizResultProps> = ({ result, onReset, initial
             </div>
           </div>
 
-          {/* Core Hook Block */}
-          <div className="bg-palette-white rounded-3xl p-5 sm:p-6 shadow-xs border border-palette-slate/15">
-            <h4 className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-palette-coral mb-2">
-              EXECUTIVE DIAGNOSIS
-            </h4>
-            <p className="text-xs sm:text-sm md:text-base font-extrabold text-palette-slate leading-relaxed">
-              {report.hook}
+          {/* 2 & 3. WHY WE PUT YOU HERE & 2 PERSONALIZED SIGNALS */}
+          <div className="bg-palette-white rounded-3xl p-5 sm:p-7 shadow-soft-flat border border-palette-slate/15">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-7 h-7 rounded-full bg-palette-coral/15 flex items-center justify-center text-palette-coral text-sm font-black">
+                🔍
+              </div>
+              <h3 className="text-base sm:text-lg md:text-xl font-black text-palette-slate">
+                Why We Put You Here
+              </h3>
+            </div>
+            <p className="text-xs sm:text-sm text-palette-slate/75 font-medium mb-4 leading-relaxed">
+              We cross-referenced your actual test responses against our behavioral model. Two specific signals in your answers explain why your result leans toward this path:
             </p>
 
-            <div className="mt-3.5 sm:mt-4 pt-3.5 sm:pt-4 border-t border-palette-slate/10 space-y-2">
-              {report.summaryHighlights.map((highlight, hIdx) => (
-                <div key={hIdx} className="flex items-start gap-2 text-xs font-semibold text-palette-slate/80">
-                  <span className="text-palette-coral">✦</span>
-                  <span>{highlight}</span>
+            <div className="space-y-4 mb-5">
+              {personalizedData.structuredSignals.map((signal, sIdx) => (
+                <div key={sIdx} className="bg-palette-cream/40 rounded-2xl p-4 sm:p-5 border border-palette-slate/10 overflow-hidden">
+                  <div className="inline-block text-[11px] font-black px-2.5 py-0.5 rounded-full bg-palette-slate text-palette-sand mb-3">
+                    {signal.tag}
+                  </div>
+
+                  <div className="space-y-2">
+                    <div>
+                      <span className="text-[10px] font-black tracking-wider uppercase text-palette-coral block mb-1">
+                        WHAT YOU TOLD US
+                      </span>
+                      <p className="text-xs sm:text-sm font-semibold text-palette-slate/90 leading-snug">
+                        {signal.toldUs1}
+                      </p>
+                    </div>
+
+                    {signal.andText && (
+                      <div className="pt-1">
+                        <span className="inline-block text-[9px] font-black tracking-wider uppercase px-2 py-0.5 rounded bg-palette-slate/10 text-palette-slate mb-1">
+                          AND
+                        </span>
+                        <p className="text-xs sm:text-sm font-semibold text-palette-slate/85 leading-snug">
+                          {signal.andText}
+                        </p>
+                      </div>
+                    )}
+
+                    <div className="pt-1">
+                      <span className="inline-block text-[9px] font-black tracking-wider uppercase px-2 py-0.5 rounded bg-palette-coral/15 text-palette-coral mb-1">
+                        BUT
+                      </span>
+                      <p className="text-xs sm:text-sm font-semibold text-palette-slate/85 leading-snug">
+                        {signal.butText}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="mt-3.5 pt-3 border-t border-palette-slate/15 bg-palette-sand/25 -mx-4 -mb-4 sm:-mx-5 sm:-mb-5 p-3.5 sm:p-4 rounded-b-2xl">
+                    <span className="text-[10px] font-black tracking-wider uppercase text-palette-slate/75 block mb-1 flex items-center gap-1.5">
+                      <span className="text-palette-coral">✦</span>
+                      <span>WHAT THAT PATTERN SUGGESTS</span>
+                    </span>
+                    <p className="text-xs sm:text-sm font-extrabold text-palette-slate leading-snug">
+                      {signal.patternSuggests}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="p-3.5 rounded-2xl bg-palette-lilac/30 border border-palette-slate/10 text-xs sm:text-sm font-bold text-palette-slate text-center">
+              {personalizedData.conclusionText}
+            </div>
+          </div>
+
+          {/* 4. WHAT THIS DOES & DOESN'T MEAN (Brand core: Don't read their mind. Read the pattern.) */}
+          <div className="bg-palette-slate text-white rounded-3xl p-5 sm:p-7 shadow-soft-flat relative overflow-hidden">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 text-palette-sand text-[11px] sm:text-xs font-black tracking-wide mb-3">
+              <span>⚖️</span>
+              <span>BEHAVIORAL REALITY CHECK</span>
+            </div>
+
+            <h3 className="text-lg sm:text-xl font-black text-white mb-2">
+              What This Does & Doesn't Mean
+            </h3>
+
+            <div className="bg-palette-sand/15 border border-palette-sand/30 rounded-2xl p-3.5 mb-4 text-center">
+              <span className="text-xs sm:text-sm font-black text-palette-sand tracking-wide">
+                “Don't read their mind. Read the pattern.”
+              </span>
+            </div>
+
+            <div className="space-y-3 text-xs sm:text-sm text-palette-cream/90 leading-relaxed font-medium">
+              <p>
+                <strong className="text-white">What we cannot know:</strong> We cannot read their private thoughts, inner emotions, or private intentions. They may genuinely care for you, or they may simply enjoy your company.
+              </p>
+              <p>
+                <strong className="text-white">What the observable pattern shows:</strong> Whatever their private feelings are, their observable behavior produces the exact same reality: <em>intimacy and emotional closeness are increasing significantly faster than commitment or relationship definition.</em>
+              </p>
+              <p className="text-palette-sand font-semibold pt-2 border-t border-white/10">
+                Stop trying to figure out what they feel in secret. Start tracking what they do in daylight.
+              </p>
+            </div>
+          </div>
+
+          {/* 5. THE PROOF TEST ⭐ */}
+          <div className="bg-palette-white rounded-3xl p-5 sm:p-7 shadow-soft-flat border border-palette-slate/15">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-7 h-7 rounded-full bg-palette-coral/15 flex items-center justify-center text-palette-coral text-sm font-black">
+                🧪
+              </div>
+              <h3 className="text-base sm:text-lg md:text-xl font-black text-palette-slate">
+                {proofTest.headline}
+              </h3>
+            </div>
+
+            <div className="bg-palette-cream/60 border border-palette-slate/15 rounded-2xl p-4 mb-4">
+              <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-wider text-palette-coral block mb-1">
+                {proofTest.timeframe} · THE CORE RULE
+              </span>
+              <p className="text-xs sm:text-sm font-extrabold text-palette-slate leading-snug">
+                {proofTest.coreRule}
+              </p>
+            </div>
+
+            <p className="text-xs sm:text-sm font-bold text-palette-slate/80 mb-3">
+              Look for at least one of these observable behaviors:
+            </p>
+
+            <div className="space-y-2.5 mb-5">
+              {proofTest.checklist.map((item, cIdx) => (
+                <div key={cIdx} className="flex items-start gap-2.5 p-3 rounded-2xl bg-palette-cream/30 border border-palette-slate/10 text-xs sm:text-sm font-semibold text-palette-slate">
+                  <div className="w-5 h-5 rounded-full bg-palette-slate text-palette-sand flex items-center justify-center text-[10px] shrink-0 font-black mt-0.5">
+                    {cIdx + 1}
+                  </div>
+                  <span className="leading-snug">{item}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-4 border-t border-palette-slate/10">
+              <div className="rounded-2xl p-3.5 sm:p-4 bg-palette-sage/10 border border-palette-sage/30">
+                <span className="font-black text-xs sm:text-sm text-palette-sage block mb-1">
+                  ✓ What Supports Path A
+                </span>
+                <p className="text-[11px] sm:text-xs text-palette-slate/80 font-medium leading-relaxed">
+                  {proofTest.pathASign.replace(/^What supports Path A:\s*/i, '')}
+                </p>
+              </div>
+
+              <div className="rounded-2xl p-3.5 sm:p-4 bg-palette-coral/10 border border-palette-coral/30">
+                <span className="font-black text-xs sm:text-sm text-palette-coral block mb-1">
+                  ⚠ What Strengthens Path B
+                </span>
+                <p className="text-[11px] sm:text-xs text-palette-slate/80 font-medium leading-relaxed">
+                  {proofTest.pathBSign.replace(/^What (strengthens|confirms) Path B:\s*/i, '')}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* 6. YOUR 7-DAY ACTION PLAYBOOK ⭐ (True Day 1 to Day 7) */}
+          <div className="bg-palette-white rounded-3xl p-5 sm:p-7 shadow-soft-flat border border-palette-slate/15">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-7 h-7 rounded-full bg-palette-sage/20 flex items-center justify-center text-palette-sage text-sm font-black">
+                📅
+              </div>
+              <h3 className="text-base sm:text-lg md:text-xl font-black text-palette-slate">
+                Your 7-Day Action Playbook
+              </h3>
+            </div>
+            <p className="text-xs sm:text-sm text-palette-slate/75 font-medium mb-4 leading-relaxed">
+              A daily step-by-step protocol to stop over-functioning, test unprompted initiative, and align expectations with zero awkwardness.
+            </p>
+
+            <div className="space-y-3">
+              {playbook.sevenDayPlan.map((step) => (
+                <div key={step.day} className="rounded-2xl p-3.5 sm:p-4 bg-palette-cream/30 border border-palette-slate/10 hover:border-palette-slate/20 transition-all">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-[11px] sm:text-xs font-black text-palette-coral bg-palette-coral/10 px-2.5 py-0.5 rounded-full">
+                      Day {step.day}
+                    </span>
+                    <span className="text-[10px] sm:text-[11px] font-bold text-palette-slate/60 uppercase tracking-wider">
+                      Focus: {step.focus}
+                    </span>
+                  </div>
+                  <h4 className="text-xs sm:text-sm font-black text-palette-slate mb-1">
+                    {step.title}
+                  </h4>
+                  <p className="text-xs text-palette-slate/80 leading-relaxed font-medium">
+                    {step.instruction}
+                  </p>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Deep Sections Render */}
-          {report.sections.map((sec, secIdx) => (
-            <div key={secIdx} className="bg-palette-white rounded-3xl p-5 sm:p-6 shadow-xs border border-palette-slate/15">
-              <div className="inline-block text-[10px] sm:text-[11px] font-extrabold px-2.5 sm:px-3 py-0.5 rounded-full bg-palette-lilac/40 text-palette-slate mb-2">
-                {sec.tag}
-              </div>
-              <h4 className="font-extrabold text-sm sm:text-base md:text-lg text-palette-slate mb-2.5 sm:mb-3">
-                {sec.title}
+          {/* 7. WHAT TO SAY & HOW TO READ THEIR ANSWER ⭐ */}
+          <div className="bg-palette-slate text-white rounded-3xl p-5 sm:p-8 shadow-soft-flat">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-palette-sand text-palette-slate text-xs font-black tracking-wide mb-3">
+              <span>💬</span>
+              <span>THE DAY 7 ALIGNMENT SCRIPT</span>
+            </div>
+
+            <h3 className="text-lg sm:text-xl md:text-2xl font-black text-white mb-2">
+              {playbook.scriptHeadline}
+            </h3>
+            <p className="text-xs sm:text-sm text-palette-cream/80 font-medium mb-4 leading-relaxed">
+              {playbook.scriptContext}
+            </p>
+
+            {/* Standout Script Box */}
+            <div className="bg-palette-white/10 border-2 border-palette-sand/50 rounded-2xl p-4 sm:p-5 mb-3 text-center">
+              <p className="text-sm sm:text-base md:text-lg font-black text-palette-sand leading-relaxed">
+                {playbook.exactScript}
+              </p>
+            </div>
+
+            <p className="text-[11px] sm:text-xs text-palette-cream/70 font-semibold mb-6 italic text-center">
+              💡 {playbook.deliveryTip}
+            </p>
+
+            {/* How to Read Their Answer (Green / Yellow / Red) */}
+            <div className="pt-5 border-t border-white/15">
+              <h4 className="text-xs sm:text-sm font-black uppercase tracking-wider text-palette-sand mb-3 flex items-center gap-1.5">
+                <span>🚦</span>
+                <span>HOW TO READ THEIR ANSWER</span>
               </h4>
 
-              <div className="space-y-2.5 sm:space-y-3 text-xs sm:text-sm text-palette-slate/80 leading-relaxed font-medium">
-                {sec.paragraphs.map((p, pIdx) => (
-                  <p key={pIdx}>{p}</p>
+              <div className="space-y-3">
+                {playbook.responseDecoders.map((dec, dIdx) => (
+                  <div
+                    key={dIdx}
+                    className={`rounded-2xl p-3.5 sm:p-4 border ${
+                      dec.type === 'green'
+                        ? 'bg-palette-sage/20 border-palette-sage/40'
+                        : dec.type === 'yellow'
+                        ? 'bg-palette-sand/20 border-palette-sand/40'
+                        : 'bg-palette-coral/20 border-palette-coral/40'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between mb-1.5">
+                      <span className="font-black text-xs sm:text-sm text-white">
+                        {dec.title}
+                      </span>
+                    </div>
+
+                    <p className="text-xs sm:text-sm font-extrabold text-palette-sand mb-2 italic">
+                      {dec.sampleQuote}
+                    </p>
+
+                    <div className="space-y-1 text-xs text-palette-cream/90 font-medium leading-relaxed">
+                      <p><strong>What it means:</strong> {dec.psychologicalMeaning}</p>
+                      <p><strong className="text-white">What to do:</strong> {dec.recommendedAction}</p>
+                    </div>
+                  </div>
                 ))}
               </div>
-
-              {sec.bullets && sec.bullets.length > 0 && (
-                <div className="mt-3.5 sm:mt-4 pt-3.5 sm:pt-4 border-t border-palette-slate/10 space-y-2">
-                  {sec.bullets.map((b, bIdx) => (
-                    <div key={bIdx} className="bg-palette-cream/60 p-2.5 sm:p-3 rounded-2xl border border-palette-slate/10 text-xs font-semibold text-palette-slate flex items-start gap-2.5">
-                      <span className="w-5 h-5 rounded-full bg-palette-slate text-white flex items-center justify-center text-[10px] shrink-0 mt-0.5">
-                        {bIdx + 1}
-                      </span>
-                      <span>{b}</span>
-                    </div>
-                  ))}
-                </div>
-              )}
             </div>
-          ))}
+          </div>
 
-          {/* Bottom Line Summary Card */}
-          <div className="bg-palette-slate text-white rounded-3xl p-5 sm:p-8 shadow-soft-flat">
-            <h4 className="text-[11px] sm:text-xs font-extrabold tracking-widest uppercase text-palette-sand mb-2.5 sm:mb-3 flex items-center gap-1.5">
-              <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-palette-coral" />
-              THE BOTTOM LINE
-            </h4>
+          {/* 8. CHECK AGAIN IN 7 DAYS (Relationship Signal Tracker) */}
+          <div className="bg-palette-cream/80 border border-palette-slate/20 rounded-3xl p-5 sm:p-7 text-center shadow-soft-flat">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-palette-slate text-palette-sand text-[11px] sm:text-xs font-black tracking-wide mb-2.5">
+              <span>🔄</span>
+              <span>CHECK AGAIN IN 7 DAYS</span>
+            </div>
 
-            <div className="space-y-2.5 sm:space-y-3 text-xs sm:text-sm text-palette-cream/90 leading-relaxed font-medium">
-              {report.bottomLine.map((line, lIdx) => (
-                <p key={lIdx}>{line}</p>
-              ))}
+            <h3 className="text-base sm:text-lg md:text-xl font-black text-palette-slate mb-2">
+              Did the pattern change?
+            </h3>
+
+            <p className="text-xs sm:text-sm text-palette-slate/75 font-medium leading-relaxed max-w-lg mx-auto mb-4">
+              After you've followed the plan, retake your signal check and compare:
+            </p>
+
+            <div className="grid grid-cols-3 gap-2.5 sm:gap-4 p-3 sm:p-4 rounded-2xl bg-palette-white border border-palette-slate/15 text-xs sm:text-sm font-extrabold text-palette-slate mb-5 shadow-xs max-w-md mx-auto">
+              <div className="text-center">
+                <span className="text-[10px] text-palette-slate/60 block uppercase font-bold">Effort</span>
+                <span className="text-palette-coral font-black">{scores.investment}</span>
+                <span className="text-palette-slate/40 mx-1">→</span>
+                <span className="text-palette-sage font-black">?</span>
+              </div>
+              <div className="text-center border-x border-palette-slate/15">
+                <span className="text-[10px] text-palette-slate/60 block uppercase font-bold">Commitment</span>
+                <span className="text-palette-coral font-black">{scores.commitment}</span>
+                <span className="text-palette-slate/40 mx-1">→</span>
+                <span className="text-palette-sage font-black">?</span>
+              </div>
+              <div className="text-center">
+                <span className="text-[10px] text-palette-slate/60 block uppercase font-bold">Exclusivity</span>
+                <span className="text-palette-coral font-black">{scores.exclusivity}</span>
+                <span className="text-palette-slate/40 mx-1">→</span>
+                <span className="text-palette-sage font-black">?</span>
+              </div>
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+              <button
+                onClick={onReset}
+                className="w-full sm:w-auto px-7 py-3 rounded-xl bg-palette-slate text-white text-xs sm:text-sm font-black shadow-soft-flat hover:bg-palette-slate/90 transition-all cursor-pointer"
+              >
+                Recheck My Signals
+              </button>
             </div>
           </div>
         </motion.div>

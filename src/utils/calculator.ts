@@ -87,5 +87,6 @@ export function calculateQuizResult(userAnswers: Record<number, string | string[
     gap,
     archetype,
     freeSummary,
+    userAnswers,
   };
 }
