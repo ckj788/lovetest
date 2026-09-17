@@ -34,10 +34,22 @@ interface QuizResultProps {
   onReset: () => void;
   initialUnlocked?: boolean;
 }
-
+ 
 export const QuizResult: React.FC<QuizResultProps> = ({ result, onReset, initialUnlocked = false }) => {
   const [isUnlocked, setIsUnlocked] = useState(initialUnlocked);
   const [isPaywallOpen, setIsPaywallOpen] = useState(false);
+  const autoOpenTriggered = React.useRef(false);
+
+  useEffect(() => {
+    if (initialUnlocked || autoOpenTriggered.current) return;
+
+    const timer = setTimeout(() => {
+      autoOpenTriggered.current = true;
+      setIsPaywallOpen(true);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [initialUnlocked]);
 
   useEffect(() => {
     if (initialUnlocked) {
