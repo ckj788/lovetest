@@ -68,10 +68,14 @@ export const Header: React.FC<HeaderProps> = ({
         )}
 
         {currentStep === 'landing' && (
-          <div className="flex items-center gap-1.5 text-[11px] sm:text-xs font-bold text-palette-slate bg-palette-white border border-palette-slate/15 px-2.5 sm:px-3 py-1 rounded-full shadow-xs shrink-0">
-            <span className="text-palette-coral">✿</span>
-            <span className="hidden sm:inline">20+ Behavioral Signals</span>
-            <span className="sm:hidden">8 Qs · 60s</span>
+          <div className="flex items-center gap-2 shrink-0">
+            <a
+              href="/dual"
+              className="flex items-center gap-1.5 text-[11px] sm:text-xs font-black text-palette-slate bg-palette-sand hover:bg-palette-sand/80 border border-palette-slate/20 px-3 py-1 rounded-full shadow-xs transition-all"
+            >
+              <span className="text-palette-coral">⚡</span>
+              <span>Duo Blind Test</span>
+            </a>
           </div>
         )}
       </div>

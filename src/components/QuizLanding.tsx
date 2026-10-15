@@ -28,15 +28,27 @@ export const QuizLanding: React.FC<QuizLandingProps> = ({ onStart }) => {
   }, []);
   return (
     <div className="max-w-3xl mx-auto px-4 py-6 sm:py-8 md:py-12">
-      {/* Top Badge */}
+      {/* Top Mode Switcher */}
       <motion.div
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         className="flex justify-center mb-5 sm:mb-6"
       >
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-palette-lilac/40 border border-palette-slate/15 text-palette-slate text-[11px] sm:text-xs font-bold shadow-xs">
-          <span className="text-palette-coral text-xs sm:text-sm">✿</span>
-          <span>RELATIONSHIP SIGNAL ENGINE · 8 QUESTIONS</span>
+        <div className="inline-flex items-center gap-1.5 p-1 rounded-2xl bg-palette-slate/10 border border-palette-slate/15 shadow-xs">
+          <button
+            onClick={onStart}
+            className="px-3.5 py-1.5 rounded-xl text-[11px] sm:text-xs font-bold text-palette-slate/75 hover:text-palette-slate hover:bg-white/50 transition-all flex items-center gap-1.5 cursor-pointer"
+          >
+            <span>👤 Solo Diagnosis (8 Qs)</span>
+          </button>
+          <a
+            href="/dual"
+            className="px-3.5 py-1.5 rounded-xl text-[11px] sm:text-xs font-black text-palette-slate bg-palette-sand shadow-sm flex items-center gap-1.5 hover:bg-palette-sand/80 transition-all"
+          >
+            <span className="text-palette-coral">⚡</span>
+            <span>2-Person Blind Match</span>
+            <span className="text-[9px] font-black px-1.5 py-0.5 rounded-full bg-palette-coral text-white">NEW</span>
+          </a>
         </div>
       </motion.div>
 
@@ -107,16 +119,29 @@ export const QuizLanding: React.FC<QuizLandingProps> = ({ onStart }) => {
           </div>
         </div>
 
-        {/* Tactile Coral Action Button */}
-        <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          onClick={onStart}
-          className="w-full sm:w-auto px-8 sm:px-10 py-3.5 sm:py-4 rounded-2xl bg-palette-coral text-white font-extrabold text-sm sm:text-base shadow-soft-coral flex items-center justify-center gap-2.5 sm:gap-3 mx-auto transition-all cursor-pointer border border-palette-coral"
-        >
-          <span>Diagnose Relationship Signals (8 Qs · 60s)</span>
-          <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
-        </motion.button>
+        {/* Two-Person and Solo CTA Buttons */}
+        <div className="space-y-3 max-w-md mx-auto">
+          {/* Primary Two-Person Test Button */}
+          <motion.a
+            href="/dual"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="w-full py-4 px-6 rounded-2xl bg-palette-coral text-white font-black text-sm sm:text-base shadow-soft-coral flex items-center justify-center gap-2.5 transition-all cursor-pointer border border-palette-coral"
+          >
+            <span>👥 Start Two-Person Blind Test (两个人做 · 6题)</span>
+            <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+          </motion.a>
+
+          {/* Secondary Solo Test Button */}
+          <motion.button
+            whileHover={{ scale: 1.01 }}
+            whileTap={{ scale: 0.99 }}
+            onClick={onStart}
+            className="w-full py-2.5 px-5 rounded-xl bg-palette-white hover:bg-palette-lilac/30 text-palette-slate font-extrabold text-xs sm:text-sm border border-palette-slate/20 transition-all cursor-pointer flex items-center justify-center gap-2"
+          >
+            <span>👤 Or take Solo Diagnosis (一个人做 · 8题)</span>
+          </motion.button>
+        </div>
 
         {/* Social Proof Counter */}
         <div className="mt-3.5 sm:mt-4 flex justify-center">
