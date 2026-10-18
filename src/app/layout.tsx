@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { Analytics } from "@vercel/analytics/react";
+import { SafeAnalytics } from "../components/SafeAnalytics";
 import { PostHogProvider } from "./providers";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "mixedsigns - Are they into you or are you delulu? | Relationship Signal Engine",
-  description: "Decode their unspoken intent using 8 behavioral proofs. Measure natural attraction, time & effort, commitment intent, and exclusive focus with precision.",
+  title: "mixedsigns — A little less guessing. A little more clarity.",
+  description: "A private reflection tool for ambiguous relationships. Explore observable behavior, compare expectations, and find a grounded next step.",
 };
 
 export default function RootLayout({
@@ -18,7 +18,7 @@ export default function RootLayout({
       <body className="antialiased selection:bg-palette-lilac selection:text-palette-slate">
         <PostHogProvider>
           {children}
-          <Analytics />
+          <SafeAnalytics />
         </PostHogProvider>
       </body>
     </html>

@@ -1,0 +1,2 @@
+import Link from 'next/link';
+export function Footer() { return <footer className="site-footer"><div className="footer-inner"><div><Link href="/" className="footer-brand">✿ mixedsigns</Link><p>A little less guessing. A little more clarity.</p></div><nav aria-label="Policies"><Link href="/privacy">Privacy</Link><Link href="/terms">Terms</Link><Link href="/refunds">Refunds</Link><Link href="/contact">Contact</Link></nav></div><div className="footer-bottom"><span>© 2026 mixedsigns</span><span>A self-reflection tool. Not a diagnosis or a prediction.</span></div></footer>; }

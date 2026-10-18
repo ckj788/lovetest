@@ -26,3 +26,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Local preview output and private runtime data
+.next-*/
+.data/
+.qa/

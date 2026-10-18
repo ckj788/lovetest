@@ -1,565 +1,615 @@
 import { DualQuestion, DualMode, DualResultData, DualComparisonItem } from '../types/dual';
-
 export const TALKING_STAGE_QUESTIONS: DualQuestion[] = [
   {
-    id: 1,
-    title: "How would you honestly describe what the two of you have right now?",
-    subtitle: "Dimension: Current Dynamic & Definition",
-    category: "Dynamic Reality",
-    options: [
+    "id": 1,
+    "category": "Current Definition",
+    "title": "Which description feels closest to what this connection is today?",
+    "subtitle": "Answer independently. Both people must finish before answers can be compared.",
+    "options": [
       {
-        id: "ts_q1_a",
-        label: "Deliberately getting to know each other with the clear goal of dating exclusively.",
-        shortLabel: "Dating toward exclusivity",
-        tag: "Intentional"
+        "id": "ts_q1_a",
+        "label": "Casual and intentionally low-pressure.",
+        "shortLabel": "Casual and intentionally low-pressure."
       },
       {
-        id: "ts_q1_b",
-        label: "Highly affectionate and close, but without an official title or public definition yet.",
-        shortLabel: "Affectionate without title",
-        tag: "Comfortable"
+        "id": "ts_q1_b",
+        "label": "Intentionally exploring a relationship.",
+        "shortLabel": "Intentionally exploring a relationship."
       },
       {
-        id: "ts_q1_c",
-        label: "A magnetic, high-chemistry connection that can run hot and cold from week to week.",
-        shortLabel: "High chemistry / Fluctuating",
-        tag: "Passionate"
+        "id": "ts_q1_c",
+        "label": "Emotionally close, but still undefined.",
+        "shortLabel": "Emotionally close, but still undefined."
       },
       {
-        id: "ts_q1_d",
-        label: "A relaxed, low-pressure dynamic where nobody is asking for heavy commitments.",
-        shortLabel: "Casual / Low-pressure",
-        tag: "Open"
+        "id": "ts_q1_d",
+        "label": "I’m genuinely unsure because we haven’t discussed it.",
+        "shortLabel": "I’m genuinely unsure because we haven’t discussed it."
       }
     ]
   },
   {
-    id: 2,
-    title: "What is your honest understanding regarding exclusivity between you two?",
-    subtitle: "Dimension: Roster & Exclusivity Boundaries",
-    category: "Exclusivity",
-    options: [
+    "id": 2,
+    "category": "Desired Next Step",
+    "title": "What would you most like to happen in the next 4–8 weeks?",
+    "subtitle": "Answer independently. Both people must finish before answers can be compared.",
+    "options": [
       {
-        id: "ts_q2_a",
-        label: "I consider us exclusively focused on each other. I'm not entertaining anyone else.",
-        shortLabel: "100% Focused on them",
-        tag: "Exclusive"
+        "id": "ts_q2_a",
+        "label": "Keep it casual and open.",
+        "shortLabel": "Keep it casual and open."
       },
       {
-        id: "ts_q2_b",
-        label: "We haven't explicitly said the words yet, so technically both of us still have individual freedom.",
-        shortLabel: "Unspoken freedom",
-        tag: "Ambiguous"
+        "id": "ts_q2_b",
+        "label": "Become exclusive without rushing a public label.",
+        "shortLabel": "Become exclusive without rushing a public label."
       },
       {
-        id: "ts_q2_c",
-        label: "I assume neither of us is seeing others, but I would feel nervous directly bringing it up.",
-        shortLabel: "Assumed exclusivity",
-        tag: "Hesitant"
+        "id": "ts_q2_c",
+        "label": "Define this as an official relationship.",
+        "shortLabel": "Define this as an official relationship."
       },
       {
-        id: "ts_q2_d",
-        label: "I'm keeping my options open until someone explicitly asks to be official.",
-        shortLabel: "Keeping options open",
-        tag: "Guarded"
+        "id": "ts_q2_d",
+        "label": "Slow down and reassess whether this is right.",
+        "shortLabel": "Slow down and reassess whether this is right."
       }
     ]
   },
   {
-    id: 3,
-    title: "Who carries the bulk of the momentum when making plans and keeping in touch?",
-    subtitle: "Dimension: Effort & Initiative Balance",
-    category: "Initiative",
-    options: [
+    "id": 3,
+    "category": "Exclusivity Understanding",
+    "title": "What do you believe the current exclusivity agreement is?",
+    "subtitle": "Answer independently. Both people must finish before answers can be compared.",
+    "options": [
       {
-        id: "ts_q3_a",
-        label: "It feels 50/50. Both of us step up and suggest plans with equal enthusiasm.",
-        shortLabel: "Balanced 50/50",
-        tag: "Reciprocal"
+        "id": "ts_q3_a",
+        "label": "Explicitly exclusive.",
+        "shortLabel": "Explicitly exclusive."
       },
       {
-        id: "ts_q3_b",
-        label: "I tend to initiate 70%+ of texts and dates; they usually say yes and come along.",
-        shortLabel: "I carry the effort",
-        tag: "Over-functioning"
+        "id": "ts_q3_b",
+        "label": "Probably exclusive, but never clearly discussed.",
+        "shortLabel": "Probably exclusive, but never clearly discussed."
       },
       {
-        id: "ts_q3_c",
-        label: "They reach out frequently, while I often wait for their lead before responding.",
-        shortLabel: "They lead the momentum",
-        tag: "Reactive"
+        "id": "ts_q3_c",
+        "label": "Explicitly non-exclusive.",
+        "shortLabel": "Explicitly non-exclusive."
       },
       {
-        id: "ts_q3_d",
-        label: "Everything is spontaneous or last-minute. Almost nothing is scheduled in advance.",
-        shortLabel: "Purely spontaneous",
-        tag: "Ad-hoc"
+        "id": "ts_q3_d",
+        "label": "Unclear or possibly understood differently.",
+        "shortLabel": "Unclear or possibly understood differently."
       }
     ]
   },
   {
-    id: 4,
-    title: "If the vibe stays this good, what is your ideal timeline for making things official?",
-    subtitle: "Dimension: Commitment Horizon",
-    category: "Timeline",
-    options: [
+    "id": 4,
+    "category": "Effort Perception",
+    "title": "How does the effort of keeping this connection moving feel to you?",
+    "subtitle": "Answer independently. Both people must finish before answers can be compared.",
+    "options": [
       {
-        id: "ts_q4_a",
-        label: "Within the next 2 to 4 weeks. I value relational clarity and don't like prolonged limbo.",
-        shortLabel: "2–4 Weeks (Soon)",
-        tag: "Fast Track"
+        "id": "ts_q4_a",
+        "label": "Balanced.",
+        "shortLabel": "Balanced."
       },
       {
-        id: "ts_q4_b",
-        label: "2 to 3 months. I need steady consistency over time to verify mutual safety.",
-        shortLabel: "2–3 Months (Paced)",
-        tag: "Measured"
+        "id": "ts_q4_b",
+        "label": "I initiate more.",
+        "shortLabel": "I initiate more."
       },
       {
-        id: "ts_q4_c",
-        label: "No rigid schedule. Let it develop naturally without applying artificial milestone pressure.",
-        shortLabel: "Organic / No rush",
-        tag: "Organic"
+        "id": "ts_q4_c",
+        "label": "They initiate more.",
+        "shortLabel": "They initiate more."
       },
       {
-        id: "ts_q4_d",
-        label: "I'm not in a place to commit to an official title in the foreseeable future.",
-        shortLabel: "Not ready for titles",
-        tag: "Not Ready"
+        "id": "ts_q4_d",
+        "label": "Mostly spontaneous, with no stable pattern.",
+        "shortLabel": "Mostly spontaneous, with no stable pattern."
       }
     ]
   },
   {
-    id: 5,
-    title: "How integrated is this connection into your real daily life and inner circle?",
-    subtitle: "Dimension: Public Transparency & Status",
-    category: "Integration",
-    options: [
+    "id": 5,
+    "category": "Integration",
+    "title": "How integrated does this connection feel in everyday life?",
+    "subtitle": "Answer independently. Both people must finish before answers can be compared.",
+    "options": [
       {
-        id: "ts_q5_a",
-        label: "My closest friends know all about them, and I'd gladly bring them around my people.",
-        shortLabel: "Open & Integrated",
-        tag: "Transparent"
+        "id": "ts_q5_a",
+        "label": "Naturally part of friends, routines, and future plans.",
+        "shortLabel": "Naturally part of friends, routines, and future plans."
       },
       {
-        id: "ts_q5_b",
-        label: "People know I'm seeing someone, but I keep details private until things are 100% locked down.",
-        shortLabel: "Private until locked",
-        tag: "Cautious"
+        "id": "ts_q5_b",
+        "label": "Some integration, but still mostly private.",
+        "shortLabel": "Some integration, but still mostly private."
       },
       {
-        id: "ts_q5_c",
-        label: "This connection exists mostly behind closed doors, late at night, or in private 1-on-1s.",
-        shortLabel: "1-on-1 Bubble",
-        tag: "Compartmentalized"
+        "id": "ts_q5_c",
+        "label": "Mostly one-on-one and separate from everyday life.",
+        "shortLabel": "Mostly one-on-one and separate from everyday life."
       },
       {
-        id: "ts_q5_d",
-        label: "I haven't told many people because I'm still not sure where this is going.",
-        shortLabel: "Undisclosed",
-        tag: "Guarded"
+        "id": "ts_q5_d",
+        "label": "Too early—or we both intentionally prefer privacy.",
+        "shortLabel": "Too early—or we both intentionally prefer privacy."
       }
     ]
   },
   {
-    id: 6,
-    title: "If you had to be 100% honest, what is your biggest unspoken hesitation right now?",
-    subtitle: "Dimension: Unspoken Friction",
-    category: "Hidden Hesitation",
-    options: [
+    "id": 6,
+    "category": "Hidden Friction",
+    "title": "What is your biggest unspoken hesitation right now?",
+    "subtitle": "Answer independently. Both people must finish before answers can be compared.",
+    "options": [
       {
-        id: "ts_q6_a",
-        label: "Worrying that I care or invest more than they do, and getting hurt if I show it.",
-        shortLabel: "Fear of caring more",
-        tag: "Vulnerability"
+        "id": "ts_q6_a",
+        "label": "I’m afraid I care more.",
+        "shortLabel": "I’m afraid I care more."
       },
       {
-        id: "ts_q6_b",
-        label: "Worrying that locking down an official relationship will take away my freedom and autonomy.",
-        shortLabel: "Fear of losing freedom",
-        tag: "Autonomy"
+        "id": "ts_q6_b",
+        "label": "I’m worried about losing independence or moving too fast.",
+        "shortLabel": "I’m worried about losing independence or moving too fast."
       },
       {
-        id: "ts_q6_c",
-        label: "Wondering if our lifestyle, career pacing, or logistical reality can actually align long-term.",
-        shortLabel: "Logistical / Long-term fit",
-        tag: "Practical"
+        "id": "ts_q6_c",
+        "label": "I’m unsure whether our lifestyles or future plans fit.",
+        "shortLabel": "I’m unsure whether our lifestyles or future plans fit."
       },
       {
-        id: "ts_q6_d",
-        label: "Honestly, zero hesitations. I'm just waiting for a safe moment to bring it up.",
-        shortLabel: "Zero doubts, waiting on cues",
-        tag: "Ready"
+        "id": "ts_q6_d",
+        "label": "I need more consistency or trust before moving forward.",
+        "shortLabel": "I need more consistency or trust before moving forward."
+      },
+      {
+        "id": "ts_q6_e",
+        "label": "I feel ready; I’m waiting for a safe opening.",
+        "shortLabel": "I feel ready; I’m waiting for a safe opening."
       }
     ]
   }
 ];
-
 export const COUPLES_QUESTIONS: DualQuestion[] = [
   {
-    id: 1,
-    title: "When you are stressed or emotionally drained, what gesture makes you feel most loved?",
-    subtitle: "Dimension: Core Love Language",
-    category: "Love Language",
-    options: [
+    "id": 1,
+    "category": "Support Language",
+    "title": "When you’re stressed, what kind of support helps most?",
+    "subtitle": "Answer independently. Both people must finish before answers can be compared.",
+    "options": [
       {
-        id: "cp_q1_a",
-        label: "Physical holding, quiet cuddles, and wordless physical presence.",
-        shortLabel: "Physical affection & closeness",
-        tag: "Touch"
+        "id": "cp_q1_a",
+        "label": "Quiet physical closeness",
+        "shortLabel": "Quiet physical closeness"
       },
       {
-        id: "cp_q1_b",
-        label: "Listening to me vent without immediately jumping to give practical advice.",
-        shortLabel: "Active empathetic listening",
-        tag: "Validation"
+        "id": "cp_q1_b",
+        "label": "Listening and emotional validation",
+        "shortLabel": "Listening and emotional validation"
       },
       {
-        id: "cp_q1_c",
-        label: "Stepping in to solve a chore, cook a meal, or take something off my plate.",
-        shortLabel: "Acts of service & relief",
-        tag: "Support"
+        "id": "cp_q1_c",
+        "label": "Practical help",
+        "shortLabel": "Practical help"
       },
       {
-        id: "cp_q1_d",
-        label: "Giving me peaceful alone time to recharge before coming back together.",
-        shortLabel: "Personal space to recharge",
-        tag: "Space"
+        "id": "cp_q1_d",
+        "label": "Time alone before reconnecting",
+        "shortLabel": "Time alone before reconnecting"
       }
     ]
   },
   {
-    id: 2,
-    title: "How would you honestly rate the current balance between passion and routine?",
-    subtitle: "Dimension: Romance & Spark Health",
-    category: "Intimacy Spark",
-    options: [
+    "id": 2,
+    "category": "Relationship Energy",
+    "title": "How does the relationship feel lately?",
+    "subtitle": "Answer independently. Both people must finish before answers can be compared.",
+    "options": [
       {
-        id: "cp_q2_a",
-        label: "Flourishing. We still have deep sexual chemistry and flirtation throughout the week.",
-        shortLabel: "High chemistry & playfulness",
-        tag: "Thriving"
+        "id": "cp_q2_a",
+        "label": "Connected and playful",
+        "shortLabel": "Connected and playful"
       },
       {
-        id: "cp_q2_b",
-        label: "Comfortable and loving, but we've drifted into a slightly predictable roommate routine.",
-        shortLabel: "Comfortable roommate pattern",
-        tag: "Routine Rut"
+        "id": "cp_q2_b",
+        "label": "Loving but predictable",
+        "shortLabel": "Loving but predictable"
       },
       {
-        id: "cp_q2_c",
-        label: "I feel an unmet craving for more spontaneous dates, passion, and intentional courtship.",
-        shortLabel: "Craving more courtship",
-        tag: "Unmet Desire"
+        "id": "cp_q2_c",
+        "label": "I’m craving more intentional romance",
+        "shortLabel": "I’m craving more intentional romance"
       },
       {
-        id: "cp_q2_d",
-        label: "Currently going through a quiet lull due to work/stress, but our core bond is solid.",
-        shortLabel: "Temporary stress lull",
-        tag: "Resilient"
+        "id": "cp_q2_d",
+        "label": "Temporarily quieter because of external stress",
+        "shortLabel": "Temporarily quieter because of external stress"
       }
     ]
   },
   {
-    id: 3,
-    title: "When tension or disagreement happens between you two, what is your default impulse?",
-    subtitle: "Dimension: Conflict Style & Repair",
-    category: "Conflict Style",
-    options: [
+    "id": 3,
+    "category": "Conflict Recovery",
+    "title": "After a disagreement, what helps you reconnect?",
+    "subtitle": "Answer independently. Both people must finish before answers can be compared.",
+    "options": [
       {
-        id: "cp_q3_a",
-        label: "I want to talk through it immediately. Lingering unresolved tension gives me anxiety.",
-        shortLabel: "Resolve immediately",
-        tag: "Anxious Resolve"
+        "id": "cp_q3_a",
+        "label": "Talking immediately",
+        "shortLabel": "Talking immediately"
       },
       {
-        id: "cp_q3_b",
-        label: "I need to withdraw and cool down for a few hours before having a rational conversation.",
-        shortLabel: "Cool off in private first",
-        tag: "De-escalate"
+        "id": "cp_q3_b",
+        "label": "Taking a defined break, then returning",
+        "shortLabel": "Taking a defined break, then returning"
       },
       {
-        id: "cp_q3_c",
-        label: "I often swallow minor annoyances to keep the peace until I reach a boiling point.",
-        shortLabel: "Swallow annoyance to keep peace",
-        tag: "Conflict Avoidant"
+        "id": "cp_q3_c",
+        "label": "Receiving reassurance before discussing details",
+        "shortLabel": "Receiving reassurance before discussing details"
       },
       {
-        id: "cp_q3_d",
-        label: "I state my feelings directly and plainly, expecting mutual accountability without drama.",
-        shortLabel: "Direct & grounded repair",
-        tag: "Secure Repair"
+        "id": "cp_q3_d",
+        "label": "Naming the issue directly and agreeing on one next step",
+        "shortLabel": "Naming the issue directly and agreeing on one next step"
       }
     ]
   },
   {
-    id: 4,
-    title: "What is one thing you quietly wish your partner would do more of without having to ask?",
-    subtitle: "Dimension: Secret Unmet Wish",
-    category: "Secret Need",
-    options: [
+    "id": 4,
+    "category": "Appreciation",
+    "title": "What would help you feel more appreciated right now?",
+    "subtitle": "Answer independently. Both people must finish before answers can be compared.",
+    "options": [
       {
-        id: "cp_q4_a",
-        label: "Plan thoughtful surprises or date nights that I don't have to organize myself.",
-        shortLabel: "Surprise date planning",
-        tag: "Initiative"
+        "id": "cp_q4_a",
+        "label": "More initiative and thoughtful planning",
+        "shortLabel": "More initiative and thoughtful planning"
       },
       {
-        id: "cp_q4_b",
-        label: "Express vocal appreciation, compliments, and notice the small things I do.",
-        shortLabel: "Words of appreciation",
-        tag: "Affirmation"
+        "id": "cp_q4_b",
+        "label": "More verbal appreciation",
+        "shortLabel": "More verbal appreciation"
       },
       {
-        id: "cp_q4_c",
-        label: "Initiate physical intimacy and romantic touch more enthusiastically.",
-        shortLabel: "More physical initiation",
-        tag: "Desire"
+        "id": "cp_q4_c",
+        "label": "More affection and physical closeness",
+        "shortLabel": "More affection and physical closeness"
       },
       {
-        id: "cp_q4_d",
-        label: "Ask deeper questions about my dreams, inner thoughts, and emotional world.",
-        shortLabel: "Deeper emotional curiosity",
-        tag: "Depth"
+        "id": "cp_q4_d",
+        "label": "More curiosity about my inner world",
+        "shortLabel": "More curiosity about my inner world"
       }
     ]
   },
   {
-    id: 5,
-    title: "How aligned do you feel on personal independence vs couple time?",
-    subtitle: "Dimension: Boundaries & Togetherness",
-    category: "Independence",
-    options: [
+    "id": 5,
+    "category": "Togetherness",
+    "title": "What balance of independence and couple time feels best?",
+    "subtitle": "Answer independently. Both people must finish before answers can be compared.",
+    "options": [
       {
-        id: "cp_q5_a",
-        label: "Near perfect. We have our own friends and passions while remaining deeply united.",
-        shortLabel: "Balanced autonomy & unity",
-        tag: "Interdependent"
+        "id": "cp_q5_a",
+        "label": "Current balance feels right",
+        "shortLabel": "Current balance feels right"
       },
       {
-        id: "cp_q5_b",
-        label: "I sometimes feel smothered and wish we had more individual breathing room.",
-        shortLabel: "Wanting more space",
-        tag: "Suffocated"
+        "id": "cp_q5_b",
+        "label": "More personal space",
+        "shortLabel": "More personal space"
       },
       {
-        id: "cp_q5_c",
-        label: "I sometimes feel lonely and wish we had more quality 1-on-1 focus without phones.",
-        shortLabel: "Craving phone-free 1-on-1s",
-        tag: "Disconnected"
+        "id": "cp_q5_c",
+        "label": "More focused one-on-one time",
+        "shortLabel": "More focused one-on-one time"
       },
       {
-        id: "cp_q5_d",
-        label: "We juggle it reasonably well, but it requires continuous gentle negotiation.",
-        shortLabel: "Work in progress",
-        tag: "Negotiating"
+        "id": "cp_q5_d",
+        "label": "More shared experiences outside our routine",
+        "shortLabel": "More shared experiences outside our routine"
       }
     ]
   },
   {
-    id: 6,
-    title: "Looking at the next 12 to 24 months, what is your #1 relational priority?",
-    subtitle: "Dimension: Future Horizon Alignment",
-    category: "Shared Vision",
-    options: [
+    "id": 6,
+    "category": "Shared Priority",
+    "title": "What should this relationship prioritize over the next 12 months?",
+    "subtitle": "Answer independently. Both people must finish before answers can be compared.",
+    "options": [
       {
-        id: "cp_q6_a",
-        label: "Solidifying major life steps (moving in together, engagement, or long-term financial plan).",
-        shortLabel: "Major structural milestone",
-        tag: "Commitment"
+        "id": "cp_q6_a",
+        "label": "A major practical commitment",
+        "shortLabel": "A major practical commitment"
       },
       {
-        id: "cp_q6_b",
-        label: "Rekindling romance, fun, and adventurous travel to keep our spark magnetic.",
-        shortLabel: "Rekindling adventure & spark",
-        tag: "Adventure"
+        "id": "cp_q6_b",
+        "label": "More fun, novelty, and romance",
+        "shortLabel": "More fun, novelty, and romance"
       },
       {
-        id: "cp_q6_c",
-        label: "Improving emotional communication and ending recurring unproductive arguments.",
-        shortLabel: "Healing communication loops",
-        tag: "Repair"
+        "id": "cp_q6_c",
+        "label": "Better conflict and communication habits",
+        "shortLabel": "Better conflict and communication habits"
       },
       {
-        id: "cp_q6_d",
-        label: "Supporting each other's individual careers and ambitions while staying a peaceful anchor.",
-        shortLabel: "Peaceful career sanctuary",
-        tag: "Support"
+        "id": "cp_q6_d",
+        "label": "Supporting individual goals while staying connected",
+        "shortLabel": "Supporting individual goals while staying connected"
+      }
+    ]
+  }
+];
+export const FRIEND_QUESTIONS: DualQuestion[] = [
+  {
+    "id": 1,
+    "category": "Free Saturday",
+    "title": "You both suddenly get a completely free Saturday. What sounds best?",
+    "subtitle": "Answer independently. Both people must finish before answers can be compared.",
+    "options": [
+      {
+        "id": "fr_q1_a",
+        "label": "Stay in, order food, and talk for hours",
+        "shortLabel": "Stay in, order food, and talk for hours"
+      },
+      {
+        "id": "fr_q1_b",
+        "label": "Try something new and slightly chaotic",
+        "shortLabel": "Try something new and slightly chaotic"
+      },
+      {
+        "id": "fr_q1_c",
+        "label": "Go out with the full group",
+        "shortLabel": "Go out with the full group"
+      },
+      {
+        "id": "fr_q1_d",
+        "label": "Make a detailed plan for a proper day trip",
+        "shortLabel": "Make a detailed plan for a proper day trip"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "category": "Texting Rhythm",
+    "title": "What does a healthy friendship texting rhythm look like to you?",
+    "subtitle": "Answer independently. Both people must finish before answers can be compared.",
+    "options": [
+      {
+        "id": "fr_q2_a",
+        "label": "Daily updates and constant memes",
+        "shortLabel": "Daily updates and constant memes"
+      },
+      {
+        "id": "fr_q2_b",
+        "label": "A few meaningful check-ins each week",
+        "shortLabel": "A few meaningful check-ins each week"
+      },
+      {
+        "id": "fr_q2_c",
+        "label": "Disappear for days, return like nothing happened",
+        "shortLabel": "Disappear for days, return like nothing happened"
+      },
+      {
+        "id": "fr_q2_d",
+        "label": "Mostly talk when making plans",
+        "shortLabel": "Mostly talk when making plans"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "category": "Support",
+    "title": "When you’re having a terrible day, what do you want first?",
+    "subtitle": "Answer independently. Both people must finish before answers can be compared.",
+    "options": [
+      {
+        "id": "fr_q3_a",
+        "label": "Let me vent—don’t fix it yet",
+        "shortLabel": "Let me vent—don’t fix it yet"
+      },
+      {
+        "id": "fr_q3_b",
+        "label": "Give me practical advice",
+        "shortLabel": "Give me practical advice"
+      },
+      {
+        "id": "fr_q3_c",
+        "label": "Distract me with humor or an activity",
+        "shortLabel": "Distract me with humor or an activity"
+      },
+      {
+        "id": "fr_q3_d",
+        "label": "Give me space, then check back later",
+        "shortLabel": "Give me space, then check back later"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "category": "Last-Minute Plan",
+    "title": "Your friend sends “be ready in 20 minutes.” What’s your honest reaction?",
+    "subtitle": "Answer independently. Both people must finish before answers can be compared.",
+    "options": [
+      {
+        "id": "fr_q4_a",
+        "label": "Already putting my shoes on",
+        "shortLabel": "Already putting my shoes on"
+      },
+      {
+        "id": "fr_q4_b",
+        "label": "Interested, but I need details",
+        "shortLabel": "Interested, but I need details"
+      },
+      {
+        "id": "fr_q4_c",
+        "label": "I need at least a few hours’ notice",
+        "shortLabel": "I need at least a few hours’ notice"
+      },
+      {
+        "id": "fr_q4_d",
+        "label": "Absolutely not—schedule me properly",
+        "shortLabel": "Absolutely not—schedule me properly"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "category": "Conflict Repair",
+    "title": "If something feels off between you, what should happen?",
+    "subtitle": "Answer independently. Both people must finish before answers can be compared.",
+    "options": [
+      {
+        "id": "fr_q5_a",
+        "label": "Talk immediately",
+        "shortLabel": "Talk immediately"
+      },
+      {
+        "id": "fr_q5_b",
+        "label": "Cool down, then talk later that day",
+        "shortLabel": "Cool down, then talk later that day"
+      },
+      {
+        "id": "fr_q5_c",
+        "label": "Send a message first because face-to-face feels intense",
+        "shortLabel": "Send a message first because face-to-face feels intense"
+      },
+      {
+        "id": "fr_q5_d",
+        "label": "Use humor to reopen the connection, then discuss it",
+        "shortLabel": "Use humor to reopen the connection, then discuss it"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "category": "Friendship Closeness",
+    "title": "What makes a friendship feel truly close to you?",
+    "subtitle": "Answer independently. Both people must finish before answers can be compared.",
+    "options": [
+      {
+        "id": "fr_q6_a",
+        "label": "Knowing I can tell them anything",
+        "shortLabel": "Knowing I can tell them anything"
+      },
+      {
+        "id": "fr_q6_b",
+        "label": "Showing up when life gets hard",
+        "shortLabel": "Showing up when life gets hard"
+      },
+      {
+        "id": "fr_q6_c",
+        "label": "Having ridiculous shared experiences",
+        "shortLabel": "Having ridiculous shared experiences"
+      },
+      {
+        "id": "fr_q6_d",
+        "label": "Feeling accepted even after long periods apart",
+        "shortLabel": "Feeling accepted even after long periods apart"
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "category": "Friendship Future",
+    "title": "Which future sounds most like your friendship?",
+    "subtitle": "Answer independently. Both people must finish before answers can be compared.",
+    "options": [
+      {
+        "id": "fr_q7_a",
+        "label": "Still sending each other nonsense at age 80",
+        "shortLabel": "Still sending each other nonsense at age 80"
+      },
+      {
+        "id": "fr_q7_b",
+        "label": "Taking a major trip together",
+        "shortLabel": "Taking a major trip together"
+      },
+      {
+        "id": "fr_q7_c",
+        "label": "Being part of each other’s chosen family",
+        "shortLabel": "Being part of each other’s chosen family"
+      },
+      {
+        "id": "fr_q7_d",
+        "label": "Living separate lives but always finding our way back",
+        "shortLabel": "Living separate lives but always finding our way back"
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "category": "Friendship Role",
+    "title": "What role do you usually play in the friendship?",
+    "subtitle": "Answer independently. Both people must finish before answers can be compared.",
+    "options": [
+      {
+        "id": "fr_q8_a",
+        "label": "The planner",
+        "shortLabel": "The planner"
+      },
+      {
+        "id": "fr_q8_b",
+        "label": "The emotional support department",
+        "shortLabel": "The emotional support department"
+      },
+      {
+        "id": "fr_q8_c",
+        "label": "The chaos generator",
+        "shortLabel": "The chaos generator"
+      },
+      {
+        "id": "fr_q8_d",
+        "label": "The responsible emergency contact",
+        "shortLabel": "The responsible emergency contact"
       }
     ]
   }
 ];
 
-export const MOCK_PARTNER_RESPONSES: Record<DualMode, Record<number, string>> = {
-  talking_stage: {
-    1: 'ts_q1_b', // Partner 2 thinks: "Affectionate without title"
-    2: 'ts_q2_b', // Partner 2 thinks: "Unspoken freedom"
-    3: 'ts_q3_a', // Partner 2 thinks: "Balanced 50/50"
-    4: 'ts_q4_c', // Partner 2 thinks: "Organic / No rush" (A timeline gap with someone who wants 2-4 weeks!)
-    5: 'ts_q5_a', // Partner 2 thinks: "Open & Integrated"
-    6: 'ts_q6_a'  // Partner 2 secretly fears: "Fear of caring more"
-  },
-  couples: {
-    1: 'cp_q1_b', // Partner 2 needs: "Active empathetic listening"
-    2: 'cp_q2_b', // Partner 2 thinks: "Comfortable roommate pattern"
-    3: 'cp_q3_b', // Partner 2 conflict style: "Cool off in private first"
-    4: 'cp_q4_a', // Partner 2's secret wish: "Surprise date planning"
-    5: 'cp_q5_c', // Partner 2 feels: "Craving phone-free 1-on-1s"
-    6: 'cp_q6_b'  // Partner 2 priority: "Rekindling adventure & spark"
-  }
-};
-
-export function calculateDualResult(
-  mode: DualMode,
-  p1Answers: Record<number, string>,
-  p2Answers: Record<number, string>
-): DualResultData {
-  const questions = mode === 'talking_stage' ? TALKING_STAGE_QUESTIONS : COUPLES_QUESTIONS;
-
-  let matchCount = 0;
-  const comparisonMatrix: DualComparisonItem[] = [];
-
-  questions.forEach((q) => {
-    const p1OptId = p1Answers[q.id];
-    const p2OptId = p2Answers[q.id];
-
-    const p1Option = q.options.find((o) => o.id === p1OptId) || q.options[0];
-    const p2Option = q.options.find((o) => o.id === p2OptId) || q.options[1];
-
-    const isMatch = p1OptId === p2OptId;
-    if (isMatch) matchCount++;
-
-    let insightText = '';
-    if (isMatch) {
-      insightText = `Pure Alignment: You both independently selected '${p1Option.shortLabel}', confirming a strong shared baseline in this area.`;
-    } else {
-      insightText = `Divergent Perception: Partner 1 sees this through '${p1Option.shortLabel}', while Partner 2 experiences it as '${p2Option.shortLabel}'. Neither is 'wrong'—this reflects different pacing and emotional vantage points.`;
-    }
-
-    comparisonMatrix.push({
-      questionId: q.id,
-      questionTitle: q.title,
-      category: q.category,
-      p1AnswerId: p1OptId,
-      p1Label: p1Option.label,
-      p2AnswerId: p2OptId,
-      p2Label: p2Option.label,
-      isMatch,
-      insightText
-    });
-  });
-
-  // Calculate Synergy Score (base 55 + matches * 7.5, max 96)
-  const synergyScore = Math.min(96, Math.max(48, Math.round(55 + matchCount * 7.2)));
-  const gapCount = questions.length - matchCount;
-
-  // Synergies & Blind Alignments
-  const blindAlignments: string[] = [];
-  const blindGaps: string[] = [];
-
-  if (mode === 'talking_stage') {
-    blindAlignments.push(
-      "High Foundation Respect: Both of you acknowledge high natural chemistry and prioritize genuine time together over superficial flings."
-    );
-    blindAlignments.push(
-      "Shared Vulnerability Reserve: Neither partner is deliberately trying to mislead the other; both are protecting their emotional safety."
-    );
-
-    blindGaps.push(
-      "Timeline & Exclusivity Pacing: One partner is ready to establish clear boundaries sooner, while the other prefers unstructured observation."
-    );
-    blindGaps.push(
-      "Initiative Perception Gap: There is a discrepancy between who feels they are driving plans vs who feels they are merely accommodating."
-    );
-  } else {
-    blindAlignments.push(
-      "Core Commitment Security: Both of you view the foundational bond as enduring, with zero desire to abandon the relationship."
-    );
-    blindAlignments.push(
-      "Shared Desire for Reconnection: Both partners independently recognize that the routine has grown predictable and want more intentional spark."
-    );
-
-    blindGaps.push(
-      "Conflict Processing Speed: One partner needs immediate verbal resolution, while the other requires quiet withdrawal to regulate first."
-    );
-    blindGaps.push(
-      "Secret Unmet Need: You differ on the primary emotional currency that makes you feel cherished during daily life."
-    );
-  }
-
-  // Conversation Cards
-  const conversationCards = mode === 'talking_stage'
-    ? [
-        {
-          tag: "CARD 1 · THE GENTLE OPENER",
-          title: "The Zero-Defense Reality Check",
-          prompt: "“Looking at how we both answered Q1, what was going through your head when you described our current dynamic?”",
-          whyItWorks: "Bypasses defensiveness by focusing on the quiz prompt rather than an accusatory 'what are we?' confrontation."
-        },
-        {
-          tag: "CARD 2 · THE TIMELINE ALIGNMENT",
-          title: "Aligning the Pace Without Pressure",
-          prompt: "“We had slightly different answers on pacing. If we took all pressure off, what does a pace that feels genuinely safe for both of us look like?”",
-          whyItWorks: "Validates both the need for clarity and the need for emotional safety, eliminating winner-versus-loser dynamics."
-        },
-        {
-          tag: "CARD 3 · THE VULNERABILITY BRIDGE",
-          title: "Revealing the Unspoken Hesitation",
-          prompt: "“In the last question, we both revealed quiet hesitations. If I promise not to take it personally, what's your biggest real hesitation about getting closer?”",
-          whyItWorks: "Creates psychological safety to address real roadblocks (fear of hurt, past baggage, career timing) before resentment builds."
-        }
-      ]
-    : [
-        {
-          tag: "CARD 1 · THE LOVE DIAL",
-          title: "Decoding the Real Love Currency",
-          prompt: "“In Q1 and Q4, you mentioned wanting more [their selected need]. Tell me about a specific time recently when you wished I had done that?”",
-          whyItWorks: "Gives concrete behavioral examples instead of vague relationship complaints."
-        },
-        {
-          tag: "CARD 2 · THE REPAIR CODE",
-          title: "How to Fight Better Next Time",
-          prompt: "“When we get into tension, I tend to react with [your style] and you need [their style]. How can we signal a 20-minute pause without either of us feeling abandoned?”",
-          whyItWorks: "Pre-agrees on a de-escalation protocol before the next emotional trigger happens."
-        },
-        {
-          tag: "CARD 3 · THE 12-MONTH REIGNITE",
-          title: "Our Next Season Together",
-          prompt: "“If we could completely redesign one routine in our week to feel more like dates when we first met, what would you want us to do?”",
-          whyItWorks: "Reframes routine fatigue into a shared creative project for the upcoming season."
-        }
-      ];
-
-  const synergyTier = synergyScore >= 80
-    ? {
-        name: "Deep Synergy Tier",
-        badge: "✨ HIGH HARMONY",
-        tagline: "Strong Intuitive Alignment with Targeted Pacing Nuance",
-        description: "Your responses reflect exceptional emotional resonance. The minor discrepancies between you are logistical pacing details rather than fundamental value conflicts."
-      }
-    : {
-        name: "Dynamic Potential Tier",
-        badge: "⚡ HIGH CHARGE / PACING GAP",
-        tagline: "Powerful Core Attraction with Critical Communication Blindspots",
-        description: "The underlying connection is vibrant, but unexpressed expectations are creating silent friction. Bridging these specific gaps will transform uncertainty into grounded mutual trust."
-      };
-
-  return {
-    mode,
-    synergyScore,
-    synergyTier,
-    p1Answers,
-    p2Answers,
-    blindAlignments,
-    blindGaps,
-    comparisonMatrix,
-    conversationCards,
-    freeHighlights: {
-      synergyScore,
-      matchCount,
-      gapCount,
-      topSharedStrength: blindAlignments[0],
-      topFrictionAlert: blindGaps[0]
-    }
-  };
+// Explicit symmetric matrices compare preferences, rather than treating every difference as conflict.
+export const TALKING_MATRICES: number[][][] = [
+ [[3,1,2,1],[1,3,2,1],[2,2,3,1],[1,1,1,2]],
+ [[3,1,0,2],[1,3,2,1],[0,2,3,1],[2,1,1,3]],
+ [[3,1,0,1],[1,2,1,1],[0,1,3,1],[1,1,1,2]],
+ [[3,1,1,1],[1,0,3,1],[1,3,0,1],[1,1,1,2]],
+ [[3,2,1,2],[2,3,2,2],[1,2,3,2],[2,2,2,2]],
+ [[2,1,1,2,2],[1,2,2,2,1],[1,2,2,2,2],[2,2,2,2,2],[2,1,2,2,3]]
+];
+export const COUPLE_MATRICES: number[][][] = [
+ [[3,2,2,1],[2,3,2,1],[2,2,3,2],[1,1,2,3]],
+ [[3,2,2,2],[2,3,2,2],[2,2,3,2],[2,2,2,3]],
+ [[3,1,2,2],[1,3,2,2],[2,2,3,2],[2,2,2,3]],
+ [[3,2,2,2],[2,3,2,2],[2,2,3,2],[2,2,2,3]],
+ [[3,2,2,2],[2,3,1,2],[2,1,3,2],[2,2,2,3]],
+ [[3,2,2,2],[2,3,2,2],[2,2,3,2],[2,2,2,3]]
+];
+export function dualQuestionScore(mode:DualMode, question:number, a:number, b:number):0|1|2|3 {
+ return ((mode==='talking_stage'?TALKING_MATRICES:COUPLE_MATRICES)[question-1]?.[a]?.[b] ?? 1) as 0|1|2|3;
+}
+export function calculateDualResult(mode:DualMode,p1Answers:Record<number,string>,p2Answers:Record<number,string>):DualResultData {
+ const questions=mode==='talking_stage'?TALKING_STAGE_QUESTIONS:COUPLES_QUESTIONS;
+ const comparisonMatrix: DualComparisonItem[]=questions.map(q=>{
+  const a=q.options.findIndex(o=>o.id===p1Answers[q.id]),b=q.options.findIndex(o=>o.id===p2Answers[q.id]);
+  const score=dualQuestionScore(mode,q.id,a,b);
+  const categoryBucket=score===3?'shared_agreement':score===2?'complementary_difference':score===1?'needs_conversation':'hidden_gap';
+  const insightText=mode==='talking_stage'&&q.id===4&&score===3&&a!==b?'Your perspectives describe the same person taking more initiative. That is agreement about the pattern, even if the workload needs discussion.':score===3?'You described an aligned preference or a shared understanding. Check that it still works for both of you.':score===2?'These answers can coexist. Ask how each preference could be supported in practice.':score===1?'You may need a clearer shared agreement here. Neither preference is automatically wrong.':'These answers describe a substantial expectation gap. Talk about what each of you actually wants before assuming agreement.';
+  return {questionId:q.id,questionTitle:q.title,category:q.category,p1AnswerId:p1Answers[q.id],p1Label:q.options[a]?.label||'Not answered',p2AnswerId:p2Answers[q.id],p2Label:q.options[b]?.label||'Not answered',score,alignmentLevel:score===3?'exact':score===2?'complementary':score===1?'discussion_needed':'mismatch',categoryBucket,insightText};
+ });
+ const by=(bucket:string)=>comparisonMatrix.filter(c=>c.categoryBucket===bucket).map(c=>c.category);
+ const sharedAgreements=by('shared_agreement'),complementaryDifferences=by('complementary_difference'),needsConversation=by('needs_conversation'),hiddenExpectationGaps=by('hidden_gap');
+ return {mode,synergyScore:Math.round(comparisonMatrix.reduce((sum,c)=>sum+c.score,0)/18*100),synergyTier:{name:'Two perspectives, one conversation',badge:'A snapshot',tagline:'Alignment is a starting point, not a prediction.',description:'Compare the patterns and make room for each person’s preferences.'},isPaid:false,p1Answers,p2Answers,sharedAgreements,complementaryDifferences,needsConversation,hiddenExpectationGaps,comparisonMatrix,conversationCards:comparisonMatrix.filter(c=>c.score<3).slice(0,3).map(c=>({tag:c.category,title:'Make room for both perspectives',prompt:'When you chose your answer about '+c.category.toLowerCase()+', what were you hoping I would understand? What is one thing we could try that works for both of us?',whyItWorks:'It asks for context and a practical step without deciding who is right.'})),freeHighlights:{synergyScore:0,exactMatches:sharedAgreements.length,complementaryCount:complementaryDifferences.length,discussionCount:needsConversation.length+hiddenExpectationGaps.length,topSharedStrength:sharedAgreements[0]||'A chance to learn something new',topFrictionAlert:hiddenExpectationGaps[0]||needsConversation[0]||'Keep comparing expectations'}};
+}
+export function calculateFriendResult(p1:Record<number,string>,g1:Record<number,string>,p2:Record<number,string>,g2:Record<number,string>){
+ const agreement=FRIEND_QUESTIONS.filter(q=>p1[q.id]===p2[q.id]).length;
+ const correct1=FRIEND_QUESTIONS.filter(q=>g1[q.id]===p2[q.id]).length;
+ const correct2=FRIEND_QUESTIONS.filter(q=>g2[q.id]===p1[q.id]).length;
+ const known=correct1+correct2;
+ const lowFrequency=['fr_q2_c','fr_q2_d'].includes(p1[2])&&['fr_q2_c','fr_q2_d'].includes(p2[2]);
+ const name=lowFrequency&&known>=8?'Low-Maintenance Legends':agreement>=6&&known>=12?'Same Braincell':agreement<=3&&known>=10?'Chaos Coordinators':agreement<=3&&p1[4]!==p2[4]&&known>=6?'Golden Retriever × Black Cat':known<=5?'New Lore Loading':'Plot-Twist Besties';
+ return {name,agreement,correct1,correct2,alignment:Math.round(agreement/8*100),mindReader:Math.round(known/16*100),shared:FRIEND_QUESTIONS.find(q=>p1[q.id]===p2[q.id]),difference:FRIEND_QUESTIONS.find(q=>p1[q.id]!==p2[q.id])};
 }

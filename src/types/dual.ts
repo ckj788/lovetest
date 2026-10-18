@@ -18,6 +18,8 @@ export interface DualQuestion {
   options: DualOption[];
 }
 
+export type DualAlignmentLevel = 'exact' | 'complementary' | 'discussion_needed' | 'mismatch';
+
 export interface DualComparisonItem {
   questionId: number;
   questionTitle: string;
@@ -26,7 +28,9 @@ export interface DualComparisonItem {
   p1Label: string;
   p2AnswerId: string;
   p2Label: string;
-  isMatch: boolean;
+  score: 0 | 1 | 2 | 3;
+  alignmentLevel: DualAlignmentLevel;
+  categoryBucket: 'shared_agreement' | 'complementary_difference' | 'needs_conversation' | 'hidden_gap';
   insightText: string;
 }
 
@@ -48,16 +52,21 @@ export interface DualResultData {
   mode: DualMode;
   synergyScore: number;
   synergyTier: DualSynergyTier;
+  sessionId?: string;
+  isPaid: boolean;
   p1Answers: Record<number, string>;
   p2Answers: Record<number, string>;
-  blindAlignments: string[];
-  blindGaps: string[];
+  sharedAgreements: string[];
+  complementaryDifferences: string[];
+  needsConversation: string[];
+  hiddenExpectationGaps: string[];
   comparisonMatrix: DualComparisonItem[];
   conversationCards: DualConversationCard[];
   freeHighlights: {
     synergyScore: number;
-    matchCount: number;
-    gapCount: number;
+    exactMatches: number;
+    complementaryCount: number;
+    discussionCount: number;
     topSharedStrength: string;
     topFrictionAlert: string;
   };
