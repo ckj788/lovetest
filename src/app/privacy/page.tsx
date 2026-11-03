@@ -39,7 +39,7 @@ export default function PrivacyPage() {
             <p>
               In our 2-person modes (Duo and Bestie), responses are kept strictly blind and private.
               Neither partner can see the other’s answers until <strong>both people have submitted</strong> their portion.
-              This preview supports taking turns on one device. The interface hides answers until both people finish; this is not an access-control guarantee against someone inspecting the browser. Cross-device invitations are not connected.
+              Each person answers independently through a private link. Full comparisons are shared with both participants only after both finish and the initiating person’s purchase is verified. Anyone with your private link can access your view; keep it safe.
             </p>
           </section>
 
@@ -48,7 +48,7 @@ export default function PrivacyPage() {
               <Trash2 className="w-4 h-4 text-[#E07A5F]" /> Retention & Deletion
             </h2>
             <p>
-              In this frontend preview, Solo progress is saved in your browser for up to 7 days from your latest activity. Use “Clear my progress” or “Clear my reflection” to remove it. Duo and Bestie answers stay in the current tab and are cleared when you leave or reload. No quiz answers are submitted to a server by these preview flows.
+              Unfinished Solo progress is saved in your browser for up to 7 days. Submitted answers are encrypted on the server and retained for 30 days from creation, including purchased reports, then expire. Keep your private report link to restore access during that period. Starting a new test removes the saved link from your browser but does not delete the server record. Contact support to request earlier deletion.
             </p>
           </section>
 

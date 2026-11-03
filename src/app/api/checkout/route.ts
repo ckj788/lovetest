@@ -1,112 +1,44 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
-import { getDuoSessionById } from '@/lib/storage';
-
+import { authorize, saveReport } from '../../../lib/reports';
+import { exclusive } from '../../../lib/storage';
 export const dynamic = 'force-dynamic';
-
-// Allowed server-side prices (in cents)
-const ALLOWED_SOLO_PRICES = [599, 799, 999]; // $5.99, $7.99 (default), $9.99
-const ALLOWED_DUO_PRICES = [999, 1299, 1499]; // $9.99 (default), $12.99, $14.99
-
 export async function POST(req: NextRequest) {
-  try {
-    const stripeKey = process.env.STRIPE_SECRET_KEY;
-    if (!stripeKey) {
-      return NextResponse.json(
-        { error: 'Stripe secret key is not configured in environment variables' },
-        { status: 500 }
-      );
+    try {
+        const { token } = await req.json();
+        const auth = await authorize(token || '');
+        if (!auth || auth.role !== 'owner')
+            return NextResponse.json({ error: 'Only the person who started this report can purchase it.' }, { status: 403 });
+        if (!process.env.STRIPE_SECRET_KEY || !process.env.STRIPE_WEBHOOK_SECRET)
+            return NextResponse.json({ error: 'Checkout is not configured yet. Your answers and invitation are saved.' }, { status: 503 });
+        const origin = process.env.APP_URL || (process.env.NODE_ENV !== 'production' ? new URL(req.url).origin : '');
+        if (!origin)
+            return NextResponse.json({ error: 'Checkout configuration is incomplete.' }, { status: 503 });
+        const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+        return await exclusive('report:' + auth.record.id, async () => {
+            const fresh = await authorize(token);
+            if (!fresh)
+                throw new Error('Expired report');
+            const r = fresh.record;
+            if (r.paid)
+                return NextResponse.json({ error: 'This report is already purchased. Refresh its status.' }, { status: 409 });
+            if (r.checkoutId) {
+                const previous = await stripe.checkout.sessions.retrieve(r.checkoutId);
+                if (previous.status === 'open' && previous.url)
+                    return NextResponse.json({ url: previous.url });
+                if (previous.status === 'complete')
+                    return NextResponse.json({ error: 'Payment is being confirmed. Refresh the report shortly.' }, { status: 409 });
+            }
+            const attempt = r.checkoutId || 'first';
+            const page = r.mode === 'friend' ? '/friend' : '/';
+            const session = await stripe.checkout.sessions.create({ mode: 'payment', line_items: [{ price_data: { currency: 'usd', unit_amount: r.price, product_data: { name: r.mode === 'friend' ? 'mixedsigns · Bestie full reveal for two' : 'mixedsigns · Solo full action plan', description: r.mode === 'friend' ? 'One purchase for both people. Full report opens after both complete 8 questions.' : 'Personalized evidence, seven-day observation plan and conversation scripts.' } }, quantity: 1 }], success_url: origin + page + '?checkout=returned#access=' + token, cancel_url: origin + page + '?checkout=cancelled#access=' + token, metadata: { reportId: r.id, mode: r.mode } }, { idempotencyKey: r.id + ':' + attempt });
+            r.checkoutId = session.id;
+            r.checkoutUrl = session.url || undefined;
+            await saveReport(r);
+            return NextResponse.json({ url: session.url });
+        });
     }
-
-    const stripe = new Stripe(stripeKey, {
-      apiVersion: '2024-06-20' as any,
-    });
-
-    const body = await req.json().catch(() => ({}));
-    const { type = 'solo', targetId, priceInCents, token } = body;
-
-    const origin = req.headers.get('origin') || req.headers.get('referer')?.replace(/\/$/, '') || 'http://localhost:3000';
-
-    if (type === 'duo') {
-      if (!targetId) {
-        return NextResponse.json({ error: 'Session ID is required for Duo checkout' }, { status: 400 });
-      }
-
-      const session = await getDuoSessionById(targetId);
-      if (!session) {
-        return NextResponse.json({ error: 'Duo session not found' }, { status: 404 });
-      }
-
-      if (session.isPaid) {
-        return NextResponse.json({ error: 'This session is already unlocked' }, { status: 400 });
-      }
-
-      const unitAmount = ALLOWED_DUO_PRICES.includes(priceInCents) ? priceInCents : 999;
-      const displayPrice = (unitAmount / 100).toFixed(2);
-
-      const checkoutSession = await stripe.checkout.sessions.create({
-        payment_method_types: ['card'],
-        line_items: [
-          {
-            price_data: {
-              currency: 'usd',
-              product_data: {
-                name: `mixedsigns · Duo Blind Match Full Compatibility Blueprint`,
-                description: `Full access for both partners: Complete answers, gap analysis, and conversation guides.`,
-              },
-              unit_amount: unitAmount,
-            },
-            quantity: 1,
-          },
-        ],
-        mode: 'payment',
-        success_url: `${origin}/dual?session=${targetId}${token ? `&token=${token}` : ''}&checkout_id={CHECKOUT_SESSION_ID}&paid=success`,
-        cancel_url: `${origin}/dual?session=${targetId}${token ? `&token=${token}` : ''}&canceled=true`,
-        metadata: {
-          type: 'duo',
-          targetId,
-          priceInCents: unitAmount.toString(),
-        },
-      });
-
-      return NextResponse.json({ url: checkoutSession.url, id: checkoutSession.id });
-    } else {
-      // Solo Mode Checkout
-      const resultId = targetId || `solo_${Date.now()}`;
-      const unitAmount = ALLOWED_SOLO_PRICES.includes(priceInCents) ? priceInCents : 799;
-
-      const checkoutSession = await stripe.checkout.sessions.create({
-        payment_method_types: ['card'],
-        line_items: [
-          {
-            price_data: {
-              currency: 'usd',
-              product_data: {
-                name: `mixedsigns · Deep Signal Diagnosis & 7-Day Action Plan`,
-                description: `Evidence-based behavioral breakdown, 7-day proof check, and word-for-word scripts.`,
-              },
-              unit_amount: unitAmount,
-            },
-            quantity: 1,
-          },
-        ],
-        mode: 'payment',
-        success_url: `${origin}/?result_id=${resultId}&checkout_id={CHECKOUT_SESSION_ID}&paid=success`,
-        cancel_url: `${origin}/?result_id=${resultId}&canceled=true`,
-        metadata: {
-          type: 'solo',
-          targetId: resultId,
-          priceInCents: unitAmount.toString(),
-        },
-      });
-
-      return NextResponse.json({ url: checkoutSession.url, id: checkoutSession.id, resultId });
+    catch {
+        return NextResponse.json({ error: 'Checkout could not start. Please retry.' }, { status: 503 });
     }
-  } catch (err: any) {
-    console.error('Stripe checkout error:', err);
-    return NextResponse.json(
-      { error: err.message || 'Payment session creation failed' },
-      { status: 500 }
-    );
-  }
 }

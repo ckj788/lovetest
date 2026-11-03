@@ -38,3 +38,8 @@
 
 构建：PowerShell 设置 NEXT_BUILD_DIR 为 .next-review 后运行 npm run build。
 启动：相同环境下运行 node node_modules/next/dist/bin/next start -H 127.0.0.1 -p 3000。
+
+
+## 2026-11-03 更新
+
+上述为上一版前端验收记录。本轮已改为 Solo 正好 8 题，Duo 隐藏，好友每人独立 8 题并通过链接邀请。新增服务端报告权限、第一人购买及第二人完成双条件解锁。免费报告精简；详情见 REPORT-FLOW.md。生产配置与真实 Stripe 测试仍待完成。

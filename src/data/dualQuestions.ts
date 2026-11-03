@@ -515,57 +515,57 @@ export const FRIEND_QUESTIONS: DualQuestion[] = [
   },
   {
     "id": 7,
-    "category": "Friendship Future",
-    "title": "Which future sounds most like your friendship?",
+    "category": "Keeping the Connection",
+    "title": "Life gets busy and you barely talk for a month. What would make you feel secure?",
     "subtitle": "Answer independently. Both people must finish before answers can be compared.",
     "options": [
       {
         "id": "fr_q7_a",
-        "label": "Still sending each other nonsense at age 80",
-        "shortLabel": "Still sending each other nonsense at age 80"
+        "label": "A quick message saying we’re still good, even if life is hectic",
+        "shortLabel": "A quick message saying we’re still good, even if life is hectic"
       },
       {
         "id": "fr_q7_b",
-        "label": "Taking a major trip together",
-        "shortLabel": "Taking a major trip together"
+        "label": "A proper catch-up already on the calendar",
+        "shortLabel": "A proper catch-up already on the calendar"
       },
       {
         "id": "fr_q7_c",
-        "label": "Being part of each other’s chosen family",
-        "shortLabel": "Being part of each other’s chosen family"
+        "label": "Picking up naturally when we both have room—no guilt",
+        "shortLabel": "Picking up naturally when we both have room—no guilt"
       },
       {
         "id": "fr_q7_d",
-        "label": "Living separate lives but always finding our way back",
-        "shortLabel": "Living separate lives but always finding our way back"
+        "label": "An honest conversation about what contact we can each manage",
+        "shortLabel": "An honest conversation about what contact we can each manage"
       }
     ]
   },
   {
     "id": 8,
-    "category": "Friendship Role",
-    "title": "What role do you usually play in the friendship?",
+    "category": "Friendship Boundaries",
+    "title": "Your friend asks for a favor when you’re already overwhelmed. What feels right?",
     "subtitle": "Answer independently. Both people must finish before answers can be compared.",
     "options": [
       {
         "id": "fr_q8_a",
-        "label": "The planner",
-        "shortLabel": "The planner"
+        "label": "Help if I can, but say honestly what my limit is",
+        "shortLabel": "Help if I can, but say honestly what my limit is"
       },
       {
         "id": "fr_q8_b",
-        "label": "The emotional support department",
-        "shortLabel": "The emotional support department"
+        "label": "Say no kindly and offer another time or a smaller favor",
+        "shortLabel": "Say no kindly and offer another time or a smaller favor"
       },
       {
         "id": "fr_q8_c",
-        "label": "The chaos generator",
-        "shortLabel": "The chaos generator"
+        "label": "Ask what is urgent, then decide together what is realistic",
+        "shortLabel": "Ask what is urgent, then decide together what is realistic"
       },
       {
         "id": "fr_q8_d",
-        "label": "The responsible emergency contact",
-        "shortLabel": "The responsible emergency contact"
+        "label": "Take time to think before answering instead of saying yes automatically",
+        "shortLabel": "Take time to think before answering instead of saying yes automatically"
       }
     ]
   }
