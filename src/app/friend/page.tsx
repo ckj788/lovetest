@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { QuizShell } from '../../components/ui/QuizShell';
 import { ChoiceQuestion } from '../../components/ui/ChoiceQuestion';
 import { FriendReport } from '../../components/friend/FriendReport';
+import {QuizCalculating} from '../../components/QuizCalculating';
 import { ReportGate } from '../../components/ReportGate';
 import { FRIEND_QUESTIONS } from '../../data/dualQuestions';
 import { useReport } from '../../lib/useReport';
@@ -29,7 +30,7 @@ export default function FriendPage() {
     catch {
         setCopied('Copy is unavailable. Select and copy the invitation below.');
     } }
-    return <QuizShell mode="friend">{answering ? <><ChoiceQuestion title={q.title} subtitle="Choose your own preference. Your friend answers independently, and detailed comparisons open only after purchase and both people finish." options={q.options} selected={answers[q.id] || ''} onChange={id => { if (!report.busy)
+    return <QuizShell mode="friend">{report.completionKind?<QuizCalculating kind={report.completionKind}/>:answering ? <><ChoiceQuestion title={q.title} subtitle="Choose your own preference. Your friend answers independently, and detailed comparisons open only after purchase and both people finish." options={q.options} selected={answers[q.id] || ''} onChange={id => { if (!report.busy)
         setAnswers({ ...answers, [q.id]: id }); }} onNext={next} disabled={report.busy} onBack={() => { if (report.busy)
         return; if (index)
         setIndex(index - 1);

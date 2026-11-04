@@ -48,3 +48,7 @@ Production report persistence previously threw if Redis or DATA_ENCRYPTION_KEY w
 For this browser-only Solo demo, REPORT_PREVIEW_MODE=true explicitly enables click-to-preview; false disables it. With no override, demo unlock is available only when real Stripe key+webhook configuration is incomplete or in local development. When both Stripe credentials exist, the fallback never grants paid access; payment is unavailable until persistent storage is repaired. Real checkout and paid entitlements remain unchanged.
 
 Client report requests time out after 15 seconds with a retry message; the last question includes an explicit Retry my result button and keeps existing answers. Tests run NODE_ENV=production with no Redis, encryption or Stripe secrets to reproduce this deployment condition.
+
+## Completion reveal
+
+Solo, friend initiator and friend guest show role-specific completion screens after the eighth answer. Successful requests share a minimum 2.1-second presentation beat (350 ms with reduced motion). Network time is included, not added; errors return to the answered question immediately for retry. New submissions show the animation; refreshing an existing report does not replay it. Animation state masks results until the beat ends, and leaving the page invalidates late UI updates. No simulated analysis percentage or scientific-processing claim is shown.
