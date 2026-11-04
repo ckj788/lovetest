@@ -40,3 +40,11 @@ Question navigation uses selected feedback → fade/slide out → direction-awar
 ## Friendship report depth
 
 Full reports now include the specific answers shaping the profile, shared preferences and prioritized differences, eight preference-specific interpretations (each person’s stated need, a potential misunderstanding, a practical agreement and an opening question), a seven-day joint plan, five adaptable scripts, a three-part response guide, and a day-seven checkpoint. Matching answers are not treated as proof of relationship health; no exact matches produces complementary opportunities rather than invented agreements. Expanded fields remain absent from unpaid API previews. Existing report links recompute this richer report from their saved answers.
+
+## Vercel Solo completion fix — 2026-11-04
+
+Production report persistence previously threw if Redis or DATA_ENCRYPTION_KEY was absent, making /api/reports return 503 after Solo question 8. Solo now falls back to a stateless server-calculated free report; answers are retained in the browser for up to 30 days and never placed in a share URL. Full report restoration and demo unlock are recalculated from saved answers via /api/reports/solo-preview. Unpaid requests do not receive full content. No database is needed for this Solo fallback. Friend cross-device sessions still require persistent encrypted storage.
+
+For this browser-only Solo demo, REPORT_PREVIEW_MODE=true explicitly enables click-to-preview; false disables it. With no override, demo unlock is available only when real Stripe key+webhook configuration is incomplete or in local development. When both Stripe credentials exist, the fallback never grants paid access; payment is unavailable until persistent storage is repaired. Real checkout and paid entitlements remain unchanged.
+
+Client report requests time out after 15 seconds with a retry message; the last question includes an explicit Retry my result button and keeps existing answers. Tests run NODE_ENV=production with no Redis, encryption or Stripe secrets to reproduce this deployment condition.

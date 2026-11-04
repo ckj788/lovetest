@@ -21,14 +21,13 @@ export default function Home() {
         }
     }
     catch { } }, []);
-    useEffect(() => { if (step === 'quiz')
-        localStorage.setItem(STORAGE, JSON.stringify({ index, answers, savedAt: Date.now() })); }, [step, index, answers]);
-    function reset() { report.clear(); setStep('landing'); setIndex(0); setAnswers({}); setResume(false); localStorage.removeItem(STORAGE); window.scrollTo(0, 0); }
+    useEffect(() => { if (step === 'quiz')try{localStorage.setItem(STORAGE, JSON.stringify({ index, answers, savedAt: Date.now() }));}catch{} }, [step, index, answers]);
+    function reset() { report.clear(); setStep('landing'); setIndex(0); setAnswers({}); setResume(false); try{localStorage.removeItem(STORAGE);}catch{} window.scrollTo(0, 0); }
     async function next(optionId?:string) { if (index < 7)
         setIndex(index + 1);
     else if (await report.submit(optionId?{...answers,[QUIZ_QUESTIONS[index].id]:optionId}:answers)) {
         setStep('landing');
-        localStorage.removeItem(STORAGE);
+        try{localStorage.removeItem(STORAGE);}catch{}
         setResume(false);
     } }
     const q = QUIZ_QUESTIONS[index];
@@ -40,5 +39,5 @@ export default function Home() {
         const selected = current.includes(id) ? current.filter(x => x !== id) : (id === 'q5_7' || id === 'q5_8') ? [id] : [...current.filter(x => x !== 'q5_7' && x !== 'q5_8'), id];
         setAnswers({ ...answers, [q.id]: selected });
     } }} onNext={next} disabled={report.busy} onPrev={() => { if (!report.busy)
-        index ? setIndex(index - 1) : setStep('landing'); }}/><p className="below-note" role="status">{report.busy ? 'Saving your eight answers…' : '8 questions. No extra setup.'}</p>{report.error && <p className="notice" role="alert">{report.error}</p>}</>}</QuizShell>;
+        index ? setIndex(index - 1) : setStep('landing'); }}/><p className="below-note" role="status">{report.busy ? 'Saving your eight answers…' : '8 questions. No extra setup.'}</p>{report.error && <div className="notice" role="alert"><p>{report.error}</p>{index===7&&<button className="primary-button" disabled={report.busy} onClick={()=>void next()}>Retry my result →</button>}</div>}</>}</QuizShell>;
 }

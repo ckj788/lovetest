@@ -1,3 +1,4 @@
+import {soloBrowserReport} from '../../../lib/soloBrowserReport';
 import { NextRequest, NextResponse } from 'next/server';
 import { authorize, createReport, reportView, submitGuest, validAnswers } from '../../../lib/reports';
 export const dynamic = 'force-dynamic';
@@ -11,8 +12,14 @@ export async function POST(req: NextRequest) { try {
             return json({ error: 'Invalid mode' }, 400);
         return json(await submitGuest(body.token, body.answers));
     }
-    const record = await createReport(body.mode, body.answers);
-    return json({ token: record.ownerToken, ...reportView(record, 'owner') });
+    try {
+        const record=await createReport(body.mode,body.answers);
+        return json({token:record.ownerToken,...reportView(record,'owner')});
+    } catch {
+        // Solo needs no second device: compute its result without a database, retaining answers in the browser.
+        if(body.mode==='solo')return json(soloBrowserReport(body.answers));
+        return json({error:'Friend invitations are temporarily unavailable. Your answers are still on this page. Please retry.'},503);
+    }
 }
 catch {
     return json({ error: 'Unable to save your answers. Please retry.' }, 503);
