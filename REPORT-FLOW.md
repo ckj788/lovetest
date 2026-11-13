@@ -52,3 +52,9 @@ Client report requests time out after 15 seconds with a retry message; the last 
 ## Completion reveal
 
 Solo, friend initiator and friend guest show role-specific completion screens after the eighth answer. Successful requests share a minimum 2.1-second presentation beat (350 ms with reduced motion). Network time is included, not added; errors return to the answered question immediately for retry. New submissions show the animation; refreshing an existing report does not replay it. Animation state masks results until the beat ends, and leaving the page invalidates late UI updates. No simulated analysis percentage or scientific-processing claim is shown.
+
+## Vercel friendship storage — 2026-11-13
+
+Production returned 503 after friend question 8 because no Redis database was connected. Cross-device invitations require persistent storage; this cannot use Solo's browser-only fallback. Storage now accepts either a complete UPSTASH_REDIS_REST_URL / UPSTASH_REDIS_REST_TOKEN pair or Vercel's KV_REST_API_URL / KV_REST_API_TOKEN pair. DATA_ENCRYPTION_KEY remains required. Setup instructions are in VERCEL-SETUP.md; connecting storage and redeploying are required to restore the online flow.
+
+GET /api/reports/availability checks encrypted storage configuration and performs a read before the friend quiz starts. Missing setup and temporary outages show a retry notice using existing styles. Owner and guest drafts are separated by invitation, validated, and retained in the browser for seven days. Failed final submissions have an explicit retry button; successful submissions remove their draft. No payment or report entitlement rules change.

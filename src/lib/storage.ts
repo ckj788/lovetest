@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
 import { Redis } from '@upstash/redis';
+import { assertStorageConfigured, redisCredentials, StorageConfigurationError } from './storageConfig';
 export interface DuoSessionRecord {
  id: string; mode: 'talking' | 'couples' | 'friend'; partner1Token: string; partner2Token: string;
  partner1Answers: Record<string, any>; partner2Answers?: Record<string, any>;
@@ -12,12 +13,13 @@ export interface DuoSessionRecord {
 export interface EntitlementRecord { id: string; type: 'solo' | 'duo'; isPaid: boolean; stripeSessionId?: string; amountPaid?: number; createdAt: number; updatedAt: number; }
 export interface SoloRecord { id: string; token: string; answers: Record<number, string | string[]>; setup: { duration?: string; outcome?: string }; createdAt: number; expiresAt: number; price: number; }
 export interface CheckoutRecord { id: string; type: 'solo' | 'duo'; targetId: string; amount: number; stripeId?: string; url?: string; paid?: boolean; refunded?: boolean; }
-const redis = process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN ? new Redis({ url: process.env.UPSTASH_REDIS_REST_URL, token: process.env.UPSTASH_REDIS_REST_TOKEN }) : null;
+const credentials = redisCredentials();
+const redis = credentials ? new Redis(credentials) : null;
 const dir = path.join(process.cwd(), '.data');
 function key() {
  const value = process.env.DATA_ENCRYPTION_KEY;
  if (value && /^[a-f0-9]{64}$/i.test(value)) return Buffer.from(value, 'hex');
- if (process.env.NODE_ENV === 'production') throw new Error('DATA_ENCRYPTION_KEY is required');
+ if (process.env.NODE_ENV === 'production') throw new StorageConfigurationError();
  return crypto.createHash('sha256').update('mixedsigns-local-development-only').digest();
 }
 function encrypt(value: unknown) {
@@ -31,7 +33,7 @@ function decrypt<T>(value: string): T {
  return JSON.parse(Buffer.concat([cipher.update(bytes.subarray(28)), cipher.final()]).toString());
 }
 function file(id: string) { return path.join(dir, crypto.createHash('sha256').update(id).digest('hex') + '.json'); }
-function localOnly() { if (process.env.NODE_ENV === 'production') throw new Error('Persistent Redis storage is required in production'); }
+function localOnly() { if (process.env.NODE_ENV === 'production') throw new StorageConfigurationError(); }
 export async function putRecord(id: string, value: unknown, ttl = 30 * 86400) {
  const encrypted = encrypt(value);
  if (redis) { await redis.set(id, encrypted, { ex: ttl }); return; }
@@ -40,6 +42,7 @@ export async function putRecord(id: string, value: unknown, ttl = 30 * 86400) {
  fs.writeFileSync(temp, JSON.stringify({ encrypted, expiresAt: Date.now() + ttl * 1000 })); fs.renameSync(temp, dest);
 }
 export async function getRecord<T>(id: string): Promise<T | null> {
+ assertStorageConfigured();
  if (redis) { const value = await redis.get<string>(id); return value ? decrypt<T>(value) : null; }
  localOnly(); const dest = file(id); if (!fs.existsSync(dest)) return null;
  const record = JSON.parse(fs.readFileSync(dest, 'utf8'));
