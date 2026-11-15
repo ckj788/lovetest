@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
-import { authorize, saveReport } from '../../../lib/reports';
+import { authorize, saveReport, requireCompletedReport, ReportNotReadyError } from '../../../lib/reports';
 import { exclusive } from '../../../lib/storage';
 export const dynamic = 'force-dynamic';
 export async function POST(req: NextRequest) {
@@ -9,6 +9,7 @@ export async function POST(req: NextRequest) {
         const auth = await authorize(token || '');
         if (!auth || auth.role !== 'owner')
             return NextResponse.json({ error: 'Only the person who started this report can purchase it.' }, { status: 403 });
+        requireCompletedReport(auth.record);
         if (!process.env.STRIPE_SECRET_KEY || !process.env.STRIPE_WEBHOOK_SECRET)
             return NextResponse.json({ error: 'Checkout is not configured yet. Your answers and invitation are saved.' }, { status: 503 });
         const origin = process.env.APP_URL || (process.env.NODE_ENV !== 'production' ? new URL(req.url).origin : '');
@@ -20,6 +21,7 @@ export async function POST(req: NextRequest) {
             if (!fresh)
                 throw new Error('Expired report');
             const r = fresh.record;
+            requireCompletedReport(r);
             if (r.paid)
                 return NextResponse.json({ error: 'This report is already purchased. Refresh its status.' }, { status: 409 });
             if (r.checkoutId) {
@@ -38,7 +40,9 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ url: session.url });
         });
     }
-    catch {
+    catch (error) {
+        if(error instanceof ReportNotReadyError)
+            return NextResponse.json({code:'REPORT_NOT_READY',error:error.message},{status:409,headers:{'Cache-Control':'no-store'}});
         return NextResponse.json({ error: 'Checkout could not start. Please retry.' }, { status: 503 });
     }
 }

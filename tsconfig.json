@@ -34,7 +34,9 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     ".next-review/types/**/*.ts",
-    ".next-development/types/**/*.ts"
+    ".next-development/types/**/*.ts",
+    ".next-figma/types/**/*.ts",
+    ".next-figma-build/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

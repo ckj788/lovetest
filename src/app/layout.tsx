@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { SafeAnalytics } from "../components/SafeAnalytics";
 import { PostHogProvider } from "./providers";
 import "./globals.css";
+import "./design.css";
+import "./premium.css";
 
 export const metadata: Metadata = {
   title: "mixedsigns — A little less guessing. A little more clarity.",

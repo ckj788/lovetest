@@ -1,4 +1,4 @@
-import {FRIEND_GUIDANCE} from './friendGuidance';
+import {analyzeFriendAnswers} from './friendAnalysis';
 import {FRIEND_QUESTIONS} from './dualQuestions';
 export type FriendAnswers=Record<number,string|string[]>;
 export const FRIEND_PATTERNS=[
@@ -21,27 +21,11 @@ export function calculateFriendReport(a:FriendAnswers,b:FriendAnswers){
  // Equally scaled profile affinities. Identity comes from content, never a random label.
  const scores=[same/8,(both(2,[2,3])+both(7,[2]))/2,(both(1,[0])+both(3,[0,3]))/2,(both(1,[1,3])+both(4,[0,1]))/2,(both(1,[2])+both(2,[0,1]))/2,(both(3,[0])+both(6,[0,1]))/2,(both(3,[1])+both(8,[1,2]))/2,(both(4,[2,3])+both(5,[1,2]))/2,((contrast?1:0)+Math.abs(option(a,4)-option(b,4))/3+(option(a,2)!==option(b,2)?1:0))/3,(8-same)/8];
  let best=0;scores.forEach((s,i)=>{if(s>scores[best])best=i;});const p=FRIEND_PATTERNS[best];
- const prompts=['What makes a free day feel good for you?','How do we signal that we need more contact?','Would you prefer listening, advice, distraction, or space?','How much notice makes a plan comfortable?','How do we pause and return without leaving things unresolved?','What is one concrete way we can show up for each other?','What small sign helps us stay secure during a busy month?','How can we ask for help while making it safe to say no?'];
- const rows=FRIEND_QUESTIONS.map((q,i)=>({question:q.title,category:q.category,a:q.options.find(o=>o.id===a[q.id])!.label,b:q.options.find(o=>o.id===b[q.id])!.label,same:a[q.id]===b[q.id],person1Need:FRIEND_GUIDANCE[i].needs[option(a,q.id)],person2Need:FRIEND_GUIDANCE[i].needs[option(b,q.id)],opportunity:a[q.id]===b[q.id]?FRIEND_GUIDANCE[i].shared:FRIEND_GUIDANCE[i].opportunity,watchFor:FRIEND_GUIDANCE[i].risk,agreement:FRIEND_GUIDANCE[i].agreement,conversationStarter:FRIEND_GUIDANCE[i].starter,insight:(a[q.id]===b[q.id]?'You share this preference. Compare the reasons behind it. ':'Your preferences differ here. Agree on something workable for both. ')+prompts[i]}));
+
+ const analysis=analyzeFriendAnswers(a,b),rows=analysis.rows;
  const profileQuestions:Record<string,number[]>={same_braincell:[1,2,3,5],low_maintenance:[2,7],comfort_crew:[1,3],adventure_allies:[1,4],social_spark:[1,2],safe_harbor:[3,6],practical_pact:[3,8],steady_anchors:[4,5],golden_black_cat:[1,4,2],plot_twist:[3,5,2,8]};
  const patternEvidence=profileQuestions[p.id].slice(0,3).map(id=>rows[id-1]);
- const strengths=rows.filter(r=>r.same).slice(0,3);
- const priority=[3,5,2,8,7,4,1,6];
- const differences=rows.filter(r=>!r.same).sort((x,y)=>priority.indexOf(rows.indexOf(x)+1)-priority.indexOf(rows.indexOf(y)+1)).slice(0,3);
- const sevenDayPlan=[
- {day:1,title:'Compare the stories behind the answers',action:p.challenge,question:p.script},
- {day:2,title:'Agree on a contact rhythm',action:rows[1].agreement,question:rows[1].conversationStarter},
- {day:3,title:'Practice the kind of support each person wants',action:'Person 1 selected “'+rows[2].a+'”. Person 2 selected “'+rows[2].b+'”. Take turns asking for that kind of support using a small, ordinary example.',question:rows[2].conversationStarter},
- {day:4,title:'Make one plan that fits both',action:rows[0].agreement+' '+rows[3].agreement,question:rows[3].conversationStarter},
- {day:5,title:'Choose a repair agreement',action:rows[4].agreement+' Discuss a low-stakes example; you do not need to create a disagreement.',question:rows[4].conversationStarter},
- {day:6,title:'Make boundaries easy to state',action:rows[7].agreement,question:rows[7].conversationStarter},
- {day:7,title:'Keep what worked, adjust one thing',action:'Each name one moment that felt good, one adjustment that would help, and one small agreement you want to keep. Return to the answers only if your preferences actually changed.',question:'Did our small changes make the friendship more comfortable for both of us?'}
- ];
- const scripts=[{title:'Open with curiosity',when:'When you want to talk about your result without turning a label into a verdict.',text:p.script},
- {title:'Ask for your kind of support',when:'When a friend means well but their first response misses what you need.',text:'I appreciate you being here. Person 1 chose “'+rows[2].a+'”; Person 2 chose “'+rows[2].b+'”. Can we ask what kind of support is wanted before we jump in?'},
- {title:'Clear up a quiet period',when:'When your texting or busy-month expectations feel different.',text:'I don’t want to guess what silence means. '+rows[6].conversationStarter},
- {title:'Repair without blame',when:'When something small has felt off and you want to make room for both repair styles.',text:'I care about us and want to understand what happened. '+rows[4].conversationStarter},
- {title:'State a limit with care',when:'When you cannot offer the help or time being requested.',text:rows[7].conversationStarter}];
- const responseGuide=[{type:'green',title:'Curiosity plus a workable agreement',meaning:'Both people can describe their needs, hear a different preference, and try a small adjustment.',action:'Keep the agreement small and specific. Check whether it works for both of you.'},{type:'yellow',title:'Good intentions, unclear expectations',meaning:'You want to understand each other but still mean different things by “check in,” “give space,” or “make plans.”',action:'Replace the vague phrase with one concrete example and a realistic check-in time.'},{type:'red',title:'Repeated pressure or dismissal',meaning:'A repeated pattern of mocking a stated need, ignoring a limit, or punishing a reasonable no can make an arrangement unworkable. A quiz answer alone does not establish that pattern.',action:'Restate your limit and decide what level of contact or commitment works for you. You do not have to argue someone into respecting it.'}];
- return {patternEvidence,strengths,differences,sevenDayPlan,scripts,responseGuide,checkpoint:['What did each person actually appreciate this week?','Which agreement was realistic, and which felt like a duty?','What is one adjustment we both want to keep?'],limitation:'These are self-reported preferences from eight situations. They do not measure loyalty, predict friendship duration, or show whether either person has followed through. Use the suggestions as conversation starters, not tests to administer to each other.',id:p.id,name:p.name,summary:p.summary,explanation:p.explanation,script:p.script,challenge:p.challenge,matches:same,rows};
+ return {...analysis,patternEvidence,strengths:rows.filter(row=>row.same).slice(0,3),differences:analysis.differences.slice(0,3),
+  limitation:'These are two people’s self-reported preferences from eight situations. The report does not establish actual behavior, loyalty, friendship duration, or whether an agreement has been respected. Compare the interpretation with your own examples before using a suggestion.',
+  id:p.id,name:p.name,summary:p.summary,explanation:p.explanation,script:analysis.scripts[0].text,challenge:analysis.recommendation.action,matches:same};
 }

@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { QuizShell } from '../components/ui/QuizShell';
-import { QuizLanding } from '../components/QuizLanding';
+import { QuizLanding } from '../components/DesignLanding';
 import { QuizQuestion } from '../components/QuizQuestion';
 import { QuizResult } from '../components/QuizResult';
 import {QuizCalculating} from '../components/QuizCalculating';

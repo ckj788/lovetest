@@ -4,7 +4,7 @@ Visual CSS and design tokens unchanged. Duo links hidden and /dual redirects hom
 
 ## Access and purchase
 
-Owner finishes → encrypted report record and independent invitation token → owner sends guest link and purchases → guest completes → both personal links open full report only when payment is confirmed and both have submitted. Guest cannot purchase. Payment before guest completion and guest completion before payment are both supported.
+Owner finishes → encrypted report record and independent invitation token → owner sends guest link → guest completes → both see a brief free snapshot → owner chooses one shared unlock → both personal links open the full report once payment is confirmed. Guest cannot purchase. New checkout sessions and local preview unlocks require both people to have completed; incomplete reports receive REPORT_NOT_READY (409). Waiting pages focus on the invitation, disclose the total price and show no purchase button. Existing paid or preview-unlocked records retain their entitlement and open after the invited friend finishes, without a second purchase.
 
 Solo free preview contains pattern name, short summary and one immediate action. Bestie free preview contains a brief archetype after completion. Neither free API response contains raw answers, full comparisons, detailed plans or scripts. No hidden paid content is rendered behind blur.
 
@@ -33,13 +33,15 @@ Single choices advance after 180 ms of selection feedback. Answer ID is passed d
 
 ## Local review unlock
 
-In next dev only (NODE_ENV=development), the existing purchase button calls /api/reports/preview and immediately enables preview access. This is saved separately from paid/Stripe fields. The initiating person unlocks; guest access still requires both people to have answered. Refresh preserves the local preview grant. Production ignores the grant and returns 404 from the preview endpoint; the real Stripe flow remains available for later integration.
+In next dev only (NODE_ENV=development), the purchase button calls /api/reports/preview and immediately enables preview access. Bestie requires both answer sets before this button appears or the endpoint grants access. This is saved separately from paid/Stripe fields. Only the initiating person unlocks; both personal links can then open the full report. Refresh preserves the local preview grant. Production ignores the grant and returns 404 from the preview endpoint; the real Stripe flow remains available for later integration.
 
 Question navigation uses selected feedback → fade/slide out → direction-aware fade/slide in, with a light option cascade and smoothly updated progress. Back navigation cancels pending advances; reduced-motion preference bypasses transition delays.
 
 ## Friendship report depth
 
 Full reports now include the specific answers shaping the profile, shared preferences and prioritized differences, eight preference-specific interpretations (each person’s stated need, a potential misunderstanding, a practical agreement and an opening question), a seven-day joint plan, five adaptable scripts, a three-part response guide, and a day-seven checkpoint. Matching answers are not treated as proof of relationship health; no exact matches produces complementary opportunities rather than invented agreements. Expanded fields remain absent from unpaid API previews. Existing report links recompute this richer report from their saved answers.
+
+The latest Bestie report groups this material into six chapters. All eight exact option pairs now receive specific interpretation and agreement guidance, including different shared-choice cases. Related question combinations influence one recommended first conversation and supply quoted evidence. Individual scripts and follow-through criteria use that recommendation. Exact shared-choice count, the ten broad types, and the suggested conversation priority are separate descriptive outputs. Preferences and hypothetical situations do not establish actual behavior or relationship quality. A human validation protocol is prepared in RESEARCH-VALIDATION.md; it has not yet been run.
 
 ## Vercel Solo completion fix — 2026-11-04
 

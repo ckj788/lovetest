@@ -3,6 +3,7 @@ import { QUIZ_QUESTIONS } from '../data/questions';
 import { FRIEND_QUESTIONS } from '../data/dualQuestions';
 import {calculateFriendReport} from '../data/friendPatterns';
 import { calculateQuizResult } from '../utils/calculator';
+import { analyzeSoloResult } from '../data/soloAnalysis';
 export type Answers = Record<number, string | string[]>;
 export interface ReportRecord {
     id: string;
@@ -40,10 +41,16 @@ export async function authorize(token: string) { if (!/^[a-f0-9]{48}$/.test(toke
     return null; return { record: r, role: token === r.ownerToken ? 'owner' as const : 'guest' as const }; }
 // Preview grants never write payment or Stripe entitlement fields.
 export const previewModeEnabled = () => process.env.NODE_ENV === 'development';
+export class ReportNotReadyError extends Error {
+ constructor(){super('Both people need to finish their eight questions before the shared report can be unlocked.');this.name='ReportNotReadyError';}
+}
+export function requireCompletedReport(record:ReportRecord){
+ if(record.mode==='friend'&&!record.guestAnswers)throw new ReportNotReadyError();
+}
 export async function unlockPreview(token:string){
  if(!previewModeEnabled())throw new Error('Preview unlock is unavailable');
  const auth=await authorize(token);if(!auth||auth.role!=='owner')throw new Error('Only the initiator can unlock this preview');
- return exclusive('report:'+auth.record.id,async()=>{const fresh=await authorize(token);if(!fresh)throw new Error('Report expired');fresh.record.previewUnlocked=true;await saveReport(fresh.record);return reportView(fresh.record,'owner');});
+ return exclusive('report:'+auth.record.id,async()=>{const fresh=await authorize(token);if(!fresh)throw new Error('Report expired');requireCompletedReport(fresh.record);fresh.record.previewUnlocked=true;await saveReport(fresh.record);return reportView(fresh.record,'owner');});
 }
 export const friendReport = calculateFriendReport;
 export function reportView(r: ReportRecord, role: 'owner' | 'guest') {
@@ -53,10 +60,11 @@ export function reportView(r: ReportRecord, role: 'owner' | 'guest') {
     const base = { previewMode:previewModeEnabled(), previewUnlocked, mode: r.mode, role, completed, paid: r.paid && !r.refunded, unlocked, price: r.price, expiresAt: r.expiresAt, inviteToken: role === 'owner' && r.mode === 'friend' ? r.guestToken : undefined };
     if (r.mode === 'solo') {
         const result = calculateQuizResult(r.answers);
-        return { ...base, preview: { name: result.pattern.name, emoji: result.pattern.emoji, summary: result.pattern.tagline, action: result.pattern.immediateAction }, full: unlocked ? result : undefined };
+        const analysis=analyzeSoloResult(result);
+        return { ...base, preview: { name: result.pattern.name, emoji: result.pattern.emoji, summary: analysis.headline, action: analysis.previewAction }, full: unlocked ? result : undefined };
     }
     const full = completed ? friendReport(r.answers, r.guestAnswers!) : undefined;
-    return { ...base, preview: { name: full?.name || 'Your friendship reveal is taking shape', summary: completed ? full!.summary : 'Eight answers from you. Eight from your friend. One shared report.' }, full: unlocked ? full : undefined };
+    return { ...base, preview: { name: full?.name || 'Your friendship reveal is taking shape', summary: completed ? full!.previewSummary : 'Eight answers from you. Eight from your friend. One shared report.' }, full: unlocked ? full : undefined };
 }
 export async function submitGuest(token: string, answers: Answers) { const auth = await authorize(token); if (!auth || auth.role !== 'guest' || auth.record.mode !== 'friend')
     throw new Error('Invalid invitation'); return exclusive('report:' + auth.record.id, async () => { const fresh = await authorize(token); if (!fresh)
