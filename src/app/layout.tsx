@@ -4,6 +4,7 @@ import { PostHogProvider } from "./providers";
 import "./globals.css";
 import "./design.css";
 import "./premium.css";
+import "./mobile.css";
 
 export const metadata: Metadata = {
   title: "mixedsigns — A little less guessing. A little more clarity.",
