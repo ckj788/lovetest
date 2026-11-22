@@ -11,7 +11,44 @@ test('independent links hide answers, require both completion and payment, and r
 test('wrong-role submission and expired links fail',async()=>{const r=await createReport('friend',a);try{await assert.rejects(()=>submitGuest(r.ownerToken,b));r.expiresAt=Date.now()-1;await saveReport(r);assert.equal(await authorize(r.guestToken),null);}finally{await cleanup(r);}});
 test('solo preview never contains scripts, raw answers or seven-day plan',async()=>{const answers={1:'q1_a',2:'q2_a',3:'q3_a',4:'q4_a',5:['q5_1'],6:'q6_a',7:'q7_a',8:'q8_a'};const r=await createReport('solo',answers);try{const free=reportView(r,'owner');assert.equal(free.unlocked,false);assert.equal(free.full,undefined);assert.doesNotMatch(JSON.stringify(free),/exactScript|sevenDayPlan|q1_a/);r.paid=true;assert.equal(reportView(r,'owner').full.pattern.name,'Mutual Momentum');}finally{await cleanup(r);}});
 
-test('webhook requires signature, checks exact checkout binding, and tolerates retries',async()=>{const Stripe=require('stripe');const stripe=new Stripe('sk_test_local_only');process.env.STRIPE_SECRET_KEY='sk_test_local_only';process.env.STRIPE_WEBHOOK_SECRET='whsec_local_only';const {POST}=require('../src/app/api/stripe/webhook/route.ts');const r=await createReport('friend',a);try{r.checkoutId='cs_expected';await saveReport(r);async function deliver(session,sign=true){const payload=JSON.stringify({id:'evt_local',object:'event',type:'checkout.session.completed',data:{object:session}});const signature=stripe.webhooks.generateTestHeaderString({payload,secret:'whsec_local_only'});return POST(new Request('http://localhost/api/stripe/webhook',{method:'POST',body:payload,headers:sign?{'stripe-signature':signature}:{}}));}const session={id:'cs_expected',metadata:{reportId:r.id,mode:'friend'},payment_status:'paid',amount_total:999,currency:'usd',mode:'payment'};assert.equal((await deliver(session,false)).status,400);assert.equal((await deliver({...session,id:'cs_wrong'})).status,500);assert.equal((await authorize(r.ownerToken)).record.paid,false);assert.equal((await deliver({...session,payment_status:'unpaid'})).status,500);assert.equal((await deliver(session)).status,200);assert.equal((await deliver(session)).status,200);assert.equal((await authorize(r.ownerToken)).record.paid,true);assert.equal(reportView((await authorize(r.ownerToken)).record,'guest').unlocked,false);}finally{await cleanup(r);delete process.env.STRIPE_SECRET_KEY;delete process.env.STRIPE_WEBHOOK_SECRET;}});
+test('signed webhooks handle pending payments, paid retries, and full refunds arriving in either order',async()=>{
+ const Stripe=require('stripe'),stripe=new Stripe('sk_test_local_only');
+ process.env.STRIPE_SECRET_KEY='sk_test_local_only';process.env.STRIPE_WEBHOOK_SECRET='whsec_local_only';
+ const {POST}=require('../src/app/api/stripe/webhook/route.ts');
+ const r=await createReport('friend',a),refunded=await createReport('friend',a);
+ const intent='pi_'+r.id,refundedIntent='pi_'+refunded.id;
+ const deliver=(type,object,signed=true)=>{
+  const payload=JSON.stringify({type,data:{object}});
+  const signature=stripe.webhooks.generateTestHeaderString({payload,secret:'whsec_local_only'});
+  return POST(new Request('http://localhost/api/stripe/webhook',{method:'POST',body:payload,headers:signed?{'stripe-signature':signature}:{}}));
+ };
+ const checkout=(report,payment_intent)=>({id:report.checkoutId,metadata:{reportId:report.id,mode:'friend'},status:'complete',payment_status:'paid',amount_total:999,currency:'usd',mode:'payment',payment_intent});
+ const event='checkout.session.completed';
+ try{
+  r.checkoutId='cs_expected';r.guestAnswers=b;refunded.checkoutId='cs_other';await saveReport(r);await saveReport(refunded);
+  const session=checkout(r,intent);
+  assert.equal((await deliver(event,session,false)).status,400);
+  assert.equal((await deliver(event,{...session,id:'cs_wrong'})).status,500);
+  assert.equal((await deliver(event,{...session,payment_status:'unpaid'})).status,200);
+  assert.equal((await authorize(r.ownerToken)).record.paid,false);
+  assert.equal((await deliver(event,session)).status,200);
+  assert.equal((await deliver(event,session)).status,200);
+  assert.equal(reportView((await authorize(r.guestToken)).record,'guest').unlocked,true);
+  assert.equal((await deliver('charge.refunded',{payment_intent:intent,refunded:false})).status,200);
+  assert.equal(reportView((await authorize(r.guestToken)).record,'guest').unlocked,true);
+  assert.equal((await deliver('charge.refunded',{payment_intent:intent,refunded:true})).status,200);
+  assert.equal((await deliver(event,session)).status,200);
+  assert.equal(reportView((await authorize(r.guestToken)).record,'guest').unlocked,false);
+  assert.equal((await deliver('charge.refunded',{payment_intent:refundedIntent,refunded:true})).status,200);
+  assert.equal((await deliver(event,checkout(refunded,refundedIntent))).status,200);
+  const final=(await authorize(refunded.ownerToken)).record;
+  assert.equal(final.refunded,true);assert.equal(final.paid,false);
+ }finally{
+  await cleanup(r);await cleanup(refunded);
+  for(const value of [intent,refundedIntent]){await removeRecord('payment-report:'+value);await removeRecord('payment-refunded:'+value);}
+  delete process.env.STRIPE_SECRET_KEY;delete process.env.STRIPE_WEBHOOK_SECRET;
+ }
+});
 
 test('local preview requires both answers, stays separate from payment, and is ignored in production',async()=>{const {unlockPreview,ReportNotReadyError}=require('../src/lib/reports.ts');const r=await createReport('friend',a);const before=process.env.NODE_ENV;try{process.env.NODE_ENV='development';await assert.rejects(()=>unlockPreview(r.guestToken));await assert.rejects(()=>unlockPreview(r.ownerToken),ReportNotReadyError);assert.equal((await authorize(r.ownerToken)).record.previewUnlocked,undefined);let view=await submitGuest(r.guestToken,b);assert.equal(view.unlocked,false);view=await unlockPreview(r.ownerToken);assert.equal(view.previewUnlocked,true);assert.equal(view.paid,false);assert.equal(view.unlocked,true);const stored=(await authorize(r.ownerToken)).record;assert.equal(stored.paid,false);assert.equal(stored.checkoutId,undefined);assert.equal(reportView(stored,'owner').full.rows.length,8);assert.equal(reportView(stored,'guest').unlocked,true);process.env.NODE_ENV='production';assert.equal(reportView(stored,'owner').unlocked,false);assert.equal(reportView(stored,'owner').full,undefined);await assert.rejects(()=>unlockPreview(r.ownerToken));const {POST}=require('../src/app/api/reports/preview/route.ts');assert.equal((await POST(new Request('http://localhost/api/reports/preview',{method:'POST'}))).status,404);}finally{process.env.NODE_ENV=before;await cleanup(r);}});
 

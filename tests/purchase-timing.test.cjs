@@ -35,6 +35,29 @@ test('preview endpoint cannot bypass completion or ownership and opens both view
  }finally{process.env.NODE_ENV=before;await cleanup(r);}
 });
 
+test('the return endpoint verifies the saved Stripe session before unlocking Solo',async()=>{
+ const stripePath=require.resolve('stripe');const original=require.cache[stripePath].exports;
+ const answers={1:'q1_a',2:'q2_a',3:'q3_a',4:'q4_a',5:['q5_1'],6:'q6_a',7:'q7_a',8:'q8_a'};
+ const r=await createReport('solo',answers),intent='pi_'+r.id;
+ r.checkoutId='cs_saved';await saveReport(r);
+ const proof={id:r.checkoutId,amount_total:799,currency:'usd',mode:'payment',status:'complete',payment_status:'paid',payment_intent:intent,metadata:{reportId:r.id,mode:'solo'}};
+ let session={...proof,status:'open',payment_status:'unpaid'},lookups=0;
+ require.cache[stripePath].exports=class {
+  checkout={sessions:{retrieve:async id=>{assert.equal(id,'cs_saved');lookups++;return session;}}};
+ };
+ process.env.STRIPE_SECRET_KEY='sk_test_mock_only';
+ const {POST}=require('../src/app/api/checkout/confirm/route.ts');
+ const verify=token=>POST(request('/api/checkout/confirm',token));
+ try{
+  assert.equal((await verify('invalid')).status,403);assert.equal(lookups,0);
+  assert.equal((await (await verify(r.ownerToken)).json()).unlocked,false);
+  session={...proof,amount_total:1};assert.equal((await verify(r.ownerToken)).status,503);
+  assert.equal((await authorize(r.ownerToken)).record.paid,false);
+  session=proof;assert.equal((await (await verify(r.ownerToken)).json()).unlocked,true);
+  assert.equal((await (await verify(r.ownerToken)).json()).unlocked,true);assert.equal(lookups,3);
+ }finally{await cleanup(r);await removeRecord('payment-report:'+intent);require.cache[stripePath].exports=original;delete process.env.STRIPE_SECRET_KEY;}
+});
+
 test('legacy paid reports preserve their shared entitlement while waiting for the second answer set',async()=>{
  const r=await createReport('friend',answers);try{r.paid=true;await saveReport(r);assert.equal(reportView(r,'owner').unlocked,false);const completed=await submitGuest(r.guestToken,answers);assert.equal(completed.unlocked,true);assert.equal(reportView((await authorize(r.ownerToken)).record,'owner').unlocked,true);}finally{await cleanup(r);}
 });

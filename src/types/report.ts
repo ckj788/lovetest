@@ -4,6 +4,7 @@ export interface ReportView {
     storage?:'browser';
     previewMode?:boolean;
     previewUnlocked?:boolean;
+    refunded?:boolean;
     mode: 'solo' | 'friend';
     role: 'owner' | 'guest';
     completed: boolean;

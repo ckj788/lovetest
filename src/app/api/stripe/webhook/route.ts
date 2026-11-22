@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { getRecord, putRecord, exclusive } from '../../../../lib/storage';
 import { ReportRecord, saveReport } from '../../../../lib/reports';
+import { fulfillCheckout } from '../../../../lib/reportPayment';
 export const dynamic = 'force-dynamic';
 export async function POST(req: NextRequest) {
     if (!process.env.STRIPE_SECRET_KEY || !process.env.STRIPE_WEBHOOK_SECRET)
@@ -18,27 +19,29 @@ export async function POST(req: NextRequest) {
         if (event.type === 'checkout.session.completed' || event.type === 'checkout.session.async_payment_succeeded') {
             const s = event.data.object as Stripe.Checkout.Session;
             const id = s.metadata?.reportId;
-            if (id)
-                await exclusive('report:' + id, async () => { const r = await getRecord<ReportRecord>('report:' + id); if (!r || r.expiresAt <= Date.now())
-                    return; if (r.checkoutId !== s.id || s.payment_status !== 'paid' || s.mode !== 'payment' || s.currency !== 'usd' || s.amount_total !== r.price || s.metadata?.mode !== r.mode)
-                    throw new Error('Checkout binding mismatch'); if (typeof s.payment_intent === 'string') {
-                    r.paymentIntent = s.payment_intent;
-                    await putRecord('payment-report:' + s.payment_intent, id);
-                } if (!r.refunded) {
-                    r.paid = true;
-                    await saveReport(r);
-                } });
+            if (id && s.payment_status === 'paid') {
+                await exclusive('report:' + id, async () => {
+                    const report = await getRecord<ReportRecord>('report:' + id);
+                    if (!report || report.expiresAt <= Date.now()) return;
+                    await fulfillCheckout(report, s);
+                });
+            }
         }
         if (event.type === 'charge.refunded') {
             const c = event.data.object as Stripe.Charge;
             const intent = typeof c.payment_intent === 'string' ? c.payment_intent : '';
-            const id = await getRecord<string>('payment-report:' + intent);
-            if (id)
-                await exclusive('report:' + id, async () => { const r = await getRecord<ReportRecord>('report:' + id); if (r) {
-                    r.refunded = true;
-                    r.paid = false;
-                    await saveReport(r);
-                } });
+            if (intent && c.refunded) {
+                // Record full refunds even when the Checkout event has not arrived yet.
+                await putRecord('payment-refunded:' + intent, true);
+                const id = await getRecord<string>('payment-report:' + intent);
+                if (id) await exclusive('report:' + id, async () => {
+                    const report = await getRecord<ReportRecord>('report:' + id);
+                    if (!report || report.expiresAt <= Date.now() || report.paymentIntent !== intent || report.refunded) return;
+                    report.refunded = true;
+                    report.paid = false;
+                    await saveReport(report);
+                });
+            }
         }
         return NextResponse.json({ received: true });
     }

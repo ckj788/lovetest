@@ -40,7 +40,7 @@ export async function authorize(token: string) { if (!/^[a-f0-9]{48}$/.test(toke
     return null; const id = await getRecord<string>('report-token:' + token); const r = id ? await getRecord<ReportRecord>('report:' + id) : null; if (!r || r.expiresAt <= Date.now() || ![r.ownerToken, r.guestToken].includes(token))
     return null; return { record: r, role: token === r.ownerToken ? 'owner' as const : 'guest' as const }; }
 // Preview grants never write payment or Stripe entitlement fields.
-export const previewModeEnabled = () => process.env.NODE_ENV === 'development';
+export const previewModeEnabled = () => process.env.NODE_ENV === 'development' && process.env.REPORT_PREVIEW_MODE !== 'false';
 export class ReportNotReadyError extends Error {
  constructor(){super('Both people need to finish their eight questions before the shared report can be unlocked.');this.name='ReportNotReadyError';}
 }
@@ -57,7 +57,7 @@ export function reportView(r: ReportRecord, role: 'owner' | 'guest') {
     const completed = r.mode === 'solo' || !!r.guestAnswers;
     const previewUnlocked=previewModeEnabled()&&r.previewUnlocked===true;
     const unlocked = ((r.paid && !r.refunded)||previewUnlocked) && completed;
-    const base = { previewMode:previewModeEnabled(), previewUnlocked, mode: r.mode, role, completed, paid: r.paid && !r.refunded, unlocked, price: r.price, expiresAt: r.expiresAt, inviteToken: role === 'owner' && r.mode === 'friend' ? r.guestToken : undefined };
+    const base = { previewMode:previewModeEnabled(), previewUnlocked, mode: r.mode, role, completed, paid: r.paid && !r.refunded, refunded:r.refunded===true, unlocked, price: r.price, expiresAt: r.expiresAt, inviteToken: role === 'owner' && r.mode === 'friend' ? r.guestToken : undefined };
     if (r.mode === 'solo') {
         const result = calculateQuizResult(r.answers);
         const analysis=analyzeSoloResult(result);

@@ -8,13 +8,13 @@ Owner finishes → encrypted report record and independent invitation token → 
 
 Solo free preview contains pattern name, short summary and one immediate action. Bestie free preview contains a brief archetype after completion. Neither free API response contains raw answers, full comparisons, detailed plans or scripts. No hidden paid content is rendered behind blur.
 
-Full report authorization is server-side. URL success parameters do not authorize access. Stripe webhook signature, checkout ID, currency, amount and report mode must match. Repeated webhook delivery preserves the same purchase. Refunded purchases are revoked.
+Full report authorization is server-side. The Stripe webhook verifies the signature and the report, Checkout session, mode, currency and amount binding. The return page can also trigger a server-side Stripe lookup for the saved Checkout session. Both paths use the same rules to grant access only after a completed and paid session. Repeated payment events preserve the same purchase. Full refunds revoke access, even if delivered before the payment event.
 
 Both report links and invitations use random 192-bit bearer tokens in URL fragments. Treat these links as private. Responses use Cache-Control: no-store. Reports expire after 30 days, including paid reports; this is disclosed before checkout.
 
 ## Environment
 
-- APP_URL: canonical https origin for Stripe redirects; required in production.
+- APP_URL: canonical HTTPS origin for Stripe redirects. Vercel Production can fall back to VERCEL_PROJECT_PRODUCTION_URL.
 - STRIPE_SECRET_KEY and STRIPE_WEBHOOK_SECRET: checkout is disabled unless both exist.
 - Webhook endpoint: /api/stripe/webhook; checkout.session.completed, checkout.session.async_payment_succeeded, charge.refunded.
 - UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN: production persistence.
@@ -23,7 +23,7 @@ Both report links and invitations use random 192-bit bearer tokens in URL fragme
 
 Prices are server-set: Solo USD 7.99, Bestie USD 9.99, one-time. No SQL migration; new report: / report-token: / payment-report: Redis keys coexist with old records. Old Solo v2 browser progress is not reused because question indices changed.
 
-Do not deploy until production Redis, encryption, canonical origin, support contact and signed Stripe test-mode success/cancel/refund delivery have been verified. No real charge was made during implementation.
+See VERCEL-SETUP.md for the Stripe environment variables, webhook destination and test-mode setup.
 
 ## Result coverage and answer navigation
 
@@ -33,7 +33,7 @@ Single choices advance after 180 ms of selection feedback. Answer ID is passed d
 
 ## Local review unlock
 
-In next dev only (NODE_ENV=development), the purchase button calls /api/reports/preview and immediately enables preview access. Bestie requires both answer sets before this button appears or the endpoint grants access. This is saved separately from paid/Stripe fields. Only the initiating person unlocks; both personal links can then open the full report. Refresh preserves the local preview grant. Production ignores the grant and returns 404 from the preview endpoint; the real Stripe flow remains available for later integration.
+In next dev, the purchase button calls /api/reports/preview and immediately enables preview access by default. Set REPORT_PREVIEW_MODE=false to use Stripe test mode locally. Bestie requires both answer sets before the endpoint grants access. Preview grants are separate from payment and have no effect in production.
 
 Question navigation uses selected feedback → fade/slide out → direction-aware fade/slide in, with a light option cascade and smoothly updated progress. Back navigation cancels pending advances; reduced-motion preference bypasses transition delays.
 
@@ -47,7 +47,7 @@ The latest Bestie report groups this material into six chapters. All eight exact
 
 Production report persistence previously threw if Redis or DATA_ENCRYPTION_KEY was absent, making /api/reports return 503 after Solo question 8. Solo now falls back to a stateless server-calculated free report; answers are retained in the browser for up to 30 days and never placed in a share URL. Full report restoration and demo unlock are recalculated from saved answers via /api/reports/solo-preview. Unpaid requests do not receive full content. No database is needed for this Solo fallback. Friend cross-device sessions still require persistent encrypted storage.
 
-For this browser-only Solo demo, REPORT_PREVIEW_MODE=true explicitly enables click-to-preview; false disables it. With no override, demo unlock is available only when real Stripe key+webhook configuration is incomplete or in local development. When both Stripe credentials exist, the fallback never grants paid access; payment is unavailable until persistent storage is repaired. Real checkout and paid entitlements remain unchanged.
+Browser-only Solo reports on production retain the free snapshot and the answers on the current device. Clicking the purchase button retries saving the report first. Checkout starts once shared storage accepts the report. Local development still supports the demo unless REPORT_PREVIEW_MODE=false.
 
 Client report requests time out after 15 seconds with a retry message; the last question includes an explicit Retry my result button and keeps existing answers. Tests run NODE_ENV=production with no Redis, encryption or Stripe secrets to reproduce this deployment condition.
 
