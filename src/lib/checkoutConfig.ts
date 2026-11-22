@@ -8,7 +8,7 @@ export function stripeCheckoutConfig() {
     const isTestKey = /^(?:sk|rk)_test_/.test(key ?? '');
     const isLiveKey = /^(?:sk|rk)_live_/.test(key ?? '');
 
-    if (process.env.NODE_ENV === 'development' || productionSandboxEnabled()) {
+    if (process.env.NODE_ENV === 'development' || (isTestKey && productionSandboxEnabled())) {
         return isTestKey && key
             ? { key, testMode: true }
             : null;

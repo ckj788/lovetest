@@ -76,7 +76,10 @@ test('Solo and Bestie use Stripe Sandbox locally and only by opt-in on Vercel Pr
   assert.equal((await POST(request('/api/checkout',solo.ownerToken))).status,503);
   process.env.STRIPE_ALLOW_TEST_CHECKOUT='true';
   process.env.STRIPE_SECRET_KEY='sk_live_mock_only';
+  assert.deepEqual(stripeCheckoutConfig(),{key:'sk_live_mock_only',testMode:false});
+  delete process.env.STRIPE_WEBHOOK_SECRET;
   assert.equal(stripeCheckoutConfig(),null);
+  process.env.STRIPE_WEBHOOK_SECRET='whsec_live_only';
   process.env.STRIPE_SECRET_KEY='sk_test_mock_only';
   await submitGuest(bestie.guestToken,answers);
   for(const [environment,report] of [['development',solo],['test',bestie]]){
