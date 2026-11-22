@@ -23,7 +23,8 @@ export default function Home() {
     }
     catch { } }, []);
     useEffect(() => { if (step === 'quiz')try{localStorage.setItem(STORAGE, JSON.stringify({ index, answers, savedAt: Date.now() }));}catch{} }, [step, index, answers]);
-    function reset() { report.clear(); setStep('landing'); setIndex(0); setAnswers({}); setResume(false); try{localStorage.removeItem(STORAGE);}catch{} window.scrollTo(0, 0); }
+    function clearDraft() { setStep('landing'); setIndex(0); setAnswers({}); setResume(false); try{localStorage.removeItem(STORAGE);}catch{} window.scrollTo(0, 0); }
+    function reset() { report.clear(); clearDraft(); }
     async function next(optionId?:string) { if (index < 7)
         setIndex(index + 1);
     else if (await report.submit(optionId?{...answers,[QUIZ_QUESTIONS[index].id]:optionId}:answers)) {
@@ -32,7 +33,14 @@ export default function Home() {
         setResume(false);
     } }
     const q = QUIZ_QUESTIONS[index];
-    return <QuizShell>{report.completionKind?<QuizCalculating kind={report.completionKind}/>:report.view ? <>{report.view.unlocked && report.view.full ? <QuizResult result={report.view.full as QuizResultData} onReset={reset}/> : <div className="result-wrap"><ReportGate view={report.view} busy={report.busy} error={report.error} paymentNotice={report.paymentNotice} onCheckout={report.checkout} onRefresh={report.refresh}/><div className="result-end"><button className="text-button" onClick={reset}>Start a new reflection</button></div></div>}</> : report.token ? <div className="handoff-card"><p role="status">{report.error || 'Loading your private report…'}</p><button className="secondary-button" onClick={report.refresh}>Retry</button><button className="text-button" onClick={reset}>Start again</button></div> : step === 'landing' ? <>{resume && <div className="resume-bar"><span>Your unfinished reflection is saved.</span><button className="text-button" onClick={() => setStep('quiz')}>Resume →</button><button className="text-button" onClick={reset}>Clear</button></div>}<QuizLanding onStart={() => { setIndex(0); setAnswers({}); setStep('quiz'); }}/></> : <><QuizQuestion question={q} currentIndex={index} totalQuestions={8} selectedAnswers={answers[q.id] || (q.type === 'multi' ? [] : '')} onSelectOption={id => { if (report.busy)
+    const landing = <>
+        {resume && <div className="resume-bar"><span>Your unfinished reflection is saved.</span><button className="text-button" onClick={() => setStep('quiz')}>Resume →</button><button className="text-button" onClick={clearDraft}>Clear</button></div>}
+        {report.hasSavedSoloReport && <div className="resume-bar">
+            <button className="text-button" onClick={report.openSavedSoloReport}>Open my saved report →</button>
+        </div>}
+        <QuizLanding onStart={() => { setIndex(0); setAnswers({}); setStep('quiz'); }}/>
+    </>;
+    return <QuizShell>{report.completionKind?<QuizCalculating kind={report.completionKind}/>:report.view ? <>{report.view.unlocked && report.view.full ? <QuizResult result={report.view.full as QuizResultData} onReset={reset}/> : <div className="result-wrap"><ReportGate view={report.view} busy={report.busy} error={report.error} paymentNotice={report.paymentNotice} onCheckout={report.checkout} onRefresh={report.refresh}/><div className="result-end"><button className="text-button" onClick={reset}>Start a new reflection</button></div></div>}</> : (report.token || report.browserOnly) ? <div className="handoff-card"><p role="status">{report.error || 'Loading your private report…'}</p><button className="secondary-button" onClick={report.refresh}>Retry</button><button className="text-button" onClick={reset}>Start again</button></div> : step === 'landing' ? landing : <><QuizQuestion question={q} currentIndex={index} totalQuestions={8} selectedAnswers={answers[q.id] || (q.type === 'multi' ? [] : '')} onSelectOption={id => { if (report.busy)
         return; if (q.type === 'single')
         setAnswers({ ...answers, [q.id]: id });
     else {
