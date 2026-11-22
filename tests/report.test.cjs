@@ -50,6 +50,21 @@ test('signed webhooks handle pending payments, paid retries, and full refunds ar
  }
 });
 
-test('local preview requires both answers, stays separate from payment, and is ignored in production',async()=>{const {unlockPreview,ReportNotReadyError}=require('../src/lib/reports.ts');const r=await createReport('friend',a);const before=process.env.NODE_ENV;try{process.env.NODE_ENV='development';await assert.rejects(()=>unlockPreview(r.guestToken));await assert.rejects(()=>unlockPreview(r.ownerToken),ReportNotReadyError);assert.equal((await authorize(r.ownerToken)).record.previewUnlocked,undefined);let view=await submitGuest(r.guestToken,b);assert.equal(view.unlocked,false);view=await unlockPreview(r.ownerToken);assert.equal(view.previewUnlocked,true);assert.equal(view.paid,false);assert.equal(view.unlocked,true);const stored=(await authorize(r.ownerToken)).record;assert.equal(stored.paid,false);assert.equal(stored.checkoutId,undefined);assert.equal(reportView(stored,'owner').full.rows.length,8);assert.equal(reportView(stored,'guest').unlocked,true);process.env.NODE_ENV='production';assert.equal(reportView(stored,'owner').unlocked,false);assert.equal(reportView(stored,'owner').full,undefined);await assert.rejects(()=>unlockPreview(r.ownerToken));const {POST}=require('../src/app/api/reports/preview/route.ts');assert.equal((await POST(new Request('http://localhost/api/reports/preview',{method:'POST'}))).status,404);}finally{process.env.NODE_ENV=before;await cleanup(r);}});
+test('legacy demo flags cannot open a completed report in development',async()=>{
+ const before=process.env.NODE_ENV;
+ const r=await createReport('friend',a);
+ try{
+  process.env.NODE_ENV='development';
+  process.env.REPORT_PREVIEW_MODE='true';
+  r.previewUnlocked=true;
+  r.guestAnswers=b;
+  await saveReport(r);
+  for(const role of ['owner','guest']){
+   const view=reportView(r,role);
+   assert.equal(view.unlocked,false);
+   assert.equal(view.full,undefined);
+  }
+ }finally{process.env.NODE_ENV=before;delete process.env.REPORT_PREVIEW_MODE;await cleanup(r);}
+});
 
 test('unpaid completed friendship preview excludes the expanded analysis',async()=>{const r=await createReport('friend',a);try{r.guestAnswers=b;for(const role of ['owner','guest']){const free=JSON.stringify(reportView(r,role));assert.doesNotMatch(free,/person1Need|sevenDayPlan|patternEvidence|responseGuide|conversationStarter|checkpoint|recommendation|findings|rankedQuestions/);}r.paid=true;const full=reportView(r,'owner').full;assert.equal(full.sevenDayPlan.length,7);assert.equal(full.scripts.length,5);}finally{await cleanup(r);}});

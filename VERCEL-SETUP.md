@@ -30,4 +30,4 @@
 2. 在 Vercel 的 Production 环境变量中确认 `STRIPE_SECRET_KEY`，并将该 Webhook 的签名密钥存入 `STRIPE_WEBHOOK_SECRET`。两个密钥须来自同一 Stripe 账号和模式。将 `APP_URL` 设为网站生产地址，尤其是在使用自定义主域名时。Vercel 提供生产域名系统变量时，应用可用它生成回跳地址。
 3. 重新部署最新代码。Solo 一次支付 $7.99。Bestie 在双方答完后由发起人支付 $9.99，一次为双方解锁。
 
-在 Stripe 测试模式联调时，使用对应的测试密钥和 Webhook 签名密钥。本地运行 `stripe listen --forward-to localhost:3008/api/stripe/webhook`，在本地设置 `REPORT_PREVIEW_MODE=false`，然后从报告页进入 Stripe Checkout。检查付款返回、Webhook 到达和退款后报告权限的变化。
+本地联调时，在 `.env.development.local` 将 `STRIPE_SECRET_KEY` 设置为 Stripe 沙盒的测试密钥，重启开发服务即可从报告页打开 Stripe 测试收银台。若要验证 Webhook 和退款，再运行 `stripe listen --forward-to localhost:3008/api/stripe/webhook` 并将监听器的签名密钥存入该文件的 `STRIPE_WEBHOOK_SECRET`。

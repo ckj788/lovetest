@@ -57,7 +57,7 @@ export function useReport(mode: 'solo' | 'friend') {
             void refresh(access);
         }
     }
-    else if(mode==='solo'){try{const saved=JSON.parse(readLocal('mixedsigns_solo_browser')||'null');if(saved&&saved.expiresAt>Date.now()){setBrowserAnswers(saved.answers);void reportRequest('/api/reports/solo-preview',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({answers:saved.answers,unlock:saved.unlocked})}).then(setView).catch(e=>setError(e.message));}}catch{}}
+    else if(mode==='solo'){try{const saved=JSON.parse(readLocal('mixedsigns_solo_browser')||'null');if(saved&&saved.expiresAt>Date.now()){setBrowserAnswers(saved.answers);void reportRequest('/api/reports/solo-preview',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({answers:saved.answers})}).then(setView).catch(e=>setError(e.message));}}catch{}}
     setReady(true); }, [mode, refresh, confirmPayment]);
     useEffect(() => {
         if (!view?.paid && !view?.refunded) return;
@@ -91,7 +91,7 @@ export function useReport(mode: 'solo' | 'friend') {
         if(ticket===submission.current){submitting.current=false;setBusy(false);setCompletionKind(null);}
     } }
     async function checkout() {
-        if (checkoutInProgress.current || confirming.current) return;
+        if (!view?.checkoutAvailable || checkoutInProgress.current || confirming.current) return;
         checkoutInProgress.current = true;
         setBusy(true);
         setError('');
@@ -99,16 +99,6 @@ export function useReport(mode: 'solo' | 'friend') {
         try {
             let access = token;
             if (browserAnswers) {
-                if (view?.previewMode) {
-                    const data = await reportRequest('/api/reports/solo-preview', {
-                        method: 'POST', headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ answers: browserAnswers, unlock: true }),
-                    });
-                    setView(data);
-                    writeLocal('mixedsigns_solo_browser', JSON.stringify({answers:browserAnswers,unlocked:data.unlocked,expiresAt:data.expiresAt}));
-                    window.scrollTo(0, 0);
-                    return;
-                }
                 // Promote a device-only Solo result to a persisted report before accepting payment.
                 const saved = await reportRequest('/api/reports', {
                     method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -122,13 +112,10 @@ export function useReport(mode: 'solo' | 'friend') {
                 history.replaceState(null, '', location.pathname + '#access=' + access);
                 setView(saved);
             }
-            const data = await reportRequest(view?.previewMode ? '/api/reports/preview' : '/api/checkout', {
+            const data = await reportRequest('/api/checkout', {
                 method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token: access }),
             });
-            if (view?.previewMode) {
-                setView(data);
-                window.scrollTo({top:0,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
-            } else location.assign(data.url);
+            location.assign(data.url);
         } catch (e) {
             setError(e instanceof Error ? e.message : 'Checkout unavailable');
         } finally {
@@ -141,7 +128,7 @@ export function useReport(mode: 'solo' | 'friend') {
     }
     catch { } setBrowserAnswers(null);setToken(''); setView(null); setError(''); setPaymentNotice(''); history.replaceState(null, '', location.pathname); }
     function refreshPaymentOrReport() {
-        if (browserAnswers) return reportRequest('/api/reports/solo-preview',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({answers:browserAnswers,unlock:view?.unlocked})}).then(setView).catch(e=>setError(e.message));
+        if (browserAnswers) return reportRequest('/api/reports/solo-preview',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({answers:browserAnswers})}).then(setView).catch(e=>setError(e.message));
         if (new URLSearchParams(location.search).get('checkout') === 'returned') return confirmPayment(token);
         return refresh(token);
     }

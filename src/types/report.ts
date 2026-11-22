@@ -2,8 +2,9 @@ import { QuizResultData } from './quiz';
 export type FriendFull = ReturnType<typeof import('../data/friendPatterns').calculateFriendReport>;
 export interface ReportView {
     storage?:'browser';
-    previewMode?:boolean;
-    previewUnlocked?:boolean;
+    checkoutAvailable: boolean;
+    checkoutTestMode: boolean;
+    checkoutUnavailableReason?: string;
     refunded?:boolean;
     mode: 'solo' | 'friend';
     role: 'owner' | 'guest';

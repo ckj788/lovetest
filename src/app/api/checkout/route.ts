@@ -3,6 +3,7 @@ import Stripe from 'stripe';
 import { authorize, saveReport, requireCompletedReport, ReportNotReadyError } from '../../../lib/reports';
 import { exclusive } from '../../../lib/storage';
 import { checkoutOrigin } from '../../../lib/reportPayment';
+import { checkoutAvailability, stripeCheckoutConfig } from '../../../lib/checkoutConfig';
 export const dynamic = 'force-dynamic';
 export async function POST(req: NextRequest) {
     try {
@@ -11,12 +12,13 @@ export async function POST(req: NextRequest) {
         if (!auth || auth.role !== 'owner')
             return NextResponse.json({ error: 'Only the person who started this report can purchase it.' }, { status: 403 });
         requireCompletedReport(auth.record);
-        if (!process.env.STRIPE_SECRET_KEY || !process.env.STRIPE_WEBHOOK_SECRET)
-            return NextResponse.json({ error: 'Checkout is not configured yet. Your answers and invitation are saved.' }, { status: 503 });
-        const origin = checkoutOrigin(req.url);
+        const config = stripeCheckoutConfig();
+        if (!config)
+            return NextResponse.json({ code: 'CHECKOUT_UNAVAILABLE', error: checkoutAvailability().checkoutUnavailableReason }, { status: 503 });
+        const origin = checkoutOrigin(req.url, req.headers.get('origin'));
         if (!origin)
             return NextResponse.json({ error: 'Checkout configuration is incomplete.' }, { status: 503 });
-        const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { timeout: 10000, maxNetworkRetries: 0 });
+        const stripe = new Stripe(config.key, { timeout: 10000, maxNetworkRetries: 0 });
         return await exclusive('report:' + auth.record.id, async () => {
             const fresh = await authorize(token);
             if (!fresh)

@@ -3,6 +3,7 @@ import Stripe from 'stripe';
 import { authorize, reportView } from '../../../../lib/reports';
 import { exclusive } from '../../../../lib/storage';
 import { fulfillCheckout } from '../../../../lib/reportPayment';
+import { stripeCheckoutConfig } from '../../../../lib/checkoutConfig';
 
 export const dynamic = 'force-dynamic';
 const json = (data: unknown, status = 200) => NextResponse.json(data, {
@@ -22,9 +23,9 @@ export async function POST(req: NextRequest) {
             if (!fresh) return json({ error: 'This report link has expired.' }, 410);
             const report = fresh.record;
             if (!report.paid && !report.refunded && report.checkoutId) {
-                const key = process.env.STRIPE_SECRET_KEY;
-                if (!key) return json({ error: 'Payment confirmation is temporarily unavailable.' }, 503);
-                const stripe = new Stripe(key, { timeout: 8000, maxNetworkRetries: 0 });
+                const config = stripeCheckoutConfig();
+                if (!config) return json({ error: 'Payment confirmation is temporarily unavailable.' }, 503);
+                const stripe = new Stripe(config.key, { timeout: 8000, maxNetworkRetries: 0 });
                 const session = await stripe.checkout.sessions.retrieve(report.checkoutId);
                 await fulfillCheckout(report, session);
             }

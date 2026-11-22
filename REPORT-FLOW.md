@@ -4,7 +4,7 @@ Visual CSS and design tokens unchanged. Duo links hidden and /dual redirects hom
 
 ## Access and purchase
 
-Owner finishes → encrypted report record and independent invitation token → owner sends guest link → guest completes → both see a brief free snapshot → owner chooses one shared unlock → both personal links open the full report once payment is confirmed. Guest cannot purchase. New checkout sessions and local preview unlocks require both people to have completed; incomplete reports receive REPORT_NOT_READY (409). Waiting pages focus on the invitation, disclose the total price and show no purchase button. Existing paid or preview-unlocked records retain their entitlement and open after the invited friend finishes, without a second purchase.
+Owner finishes → encrypted report record and independent invitation token → owner sends guest link → guest completes → both see a brief free snapshot → owner chooses one shared unlock → both personal links open the full report once payment is confirmed. Guest cannot purchase. New checkout sessions require both people to have completed. Incomplete reports receive REPORT_NOT_READY (409). Waiting pages focus on the invitation, disclose the total price and show no purchase button. Existing paid reports open after the invited friend finishes, without a second purchase.
 
 Solo free preview contains pattern name, short summary and one immediate action. Bestie free preview contains a brief archetype after completion. Neither free API response contains raw answers, full comparisons, detailed plans or scripts. No hidden paid content is rendered behind blur.
 
@@ -31,9 +31,9 @@ Solo keeps seven deterministic behavioral outcomes (including insufficient evide
 
 Single choices advance after 180 ms of selection feedback. Answer ID is passed directly to submission so the last answer cannot be lost to a stale React state. Double clicks are locked out; back navigation cancels a pending advance. Multi-select never auto-advances and retains its confirm button.
 
-## Local review unlock
+## Local payment testing
 
-In next dev, the purchase button calls /api/reports/preview and immediately enables preview access by default. Set REPORT_PREVIEW_MODE=false to use Stripe test mode locally. Bestie requires both answer sets before the endpoint grants access. Preview grants are separate from payment and have no effect in production.
+Development uses Stripe test mode. In both modes the purchase button opens hosted Checkout once a Stripe test key is configured. The old demo URL returns 410, and previously saved demo grants no longer unlock reports.
 
 Question navigation uses selected feedback → fade/slide out → direction-aware fade/slide in, with a light option cascade and smoothly updated progress. Back navigation cancels pending advances; reduced-motion preference bypasses transition delays.
 
@@ -47,7 +47,7 @@ The latest Bestie report groups this material into six chapters. All eight exact
 
 Production report persistence previously threw if Redis or DATA_ENCRYPTION_KEY was absent, making /api/reports return 503 after Solo question 8. Solo now falls back to a stateless server-calculated free report; answers are retained in the browser for up to 30 days and never placed in a share URL. Full report restoration and demo unlock are recalculated from saved answers via /api/reports/solo-preview. Unpaid requests do not receive full content. No database is needed for this Solo fallback. Friend cross-device sessions still require persistent encrypted storage.
 
-Browser-only Solo reports on production retain the free snapshot and the answers on the current device. Clicking the purchase button retries saving the report first. Checkout starts once shared storage accepts the report. Local development still supports the demo unless REPORT_PREVIEW_MODE=false.
+Browser-only Solo reports retain the free snapshot and the answers on the current device. Clicking the purchase button retries saving the report first. Checkout starts once shared storage accepts the report.
 
 Client report requests time out after 15 seconds with a retry message; the last question includes an explicit Retry my result button and keeps existing answers. Tests run NODE_ENV=production with no Redis, encryption or Stripe secrets to reproduce this deployment condition.
 

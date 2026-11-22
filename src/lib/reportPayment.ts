@@ -2,14 +2,22 @@ import type Stripe from 'stripe';
 import { saveReport, type ReportRecord } from './reports';
 import { getRecord, putRecord } from './storage';
 
-export function checkoutOrigin(requestUrl: string) {
+export function checkoutOrigin(requestUrl: string, browserOrigin?: string | null) {
     const configured = process.env.APP_URL?.trim()
         || (process.env.VERCEL_ENV === 'production' ? 'https://' + (process.env.VERCEL_PROJECT_PRODUCTION_URL || '') : '');
     const candidate = configured || (process.env.NODE_ENV === 'production' ? '' : requestUrl);
     if (!candidate) return null;
     try {
-        const { origin, protocol, username, password } = new URL(candidate);
+        const url = new URL(candidate);
+        const { origin, protocol, username, password } = url;
         if (username || password || (protocol !== 'https:' && !(protocol === 'http:' && process.env.NODE_ENV !== 'production'))) return null;
+        // Next can normalize 127.0.0.1 to localhost. Keep the same browser origin on a local return.
+        const loopbackHosts = ['localhost', '127.0.0.1', '[::1]'];
+        if (!configured && process.env.NODE_ENV === 'development' && browserOrigin && loopbackHosts.includes(url.hostname)) {
+            const browserUrl = URL.canParse(browserOrigin) ? new URL(browserOrigin) : null;
+            if (browserUrl && loopbackHosts.includes(browserUrl.hostname)
+                && browserUrl.protocol === protocol && browserUrl.port === url.port) return browserUrl.origin;
+        }
         return origin;
     } catch {
         return null;
