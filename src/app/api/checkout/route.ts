@@ -3,7 +3,7 @@ import Stripe from 'stripe';
 import { authorize, saveReport, requireCompletedReport, ReportNotReadyError } from '../../../lib/reports';
 import { exclusive } from '../../../lib/storage';
 import { checkoutOrigin } from '../../../lib/reportPayment';
-import { checkoutAvailability, stripeCheckoutConfig } from '../../../lib/checkoutConfig';
+import { checkoutAvailability, checkoutMatchesStripeMode, stripeCheckoutConfig } from '../../../lib/checkoutConfig';
 export const dynamic = 'force-dynamic';
 export async function POST(req: NextRequest) {
     try {
@@ -30,6 +30,8 @@ export async function POST(req: NextRequest) {
             if (r.paid)
                 return NextResponse.json({ error: 'This report is already purchased. Refresh its status.' }, { status: 409 });
             if (r.checkoutId) {
+                if (!checkoutMatchesStripeMode(r.checkoutId, config.testMode))
+                    return NextResponse.json({ error: 'The site’s payment mode has changed. Start a new test to open a new checkout.' }, { status: 409 });
                 const previous = await stripe.checkout.sessions.retrieve(r.checkoutId);
                 if (previous.status === 'open' && previous.url)
                     return NextResponse.json({ url: previous.url });

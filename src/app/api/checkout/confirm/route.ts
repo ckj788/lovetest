@@ -3,7 +3,7 @@ import Stripe from 'stripe';
 import { authorize, reportView } from '../../../../lib/reports';
 import { exclusive } from '../../../../lib/storage';
 import { fulfillCheckout } from '../../../../lib/reportPayment';
-import { stripeCheckoutConfig } from '../../../../lib/checkoutConfig';
+import { checkoutMatchesStripeMode, stripeCheckoutConfig } from '../../../../lib/checkoutConfig';
 
 export const dynamic = 'force-dynamic';
 const json = (data: unknown, status = 200) => NextResponse.json(data, {
@@ -25,8 +25,11 @@ export async function POST(req: NextRequest) {
             if (!report.paid && !report.refunded && report.checkoutId) {
                 const config = stripeCheckoutConfig();
                 if (!config) return json({ error: 'Payment confirmation is temporarily unavailable.' }, 503);
+                if (!checkoutMatchesStripeMode(report.checkoutId, config.testMode))
+                    return json({ error: 'The site’s payment mode has changed. Use the original payment mode to confirm this checkout.' }, 409);
                 const stripe = new Stripe(config.key, { timeout: 8000, maxNetworkRetries: 0 });
                 const session = await stripe.checkout.sessions.retrieve(report.checkoutId);
+                if (session.livemode !== !config.testMode) throw new Error('Stripe mode mismatch');
                 await fulfillCheckout(report, session);
             }
             return json(reportView(report, 'owner'));

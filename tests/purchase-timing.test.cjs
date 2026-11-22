@@ -43,7 +43,7 @@ test('the obsolete demo endpoint rejects unlock requests for both products',asyn
  }finally{process.env.NODE_ENV=before;}
 });
 
-test('local Solo and Bestie use Stripe test Checkout, while live keys cannot create local orders',async()=>{
+test('Solo and Bestie use Stripe Sandbox locally and only by opt-in on Vercel Production',async()=>{
  const stripePath=require.resolve('stripe'),original=require.cache[stripePath].exports;
  const previousEnv=process.env.NODE_ENV;
  const soloAnswers={1:'q1_a',2:'q2_a',3:'q3_a',4:'q4_a',5:['q5_1'],6:'q6_a',7:'q7_a',8:'q8_a'};
@@ -53,7 +53,7 @@ test('local Solo and Bestie use Stripe test Checkout, while live keys cannot cre
   constructor(key){assert.equal(key,'sk_test_mock_only');}
   checkout={sessions:{create:async options=>{
    calls.push(options);
-   return {id:'cs_local_'+calls.length,url:'https://checkout.stripe.com/test-checkout'};
+   return {id:'cs_test_local_'+calls.length,url:'https://checkout.stripe.com/test-checkout'};
   }}};
  };
  const checkoutPath=require.resolve('../src/app/api/checkout/route.ts');
@@ -66,9 +66,21 @@ test('local Solo and Bestie use Stripe test Checkout, while live keys cannot cre
   assert.equal((await POST(request('/api/checkout',solo.ownerToken))).status,503);
   assert.equal(calls.length,0);
   assert.equal(reportView(solo,'owner').checkoutAvailable,false);
+  const {stripeCheckoutConfig}=require('../src/lib/checkoutConfig.ts');
+  process.env.NODE_ENV='test';
+  process.env.VERCEL_ENV='production';
+  process.env.APP_URL='https://example.test';
+  process.env.STRIPE_SECRET_KEY='sk_test_mock_only';
+  process.env.STRIPE_WEBHOOK_SECRET='whsec_live_only';
+  assert.equal(stripeCheckoutConfig(),null);
+  assert.equal((await POST(request('/api/checkout',solo.ownerToken))).status,503);
+  process.env.STRIPE_ALLOW_TEST_CHECKOUT='true';
+  process.env.STRIPE_SECRET_KEY='sk_live_mock_only';
+  assert.equal(stripeCheckoutConfig(),null);
   process.env.STRIPE_SECRET_KEY='sk_test_mock_only';
   await submitGuest(bestie.guestToken,answers);
-  for(const report of [solo,bestie]){
+  for(const [environment,report] of [['development',solo],['test',bestie]]){
+   process.env.NODE_ENV=environment;
    const response=await POST(request('/api/checkout',report.ownerToken));
    assert.equal(response.status,200);
    assert.equal((await response.json()).url,'https://checkout.stripe.com/test-checkout');
@@ -79,9 +91,15 @@ test('local Solo and Bestie use Stripe test Checkout, while live keys cannot cre
    assert.equal(view.full,undefined);
   }
   assert.deepEqual(calls.map(call=>call.line_items[0].price_data.unit_amount),[799,999]);
+  delete process.env.STRIPE_ALLOW_TEST_CHECKOUT;
+  process.env.STRIPE_SECRET_KEY='sk_live_mock_only';
+  assert.deepEqual(stripeCheckoutConfig(),{key:'sk_live_mock_only',testMode:false});
+  assert.match((await authorize(bestie.ownerToken)).record.checkoutId,/^cs_test_/);
  }finally{
   await cleanup(solo);await cleanup(bestie);
   process.env.NODE_ENV=previousEnv;delete process.env.STRIPE_SECRET_KEY;
+  delete process.env.STRIPE_WEBHOOK_SECRET;delete process.env.STRIPE_ALLOW_TEST_CHECKOUT;
+  delete process.env.VERCEL_ENV;delete process.env.APP_URL;
   delete require.cache[checkoutPath];
   require.cache[stripePath].exports=original;
  }
@@ -91,23 +109,25 @@ test('the return endpoint verifies the saved Stripe session before unlocking Sol
  const stripePath=require.resolve('stripe');const original=require.cache[stripePath].exports;
  const answers={1:'q1_a',2:'q2_a',3:'q3_a',4:'q4_a',5:['q5_1'],6:'q6_a',7:'q7_a',8:'q8_a'};
  const r=await createReport('solo',answers),intent='pi_'+r.id;
- r.checkoutId='cs_saved';await saveReport(r);
- const proof={id:r.checkoutId,amount_total:799,currency:'usd',mode:'payment',status:'complete',payment_status:'paid',payment_intent:intent,metadata:{reportId:r.id,mode:'solo'}};
+ r.checkoutId='cs_test_saved';await saveReport(r);
+ const proof={id:r.checkoutId,livemode:false,amount_total:799,currency:'usd',mode:'payment',status:'complete',payment_status:'paid',payment_intent:intent,metadata:{reportId:r.id,mode:'solo'}};
  let session={...proof,status:'open',payment_status:'unpaid'},lookups=0;
  require.cache[stripePath].exports=class {
-  checkout={sessions:{retrieve:async id=>{assert.equal(id,'cs_saved');lookups++;return session;}}};
+  checkout={sessions:{retrieve:async id=>{assert.equal(id,'cs_test_saved');lookups++;return session;}}};
  };
- process.env.STRIPE_SECRET_KEY='sk_test_mock_only';process.env.STRIPE_WEBHOOK_SECRET='whsec_mock_only';
+ process.env.VERCEL_ENV='production';process.env.STRIPE_ALLOW_TEST_CHECKOUT='true';
+ process.env.STRIPE_SECRET_KEY='sk_test_mock_only';process.env.STRIPE_WEBHOOK_SECRET='whsec_live_only';
  const {POST}=require('../src/app/api/checkout/confirm/route.ts');
  const verify=token=>POST(request('/api/checkout/confirm',token));
  try{
   assert.equal((await verify('invalid')).status,403);assert.equal(lookups,0);
   assert.equal((await (await verify(r.ownerToken)).json()).unlocked,false);
+  session={...proof,livemode:true};assert.equal((await verify(r.ownerToken)).status,503);
   session={...proof,amount_total:1};assert.equal((await verify(r.ownerToken)).status,503);
   assert.equal((await authorize(r.ownerToken)).record.paid,false);
   session=proof;assert.equal((await (await verify(r.ownerToken)).json()).unlocked,true);
-  assert.equal((await (await verify(r.ownerToken)).json()).unlocked,true);assert.equal(lookups,3);
- }finally{await cleanup(r);await removeRecord('payment-report:'+intent);require.cache[stripePath].exports=original;delete process.env.STRIPE_SECRET_KEY;delete process.env.STRIPE_WEBHOOK_SECRET;}
+  assert.equal((await (await verify(r.ownerToken)).json()).unlocked,true);assert.equal(lookups,4);
+ }finally{await cleanup(r);await removeRecord('payment-report:'+intent);require.cache[stripePath].exports=original;delete process.env.STRIPE_SECRET_KEY;delete process.env.STRIPE_WEBHOOK_SECRET;delete process.env.VERCEL_ENV;delete process.env.STRIPE_ALLOW_TEST_CHECKOUT;}
 });
 
 test('local Checkout returns to the same loopback origin the browser used',()=>{

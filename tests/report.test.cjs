@@ -17,18 +17,18 @@ test('signed webhooks handle pending payments, paid retries, and full refunds ar
  const {POST}=require('../src/app/api/stripe/webhook/route.ts');
  const r=await createReport('friend',a),refunded=await createReport('friend',a);
  const intent='pi_'+r.id,refundedIntent='pi_'+refunded.id;
- const deliver=(type,object,signed=true)=>{
-  const payload=JSON.stringify({type,data:{object}});
-  const signature=stripe.webhooks.generateTestHeaderString({payload,secret:'whsec_local_only'});
+ const deliver=(type,object,signed=true,livemode=false,secret='whsec_local_only')=>{
+  const payload=JSON.stringify({type,livemode,data:{object}});
+  const signature=stripe.webhooks.generateTestHeaderString({payload,secret});
   return POST(new Request('http://localhost/api/stripe/webhook',{method:'POST',body:payload,headers:signed?{'stripe-signature':signature}:{}}));
  };
  const checkout=(report,payment_intent)=>({id:report.checkoutId,metadata:{reportId:report.id,mode:'friend'},status:'complete',payment_status:'paid',amount_total:999,currency:'usd',mode:'payment',payment_intent});
  const event='checkout.session.completed';
  try{
-  r.checkoutId='cs_expected';r.guestAnswers=b;refunded.checkoutId='cs_other';await saveReport(r);await saveReport(refunded);
+  r.checkoutId='cs_test_expected';r.guestAnswers=b;refunded.checkoutId='cs_test_other';await saveReport(r);await saveReport(refunded);
   const session=checkout(r,intent);
   assert.equal((await deliver(event,session,false)).status,400);
-  assert.equal((await deliver(event,{...session,id:'cs_wrong'})).status,500);
+  assert.equal((await deliver(event,{...session,id:'cs_test_wrong'})).status,500);
   assert.equal((await deliver(event,{...session,payment_status:'unpaid'})).status,200);
   assert.equal((await authorize(r.ownerToken)).record.paid,false);
   assert.equal((await deliver(event,session)).status,200);
@@ -43,10 +43,19 @@ test('signed webhooks handle pending payments, paid retries, and full refunds ar
   assert.equal((await deliver(event,checkout(refunded,refundedIntent))).status,200);
   const final=(await authorize(refunded.ownerToken)).record;
   assert.equal(final.refunded,true);assert.equal(final.paid,false);
+
+  process.env.VERCEL_ENV='production';process.env.STRIPE_ALLOW_TEST_CHECKOUT='true';
+  assert.equal((await deliver(event,session)).status,400);
+  assert.equal((await deliver(event,session,true,true)).status,400);
+  assert.equal((await deliver('charge.refunded',{payment_intent:intent,refunded:true},true,true)).status,200);
+  process.env.STRIPE_TEST_WEBHOOK_SECRET='whsec_sandbox_only';
+  assert.equal((await deliver(event,session)).status,400);
+  assert.equal((await deliver(event,session,true,false,'whsec_sandbox_only')).status,200);
  }finally{
   await cleanup(r);await cleanup(refunded);
   for(const value of [intent,refundedIntent]){await removeRecord('payment-report:'+value);await removeRecord('payment-refunded:'+value);}
   delete process.env.STRIPE_SECRET_KEY;delete process.env.STRIPE_WEBHOOK_SECRET;
+  delete process.env.VERCEL_ENV;delete process.env.STRIPE_ALLOW_TEST_CHECKOUT;delete process.env.STRIPE_TEST_WEBHOOK_SECRET;
  }
 });
 

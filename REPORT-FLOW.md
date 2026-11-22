@@ -15,7 +15,8 @@ Both report links and invitations use random 192-bit bearer tokens in URL fragme
 ## Environment
 
 - APP_URL: canonical HTTPS origin for Stripe redirects. Vercel Production can fall back to VERCEL_PROJECT_PRODUCTION_URL.
-- STRIPE_SECRET_KEY and STRIPE_WEBHOOK_SECRET: checkout is disabled unless both exist.
+- STRIPE_SECRET_KEY and STRIPE_WEBHOOK_SECRET: live checkout requires both production credentials.
+- STRIPE_ALLOW_TEST_CHECKOUT: Vercel Production can explicitly run Sandbox Checkout with a test API key. Return-page verification works without a sandbox webhook. Set STRIPE_TEST_WEBHOOK_SECRET to verify sandbox notifications separately from live events.
 - Webhook endpoint: /api/stripe/webhook; checkout.session.completed, checkout.session.async_payment_succeeded, charge.refunded.
 - UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN: production persistence.
 - DATA_ENCRYPTION_KEY: 64 hex characters; required in production.
